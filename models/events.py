@@ -45,19 +45,9 @@ class Event(Base):
         String(1000)
     )
 
-    contract_id = Column(
-        Integer,
-        ForeignKey("contracts.id")
-    )
-
     support_contact_id = Column(
         Integer,
         ForeignKey("employees.id")
-    )
-
-    contract = relationship(
-        "Contract",
-        back_populates="events"
     )
 
     support_contact = relationship(
