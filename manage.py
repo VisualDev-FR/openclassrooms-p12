@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 from models import Base, create_engine
 from models.clients import Client
 from models.employees import Employee
+from models.contracts import Contract
+from models.events import Event
 
 
 def create_tables():
