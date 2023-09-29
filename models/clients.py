@@ -53,7 +53,8 @@ class Client(Base):
 
     sales_contact_id = Column(
         Integer,
-        ForeignKey("employees.id")
+        ForeignKey("employees.id"),
+        nullable=False
     )
 
     sales_contact = relationship(
