@@ -1,0 +1,9 @@
+* objectifs pour le 29/09/2023:
+    + finir le diagramme UML
+    + refaire les modèles python en fonction du diagramme
+    + définir les relations dans les modèles dans l'orm
+
+* objectifs pour le 06/10/2023
+    - mettre en place la fonction de login / signup
+    - mettre en place le système de tokens
+    - avancer sur l'étape 5
