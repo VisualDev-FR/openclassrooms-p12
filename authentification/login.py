@@ -10,7 +10,7 @@ def login(email: str, password: str) -> bool:
     engine = create_engine()
 
     session = Session(engine)
-    request = sqlalchemy.select(Employee)
+    request = sqlalchemy.select(Employee).where(Employee.email == email)
 
     employee = session.scalar(request)
 

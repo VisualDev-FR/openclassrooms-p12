@@ -11,6 +11,7 @@ from models.employees import Employee
 
 def create_engine() -> sqlalchemy.Engine:
     if DATABASE_PASSWORD:
+        # TODO: change root user
         return sqlalchemy.create_engine(
             f"mysql+pymysql://root:{DATABASE_PASSWORD}@localhost/EpicEvents"
         )

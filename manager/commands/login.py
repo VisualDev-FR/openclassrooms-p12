@@ -11,6 +11,6 @@ def execute(*args):
 
 
 if __name__ == "__main__":
-    execute("example@epicevents.com")
+    execute()
 
     print(get_token())

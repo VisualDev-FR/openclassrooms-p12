@@ -13,7 +13,7 @@ __JWT_ALGORITHM = "HS256"
 __JWT_EXPIRATION_TIME = datetime.timedelta(hours=1)
 
 
-def __get_token_path():
+def __get_token_path() -> Path:
     """
     retreive the file where the token is stored
     """
@@ -53,7 +53,7 @@ def clear_token():
         os.remove(path)
 
 
-def create_token(user_id: int):
+def create_token(user_id: int) -> str:
     """
     Return a Json-web-token for a given user, encrypted with
     a secret key defined in `authentification.environ.SECRET_KEY`
@@ -83,9 +83,3 @@ def decode_token(token: str) -> dict:
         # token is expired or is not valid
         clear_token()
         return None
-
-
-if __name__ == "__main__":
-    set_token("coucou")
-
-    print(get_token())
