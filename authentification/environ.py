@@ -1,3 +1,4 @@
+from pathlib import Path
 import os
 
 DATABASE_PASSWORD = os.environ.get("EPICEVENTS_PW")
@@ -11,16 +12,13 @@ if not SECRET_KEY:
     raise AttributeError("Environnement variable not set : SECRET_KEY")
 
 
-def set_token(token: str):
-    os.environ["EPICEVENTS_TOKEN"] = token
+def get_epicevents_env():
 
+    appdata = Path(os.environ.get("appdata"))
 
-def get_token() -> str:
-    return os.environ.get("EPICEVENTS_TOKEN")
+    path = Path(appdata, "epicevents")
 
+    if not os.path.exists(path):
+        os.mkdir(path)
 
-def clear_token():
-    try:
-        del os.environ["EPICEVENTS_TOKEN"]
-    except KeyError:
-        pass
+    return path

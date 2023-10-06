@@ -1,5 +1,4 @@
-from authentification.environ import get_token
-from authentification.token import decode_token
+from authentification.token import decode_token, get_token
 
 
 def login_required(function):

@@ -20,26 +20,20 @@ def create(full_name: str, email: str, password: str, department: Department):
 
 
 @login_required
-def get(email: str, password: str):
+def get_all():
     session = Session(engine)
 
-    request = sqlalchemy.select(Employee).where(Employee.email == email)
+    request = sqlalchemy.select(Employee)
 
-    employee = session.scalar(request)
-
-    print(employee.full_name)
-
-    # for employee in session.scalars(request):
-
-    #     valid_password = employee.check_password(password)
-
-    #     print(employee.full_name, valid_password)
+    return [employee.full_name for employee in session.scalars(request)]
 
 
 if __name__ == "__main__":
-    create(
-        full_name="Thomas, Menanteau",
-        email="example@epicevents.co",
-        password="password",
-        department=Department.SALES
-    )
+    # create(
+    #     full_name="Thomas, Menanteau",
+    #     email="example@epicevents.co",
+    #     password="password",
+    #     department=Department.SALES
+    # )
+
+    print(get_all())

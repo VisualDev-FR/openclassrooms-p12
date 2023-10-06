@@ -1,5 +1,5 @@
 from authentification.login import login
-from authentification.environ import get_token
+from authentification.token import get_token, clear_token
 
 
 def execute(*args):
@@ -11,6 +11,6 @@ def execute(*args):
 
 
 if __name__ == "__main__":
-    execute()
+    execute("example@epicevents.com")
 
     print(get_token())

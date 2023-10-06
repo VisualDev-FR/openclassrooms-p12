@@ -3,8 +3,7 @@ import sqlalchemy
 
 from models.employees import Employee
 from database.manager import create_engine
-from authentification.environ import set_token
-from authentification.token import create_token
+from authentification.token import create_token, set_token, clear_token
 
 
 def login(email: str, password: str) -> bool:
@@ -25,4 +24,10 @@ def login(email: str, password: str) -> bool:
         set_token(token)
         return True
 
-    return False
+    else:
+        clear_token()
+        return False
+
+
+def logout():
+    clear_token()

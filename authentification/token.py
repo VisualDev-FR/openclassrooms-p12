@@ -1,12 +1,56 @@
+from pathlib import Path
+from authentification.environ import get_epicevents_env
 import datetime
+import os
+
 import jwt
-from authentification.environ import clear_token
+
 from authentification.environ import (
     SECRET_KEY,
 )
 
 __JWT_ALGORITHM = "HS256"
 __JWT_EXPIRATION_TIME = datetime.timedelta(hours=1)
+
+
+def __get_token_path():
+    """
+    retreive the file where the token is stored
+    """
+    return Path(get_epicevents_env(), "token.txt")
+
+
+def set_token(token: str):
+    """
+    store a given token on the user's disk
+    """
+    path = __get_token_path()
+
+    with open(path, "w") as writer:
+        writer.write(token)
+
+
+def get_token() -> str:
+    """
+    retreive the token stored on the user's disk
+    """
+    path = __get_token_path()
+
+    if not path.exists():
+        return None
+
+    with open(path, "r") as reader:
+        return reader.read()
+
+
+def clear_token():
+    """
+    remove the token stored on the user's disk
+    """
+    path = __get_token_path()
+
+    if path.exists():
+        os.remove(path)
 
 
 def create_token(user_id: int):
@@ -39,3 +83,9 @@ def decode_token(token: str) -> dict:
         # token is expired or is not valid
         clear_token()
         return None
+
+
+if __name__ == "__main__":
+    set_token("coucou")
+
+    print(get_token())
