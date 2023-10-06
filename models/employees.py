@@ -76,8 +76,3 @@ class Employee(Base):
             password=password.encode("utf-8"),
             hashed_password=self.password_hash.encode("utf-8")
         )
-
-
-if __name__ == "__main__":
-    from sqlalchemy.schema import CreateTable
-    print(CreateTable(Employee.__table__))
