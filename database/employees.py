@@ -1,4 +1,5 @@
 import sqlalchemy
+import typing
 from sqlalchemy.orm import Session
 
 from database.manager import Manager, engine
@@ -8,19 +9,19 @@ from authentification.decorators import login_required, accounting_user_required
 
 class EmployeeManager(Manager):
     """
-    Manage the access to employees table.
+    Manage the access to ``Employee`` table.
     """
+
+    def __init__(self, session: Session) -> None:
+        super().__init__(session=session, model=Employee)
 
     @login_required
     def get(self, *args, **kwargs):
         return super().get(*args, **kwargs)
 
     @login_required
-    def all(self):
-        request = sqlalchemy.select(Employee)
-        all_employees = self._session.scalars(request)
-
-        return [employee.full_name for employee in all_employees]
+    def all(self) -> typing.List[Employee]:
+        return super().all()
 
     @accounting_user_required
     def create(self, full_name: str, email: str, password: str, department: Department):

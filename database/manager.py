@@ -28,16 +28,17 @@ class Manager(ABC):
     A model manager shall implement all CRUD methods to access or modify datas.
     """
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session, model: type) -> None:
         self._session = session
+        self._model = model
 
     @abstractmethod
     def create(*args, **kwargs):
         pass
 
-    @abstractmethod
     def all(self):
-        pass
+        request = sqlalchemy.select(self._model)
+        return self._session.scalars(request)
 
     @abstractmethod
     def get(self, *args, **kwargs):

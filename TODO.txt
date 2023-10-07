@@ -8,9 +8,10 @@
     + mettre en place le système de tokens
 
 * objectifs pour le 13/10/2023
-    - changer l'utilisateur root dans la connection à la base de données
-    - écrire les spécifications de mise en place de la base de donnée
-    - mettre en place la strategie de signup
-    - implémenter les decorateurs d'autorisation (un par role)
-    - crypter le password au moment de l'identification
+    + changer l'utilisateur root dans la connection à la base de données
+    + mettre en place la strategie de signup
+    + implémenter les decorateurs d'autorisation (un par role)
+    + crypter le password au moment de l'identification
+    - debugger les relations entre les modèles
+    - écrire les spécifications de mise en place de la base de donnée dans le readme
     - finir l'étape 5
