@@ -1,3 +1,4 @@
+from pwinput import pwinput
 from authentification.login import sign_up
 from authentification.environ import DATABASE_PASSWORD
 
@@ -10,7 +11,7 @@ if __name__ == "__main__":
     all the information required to create a new user in the database and log him in.
     """
 
-    password = input(
+    password = pwinput(
         "You need the database password to access this method.\npassword : "
     )
 
@@ -20,7 +21,7 @@ if __name__ == "__main__":
 
     full_name = input("full name : ")
     email = input("email : ")
-    password = input("password : ")
+    password = pwinput("password : ")
 
     sign_up(
         full_name=full_name,

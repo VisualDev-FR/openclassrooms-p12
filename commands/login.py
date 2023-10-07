@@ -1,4 +1,5 @@
 import sys
+from pwinput import pwinput
 from authentification.login import login
 
 
@@ -8,8 +9,8 @@ if __name__ == "__main__":
     """
 
     args = sys.argv
-    email = args[0] if len(args) else input("email : ")
-    password = input("password : ")
+    email = args[1] if len(args) > 1 else input("email : ")
+    password = pwinput("password : ")
 
     logged_in_employee = login(email, password)
 
