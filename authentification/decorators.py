@@ -27,66 +27,41 @@ def login_required(function):
     return wrapper
 
 
-def __check_department(
-    department: Department, function: typing.Callable, *args, **kwargs
-) -> typing.Any:
+def permission_required(roles: typing.List[Department]):
     """
-    Generic decorator wrapper, allowing to check if the authenticated user belongs to a given department.
-    """
-    REJECT_MESSAGE = f"Please login as a {department.value} employee and retry."
+    checks if the authenticated user belongs to a given department.
 
-    token = retreive_token()
-    decoded_token = decode_token(token)
+    Several departments can be specified, in order to give permission to multiple roles.
 
-    if not decoded_token:
-        print(REJECT_MESSAGE)
-        return None
-
-    user_id = decoded_token["user_id"]
-
-    session = Session(engine)
-    request = sqlalchemy.select(Employee).where(Employee.id == user_id)
-    employee = session.scalar(request)
-
-    if not employee:
-        print(REJECT_MESSAGE)
-        return None
-
-    if employee.department is not department:
-        print(REJECT_MESSAGE)
-        return None
-
-    return function(*args, **kwargs)
-
-
-def sales_user_required(function):
-    """
-    Decorator allowing to check if the authenticated user belongs to ``sales`` department.
+    returns ``None`` if the user is not authenticated or if he does not belong to the required departement.
     """
 
-    def wrapper(*args, **kwargs):
-        return __check_department(Department.SALES, function, *args, **kwargs)
+    def decorator(function):
+        def wrapper(*args, **kwargs):
 
-    return wrapper
+            REJECT_MESSAGE = "Permission denied."
 
+            token = retreive_token()
+            decoded_token = decode_token(token)
 
-def accounting_user_required(function):
-    """
-    Decorator allowing to check if the authenticated user belongs to ``accounts`` department.
-    """
+            if not decoded_token:
+                print(REJECT_MESSAGE)
+                return None
 
-    def wrapper(*args, **kwargs):
-        return __check_department(Department.ACCOUNTING, function, *args, **kwargs)
+            user_id = decoded_token["user_id"]
 
-    return wrapper
+            session = Session(engine)
+            request = sqlalchemy.select(Employee).where(Employee.id == user_id)
+            employee = session.scalar(request)
 
+            if not employee:
+                print(REJECT_MESSAGE)
+                return None
 
-def support_user_required(function):
-    """
-    Decorator allowing to check if the authenticated user belongs to ``support`` department.
-    """
+            if employee.department not in roles:
+                print(REJECT_MESSAGE)
+                return None
 
-    def wrapper(*args, **kwargs):
-        return __check_department(Department.SUPPORT, function, *args, **kwargs)
-
-    return wrapper
+            return function(*args, **kwargs)
+        return wrapper
+    return decorator
