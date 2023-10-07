@@ -1,0 +1,72 @@
+[
+    {
+        "full_name": "Alice Johnson",
+        "email": "alice.johnson@example.com",
+        "phone": "123-456-7890",
+        "enterprise": "Johnson Electronics",
+        "sales_contact_id": 1
+    },
+    {
+        "full_name": "Bob Smith",
+        "email": "bob.smith@example.com",
+        "phone": "987-654-3210",
+        "enterprise": "Smith Solutions",
+        "sales_contact_id": 4
+    },
+    {
+        "full_name": "Caroline Williams",
+        "email": "caroline.williams@example.com",
+        "phone": "555-555-5555",
+        "enterprise": "Williams Enterprises",
+        "sales_contact_id": 7
+    },
+    {
+        "full_name": "David Brown",
+        "email": "david.brown@example.com",
+        "phone": "777-888-9999",
+        "enterprise": "Brown Innovations",
+        "sales_contact_id": 10
+    },
+    {
+        "full_name": "Ella Davis",
+        "email": "ella.davis@example.com",
+        "phone": "111-222-3333",
+        "enterprise": "Davis Tech Solutions",
+        "sales_contact_id": 1
+    },
+    {
+        "full_name": "Franklin Lee",
+        "email": "franklin.lee@example.com",
+        "phone": "999-999-9999",
+        "enterprise": "Lee Dynamic Systems",
+        "sales_contact_id": 4
+    },
+    {
+        "full_name": "Grace Martin",
+        "email": "grace.martin@example.com",
+        "phone": "444-555-6666",
+        "enterprise": "Martin Innovate",
+        "sales_contact_id": 7
+    },
+    {
+        "full_name": "Henry Clark",
+        "email": "henry.clark@example.com",
+        "phone": "888-888-8888",
+        "enterprise": "Clark Peak Solutions",
+        "sales_contact_id": 10
+    },
+    {
+        "full_name": "Isabella Adams",
+        "email": "isabella.adams@example.com",
+        "phone": "666-777-8888",
+        "enterprise": "Adams Pro Global",
+        "sales_contact_id": 1
+    },
+    {
+        "full_name": "Jack White",
+        "email": "jack.white@example.com",
+        "phone": "222-333-4444",
+        "enterprise": "White FutureTech",
+        "sales_contact_id": 4
+    }
+]
