@@ -1,10 +1,10 @@
 ## créer une variable d'environnement
 ``` bash
-setx EPICEVENTS_PW root
+setx EPICEVENTS_PW password
 ```
 
 ``` bash
-setx EPICEVENTS_USER epicevents_user
+setx EPICEVENTS_USER epicevent_user
 ```
 
 ``` bash

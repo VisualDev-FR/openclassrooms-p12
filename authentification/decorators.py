@@ -61,7 +61,7 @@ def __check_department(
 
 def sales_user_required(function):
     """
-    Decorator allowing to check if the authenticated user belongs to sales department.
+    Decorator allowing to check if the authenticated user belongs to ``sales`` department.
     """
 
     def wrapper(*args, **kwargs):
@@ -72,7 +72,7 @@ def sales_user_required(function):
 
 def accounting_user_required(function):
     """
-    Decorator allowing to check if the authenticated user belongs to accounts department.
+    Decorator allowing to check if the authenticated user belongs to ``accounts`` department.
     """
 
     def wrapper(*args, **kwargs):
@@ -83,7 +83,7 @@ def accounting_user_required(function):
 
 def support_user_required(function):
     """
-    Decorator allowing to check if the authenticated user belongs to support department.
+    Decorator allowing to check if the authenticated user belongs to ``support`` department.
     """
 
     def wrapper(*args, **kwargs):
