@@ -32,7 +32,7 @@ def store_token(token: str):
 
 def retreive_token() -> str:
     """
-    retreive the token stored on the user's disk
+    retreive the authentification json-web-token stored on the user's disk
     """
     path = __get_token_path()
 
@@ -74,7 +74,7 @@ def create_token(user_id: int) -> str:
 def decode_token(token: str) -> dict:
     """
     decode a json-web-token and returns the contained payload.\n
-    return ``None`` if the token has expirated.
+    return ``None`` if the token has expirated or doesn't exist on the user's disk.
     """
     try:
         return jwt.decode(jwt=token, key=SECRET_KEY, algorithms=__JWT_ALGORITHM)
