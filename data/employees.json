@@ -48,5 +48,10 @@
         "full_name": "Amanda Harris",
         "email": "amanda.harris@epicevents.co",
         "departement": "SALES"
+    },
+    {
+        "full_name": "admin",
+        "email": "admin@example.co",
+        "departement": "ACCOUNTING"
     }
 ]

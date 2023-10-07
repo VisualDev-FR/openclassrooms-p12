@@ -19,7 +19,7 @@ def login_required(function):
         token = retreive_token()
 
         if not decode_token(token):
-            print("You must be authentified.")
+            print("Please login and retry.")
             return None
 
         return function(*args, **kwargs)
@@ -33,7 +33,7 @@ def __check_department(
     """
     Generic decorator wrapper, allowing to check if the authenticated user belongs to a given department.
     """
-    REJECT_MESSAGE = f"You must be authentified as a {department.value} employee to access this function."
+    REJECT_MESSAGE = f"Please login as a {department.value} employee and retry."
 
     token = retreive_token()
     decoded_token = decode_token(token)
