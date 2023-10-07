@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 import sqlalchemy
 import typing
 
@@ -41,17 +42,31 @@ class Manager(ABC):
         self._session = session
         self._model = model
 
-    @abstractmethod
-    def create(*args, **kwargs):
-        pass
+    def create(self, *args, **kwargs):
+        try:
+
+            obj = self._model(*args, **kwargs)
+
+            self._session.add(obj)
+            self._session.commit()
+
+            return obj
+
+        except IntegrityError as e:
+            print(f"Integrity error : {e._message()}")
+            return None
+
+        except Exception as e:
+            print(f"Unhandled exception: {type(e).__name__}")
+            return None
 
     def all(self):
         request = sqlalchemy.select(self._model)
         return self._session.scalars(request)
 
-    @abstractmethod
-    def get(self, *args, **kwargs):
-        pass
+    def get(self, where_clause):
+        request = sqlalchemy.select(self._model).where(where_clause)
+        return self._session.scalars(request)
 
     @abstractmethod
     def update(self, *args, **kwargs):
