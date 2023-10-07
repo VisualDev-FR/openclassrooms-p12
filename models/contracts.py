@@ -48,22 +48,10 @@ class Contract(Base):
         ForeignKey("employees.id")
     )
 
-    event_id = Column(
-        Integer,
-        ForeignKey("events.id")
-    )
-
     client = relationship(
         "Client",
-        back_populates="contracts"
     )
 
     account_contact = relationship(
         "Employee",
-        back_populates="contracts"
-    )
-
-    event = relationship(
-        "Event",
-        back_populates="contracts"
     )

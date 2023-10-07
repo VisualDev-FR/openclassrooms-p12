@@ -1,9 +1,11 @@
 from models import Base
+from sqlalchemy.sql import func
 from sqlalchemy import (
     Enum,
     Column,
     Integer,
     String,
+    DateTime
 )
 import enum
 import bcrypt
@@ -23,6 +25,11 @@ class Employee(Base):
         Integer,
         primary_key=True,
         autoincrement=True
+    )
+
+    creation_date = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
     )
 
     full_name = Column(

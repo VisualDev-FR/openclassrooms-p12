@@ -59,10 +59,4 @@ class Client(Base):
 
     sales_contact = relationship(
         "Employee",
-        back_populates="clients"
     )
-
-
-if __name__ == "__main__":
-    from sqlalchemy.schema import CreateTable
-    print(CreateTable(Client.__table__))

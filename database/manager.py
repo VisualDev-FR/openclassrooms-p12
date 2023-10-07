@@ -4,12 +4,11 @@ import sqlalchemy
 import typing
 
 from authentification.environ import DATABASE_PASSWORD, DATABASE_USERNAME
-from models.employees import Employee
 from models import Base
-
-# from models.clients import Client
-# from models.contracts import Contract
-# from models.events import Event
+from models.employees import Employee
+from models.clients import Client
+from models.contracts import Contract
+from models.events import Event
 
 
 engine = sqlalchemy.create_engine(
@@ -17,7 +16,17 @@ engine = sqlalchemy.create_engine(
 )
 
 
+def drop_tables():
+    """
+    drop all database tables.
+    """
+    Base.metadata.drop_all(engine)
+
+
 def create_tables():
+    """
+    create all database tables from the declared and imported models.
+    """
     Base.metadata.create_all(engine)
 
 
@@ -51,7 +60,3 @@ class Manager(ABC):
     @abstractmethod
     def delete(*args, **kwargs):
         pass
-
-
-if __name__ == "__main__":
-    create_tables()

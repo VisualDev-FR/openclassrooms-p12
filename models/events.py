@@ -52,5 +52,4 @@ class Event(Base):
 
     support_contact = relationship(
         "Employee",
-        back_populates="events"
     )
