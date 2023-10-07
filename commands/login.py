@@ -3,6 +3,10 @@ from authentification.login import login
 
 
 if __name__ == "__main__":
+    """
+    Entry point for login feature.
+    """
+
     args = sys.argv
     email = args[0] if len(args) else input("email : ")
     password = input("password : ")

@@ -4,7 +4,8 @@ from authentification.environ import DATABASE_PASSWORD
 
 if __name__ == "__main__":
     """
-    Entry point for registration functionality.\n
+    Entry point for registration functionality.
+
     Asks the user for the database password to access this method, then collects
     all the information required to create a new user in the database and log him in.
     """
