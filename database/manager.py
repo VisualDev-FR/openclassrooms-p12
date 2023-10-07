@@ -1,4 +1,7 @@
+from abc import ABC, abstractmethod
+from sqlalchemy.orm import Session
 import sqlalchemy
+import typing
 
 from authentification.environ import DATABASE_PASSWORD, DATABASE_USERNAME
 from models.employees import Employee
@@ -16,6 +19,37 @@ engine = sqlalchemy.create_engine(
 
 def create_tables():
     Base.metadata.create_all(engine)
+
+
+class Manager(ABC):
+    """
+    class template to implement model managers.
+
+    A model manager shall implement all CRUD methods to access or modify datas.
+    """
+
+    def __init__(self, session: Session) -> None:
+        self._session = session
+
+    @abstractmethod
+    def create(*args, **kwargs):
+        pass
+
+    @abstractmethod
+    def all(self):
+        pass
+
+    @abstractmethod
+    def get(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def update(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def delete(*args, **kwargs):
+        pass
 
 
 if __name__ == "__main__":
