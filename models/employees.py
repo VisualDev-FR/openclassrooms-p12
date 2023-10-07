@@ -75,7 +75,7 @@ class Employee(Base):
         self.password_hash = password_hash.decode("utf-8")
         self.salt = salt.decode("utf-8")
 
-    def check_password(self, password: str):
+    def check_password(self, password: str) -> bool:
         """
         Allow to check if a given password is valid, regarding the registered password
         """
