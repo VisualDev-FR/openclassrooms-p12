@@ -6,6 +6,7 @@ from sqlalchemy import (
     String,
 )
 import enum
+import bcrypt
 
 
 class Department(enum.Enum):
@@ -35,8 +36,13 @@ class Employee(Base):
         unique=True
     )
 
-    password = Column(
-        String(50),
+    password_hash = Column(
+        String(60),
+        nullable=False
+    )
+
+    salt = Column(
+        String(30),
         nullable=False
     )
 
@@ -45,7 +51,28 @@ class Employee(Base):
         nullable=False
     )
 
+    def set_password(self, password: str):
+        """
+        Hash and store a new password + salt value
+        """
+        # generate new salt
+        salt = bcrypt.gensalt()
 
-if __name__ == "__main__":
-    from sqlalchemy.schema import CreateTable
-    print(CreateTable(Employee.__table__))
+        # hash password with generated salt
+        password_hash = bcrypt.hashpw(
+            password=password.encode("utf-8"),
+            salt=salt
+        )
+
+        # set the hashed password and the salt value
+        self.password_hash = password_hash.decode("utf-8")
+        self.salt = salt.decode("utf-8")
+
+    def check_password(self, password: str):
+        """
+        Allow to check if a given password is valid, regarding the registered password
+        """
+        return bcrypt.checkpw(
+            password=password.encode("utf-8"),
+            hashed_password=self.password_hash.encode("utf-8")
+        )
