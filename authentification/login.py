@@ -2,12 +2,11 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 
 from models.employees import Employee
-from database.manager import create_engine
-from authentification.token import create_token, set_token, clear_token
+from database.manager import engine
+from authentification.token import create_token, store_token, clear_token
 
 
 def login(email: str, password: str) -> bool:
-    engine = create_engine()
 
     session = Session(engine)
     request = sqlalchemy.select(Employee).where(Employee.email == email)
@@ -21,7 +20,7 @@ def login(email: str, password: str) -> bool:
 
     if password_is_valid:
         token = create_token(user_id=employee.id)
-        set_token(token)
+        store_token(token)
         return True
 
     else:

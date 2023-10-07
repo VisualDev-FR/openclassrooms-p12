@@ -1,5 +1,5 @@
 from pathlib import Path
-from authentification.environ import get_epicevents_env
+from authentification.environ import get_epicevents_path
 import datetime
 import os
 
@@ -17,10 +17,10 @@ def __get_token_path() -> Path:
     """
     retreive the file where the token is stored
     """
-    return Path(get_epicevents_env(), "token.txt")
+    return Path(get_epicevents_path(), "token.txt")
 
 
-def set_token(token: str):
+def store_token(token: str):
     """
     store a given token on the user's disk
     """
@@ -30,7 +30,7 @@ def set_token(token: str):
         writer.write(token)
 
 
-def get_token() -> str:
+def retreive_token() -> str:
     """
     retreive the token stored on the user's disk
     """

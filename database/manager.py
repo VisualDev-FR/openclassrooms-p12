@@ -1,34 +1,21 @@
-from sqlalchemy.orm import Session
 import sqlalchemy
 
-from authentification.environ import DATABASE_PASSWORD
-from models import Base
+from authentification.environ import DATABASE_PASSWORD, DATABASE_USERNAME
 from models.employees import Employee
+from models import Base
+
 # from models.clients import Client
 # from models.contracts import Contract
 # from models.events import Event
 
 
-def create_engine() -> sqlalchemy.Engine:
-    if DATABASE_PASSWORD:
-        # TODO: change root user
-        return sqlalchemy.create_engine(
-            f"mysql+pymysql://root:{DATABASE_PASSWORD}@localhost/EpicEvents"
-        )
-
-    else:
-        raise AttributeError("Environnement variable not set : EPICEVENTS_PW")
+engine = sqlalchemy.create_engine(
+    f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/EpicEvents"
+)
 
 
 def create_tables():
-    # create sqlAlchemy engine
-    engine = create_engine()
-
-    # create all database tables
     Base.metadata.create_all(engine)
-
-
-engine = create_engine()
 
 
 if __name__ == "__main__":

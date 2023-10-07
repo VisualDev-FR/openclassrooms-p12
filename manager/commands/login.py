@@ -1,5 +1,5 @@
 from authentification.login import login
-from authentification.token import get_token, clear_token
+from authentification.token import retreive_token, clear_token
 
 
 def execute(*args):
@@ -13,4 +13,4 @@ def execute(*args):
 if __name__ == "__main__":
     execute()
 
-    print(get_token())
+    print(retreive_token())
