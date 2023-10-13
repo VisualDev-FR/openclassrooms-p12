@@ -1,13 +1,10 @@
 from authentification.login import logout
 
 
-def execute(*args):
+if __name__ == "__main__":
     """
-    Entry point for Logout feature.\n
+    Entry point for Logout feature.
+
     Deletes the token stored on the user's disk.
     """
     logout()
-
-
-if __name__ == "__main__":
-    execute()

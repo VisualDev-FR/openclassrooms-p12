@@ -1,0 +1,57 @@
+[
+    {
+        "full_name": "John Smith",
+        "email": "john.smith@epicevents.co",
+        "departement": "SALES"
+    },
+    {
+        "full_name": "Jane Doe",
+        "email": "jane.doe@epicevents.co",
+        "departement": "ACCOUNTING"
+    },
+    {
+        "full_name": "Michael Johnson",
+        "email": "michael.johnson@epicevents.co",
+        "departement": "SUPPORT"
+    },
+    {
+        "full_name": "Emily Williams",
+        "email": "emily.williams@epicevents.co",
+        "departement": "SALES"
+    },
+    {
+        "full_name": "David Brown",
+        "email": "david.brown@epicevents.co",
+        "departement": "ACCOUNTING"
+    },
+    {
+        "full_name": "Sarah Davis",
+        "email": "sarah.davis@epicevents.co",
+        "departement": "SUPPORT"
+    },
+    {
+        "full_name": "Robert Wilson",
+        "email": "robert.wilson@epicevents.co",
+        "departement": "SALES"
+    },
+    {
+        "full_name": "Linda Lee",
+        "email": "linda.lee@epicevents.co",
+        "departement": "ACCOUNTING"
+    },
+    {
+        "full_name": "William Johnson",
+        "email": "william.johnson@epicevents.co",
+        "departement": "SUPPORT"
+    },
+    {
+        "full_name": "Amanda Harris",
+        "email": "amanda.harris@epicevents.co",
+        "departement": "SALES"
+    },
+    {
+        "full_name": "admin",
+        "email": "admin@example.co",
+        "departement": "ACCOUNTING"
+    }
+]

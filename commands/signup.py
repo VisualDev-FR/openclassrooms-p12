@@ -1,31 +1,30 @@
+from pwinput import pwinput
 from authentification.login import sign_up
-from authentification.token import retreive_token, clear_token
 from authentification.environ import DATABASE_PASSWORD
 
 
-def execute(*args):
+if __name__ == "__main__":
     """
-    Entry point for registration functionality.\n
+    Entry point for registration functionality.
+
     Asks the user for the database password to access this method, then collects
     all the information required to create a new user in the database and log him in.
     """
 
-    password = input("You need the database password to access this method.\npassword : ")
+    password = pwinput(
+        "You need the database password to access this method.\npassword : "
+    )
 
     if password != DATABASE_PASSWORD:
         print("Invalid password.")
-        return
+        exit()
 
     full_name = input("full name : ")
     email = input("email : ")
-    password = input("password : ")
+    password = pwinput("password : ")
 
     sign_up(
         full_name=full_name,
         email=email,
         password=password,
     )
-
-
-if __name__ == "__main__":
-    execute()

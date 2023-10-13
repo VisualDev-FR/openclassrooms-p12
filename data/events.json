@@ -1,0 +1,82 @@
+[
+    {
+        "start_date": "2023-01-15 09:00:00",
+        "end_date": "2023-01-15 17:00:00",
+        "location": "Salle A",
+        "attendees_count": 50,
+        "notes": "Réunion annuelle de l'entreprise",
+        "support_contact_id": 3
+    },
+    {
+        "start_date": "2023-02-10 13:30:00",
+        "end_date": "2023-02-10 16:30:00",
+        "location": "Salle de conférence B",
+        "attendees_count": 80,
+        "notes": "Conférence sur les nouvelles tendances",
+        "support_contact_id": 6
+    },
+    {
+        "start_date": "2023-03-05 10:00:00",
+        "end_date": "2023-03-05 14:00:00",
+        "location": "Salle C",
+        "attendees_count": 40,
+        "notes": "Formation interne",
+        "support_contact_id": 9
+    },
+    {
+        "start_date": "2023-04-20 08:30:00",
+        "end_date": "2023-04-20 16:00:00",
+        "location": "Salle D",
+        "attendees_count": 120,
+        "notes": "Salon professionnel",
+        "support_contact_id": 3
+    },
+    {
+        "start_date": "2023-05-15 09:30:00",
+        "end_date": "2023-05-15 12:00:00",
+        "location": "Salle E",
+        "attendees_count": 60,
+        "notes": "Séminaire de marketing",
+        "support_contact_id": 6
+    },
+    {
+        "start_date": "2023-06-08 14:00:00",
+        "end_date": "2023-06-08 18:00:00",
+        "location": "Salle F",
+        "attendees_count": 75,
+        "notes": "Présentation des produits",
+        "support_contact_id": 9
+    },
+    {
+        "start_date": "2023-07-12 11:00:00",
+        "end_date": "2023-07-12 15:30:00",
+        "location": "Salle G",
+        "attendees_count": 55,
+        "notes": "Réunion de développement",
+        "support_contact_id": 3
+    },
+    {
+        "start_date": "2023-08-25 10:30:00",
+        "end_date": "2023-08-25 14:30:00",
+        "location": "Salle de réception H",
+        "attendees_count": 90,
+        "notes": "Fête d'entreprise",
+        "support_contact_id": 6
+    },
+    {
+        "start_date": "2023-09-18 15:00:00",
+        "end_date": "2023-09-18 17:30:00",
+        "location": "Salle I",
+        "attendees_count": 30,
+        "notes": "Réunion de l'équipe de projet",
+        "support_contact_id": 9
+    },
+    {
+        "start_date": "2023-10-10 09:00:00",
+        "end_date": "2023-10-10 11:30:00",
+        "location": "Salle de réunion J",
+        "attendees_count": 35,
+        "notes": "Discussion stratégique",
+        "support_contact_id": 3
+    }
+]
