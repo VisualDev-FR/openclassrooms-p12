@@ -15,7 +15,7 @@ class EmployeeManager(Manager):
         super().__init__(session=session, model=Employee)
 
     @login_required
-    def get(self, *args, **kwargs):
+    def get(self, *args, **kwargs) -> typing.List[Employee]:
         return super().get(*args, **kwargs)
 
     @login_required

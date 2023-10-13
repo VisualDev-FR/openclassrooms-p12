@@ -8,6 +8,9 @@ from models import Base
 from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 from unittest.mock import patch
+from authentification.token import create_token, store_token, clear_token
+from contextlib import contextmanager
+import os
 
 
 @pytest.fixture(scope="session")
@@ -67,3 +70,35 @@ def session(setup_database, account_employee, sales_employee, support_employee):
     session.close()
     transaction.rollback()
     connection.close()
+
+
+@contextmanager
+def login_as_sales(session):
+    try:
+        token = create_token(user_id=1)
+        store_token(token)
+        yield
+
+    finally:
+        clear_token()
+
+
+@contextmanager
+def login_as_accounting(session):
+    try:
+        token = create_token(user_id=2)
+        store_token(token)
+        yield
+
+    finally:
+        clear_token()
+
+
+@contextmanager
+def login_as_support(session):
+    try:
+        token = create_token(user_id=3)
+        store_token(token)
+        yield
+    finally:
+        clear_token()

@@ -32,7 +32,9 @@ def store_token(token: str):
 
 def retreive_token() -> str:
     """
-    retreive the authentification json-web-token stored on the user's disk
+    retreive the authentification json-web-token stored on the user's disk.
+
+    Return None if no token exists.
     """
     path = __get_token_path()
 
