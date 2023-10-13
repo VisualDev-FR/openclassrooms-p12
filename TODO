@@ -12,6 +12,7 @@ objectifs pour le 13/10/2023:
   ✔ mettre en place la strategie de signup
   ✔ implémenter les decorateurs d'autorisation (un par role)
   ✔ crypter le password au moment de l'identification
-  ☐ debugger les relations entre les modèles
+  ✔ debugger les relations entre les modèles
+  ☐ mettre en place l'environnement de tests @started(23-10-13 10:36)
   ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
   ☐ finir l'étape 5

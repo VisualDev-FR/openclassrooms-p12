@@ -17,6 +17,11 @@ engine = sqlalchemy.create_engine(
 )
 
 
+engine_test = sqlalchemy.create_engine(
+    f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/epicevents_test"
+)
+
+
 def drop_tables():
     """
     drop all database tables.
@@ -42,10 +47,8 @@ class Manager(ABC):
         self._session = session
         self._model = model
 
-    def create(self, *args, **kwargs):
+    def create(self, obj):
         try:
-            obj = self._model(*args, **kwargs)
-
             self._session.add(obj)
             self._session.commit()
 
@@ -61,11 +64,11 @@ class Manager(ABC):
 
     def all(self):
         request = sqlalchemy.select(self._model)
-        return self._session.scalars(request)
+        return [obj for obj in self._session.scalars(request)]
 
     def get(self, where_clause):
         request = sqlalchemy.select(self._model).where(where_clause)
-        return self._session.scalars(request)
+        return [obj for obj in self._session.scalars(request)]
 
     @abstractmethod
     def update(self, *args, **kwargs):

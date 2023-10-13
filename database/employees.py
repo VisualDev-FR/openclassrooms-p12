@@ -1,10 +1,9 @@
-import sqlalchemy
 import typing
 from sqlalchemy.orm import Session
 
-from database.manager import Manager, engine
+from authentification.decorators import login_required, permission_required
 from models.employees import Employee, Department
-from authentification.decorators import login_required, accounting_user_required
+from database.manager import Manager, engine
 
 
 class EmployeeManager(Manager):
@@ -23,7 +22,7 @@ class EmployeeManager(Manager):
     def all(self) -> typing.List[Employee]:
         return super().all()
 
-    @accounting_user_required
+    @permission_required(roles=[Department.ACCOUNTING])
     def create(self, full_name: str, email: str, password: str, department: Department):
         new_employee = Employee(
             full_name=full_name,
@@ -33,13 +32,12 @@ class EmployeeManager(Manager):
 
         new_employee.set_password(password)
 
-        self._session.add(new_employee)
-        self._session.commit()
+        super().create(new_employee)
 
-    @accounting_user_required
+    @permission_required(roles=[Department.ACCOUNTING])
     def update(self, *args, **kwargs):
         return super().update(*args, **kwargs)
 
-    @accounting_user_required
+    @permission_required(roles=[Department.ACCOUNTING])
     def delete(*args, **kwargs):
         return super().delete(**kwargs)
