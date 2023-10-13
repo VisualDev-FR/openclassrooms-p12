@@ -3,10 +3,7 @@ from sqlalchemy.orm import Session
 from database.manager import Manager
 from models.events import Event
 from models.employees import Department as roles
-from authentification.decorators import (
-    login_required,
-    permission_required
-)
+from authentification.decorators import login_required, permission_required
 
 
 class EventsManager(Manager):

@@ -44,7 +44,6 @@ class Manager(ABC):
 
     def create(self, *args, **kwargs):
         try:
-
             obj = self._model(*args, **kwargs)
 
             self._session.add(obj)
@@ -54,11 +53,11 @@ class Manager(ABC):
 
         except IntegrityError as e:
             print(f"Integrity error : {e._message()}")
-            return None
 
         except Exception as e:
             print(f"Unhandled exception: {type(e).__name__}")
-            return None
+
+        return None
 
     def all(self):
         request = sqlalchemy.select(self._model)

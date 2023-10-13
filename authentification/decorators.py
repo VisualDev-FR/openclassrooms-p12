@@ -38,17 +38,16 @@ def permission_required(roles: typing.List[Department]):
 
     def decorator(function):
         def wrapper(*args, **kwargs):
-
             REJECT_MESSAGE = "Permission denied."
 
             token = retreive_token()
-            decoded_token = decode_token(token)
+            token_payload = decode_token(token)
 
-            if not decoded_token:
+            if not token_payload:
                 print(REJECT_MESSAGE)
                 return None
 
-            user_id = decoded_token["user_id"]
+            user_id = token_payload["user_id"]
 
             session = Session(engine)
             request = sqlalchemy.select(Employee).where(Employee.id == user_id)
@@ -63,5 +62,7 @@ def permission_required(roles: typing.List[Department]):
                 return None
 
             return function(*args, **kwargs)
+
         return wrapper
+
     return decorator
