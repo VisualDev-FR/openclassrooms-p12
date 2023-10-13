@@ -19,8 +19,7 @@ def login_required(function):
         token = retreive_token()
 
         if not decode_token(token):
-            print("Please login and retry.")
-            return None
+            raise PermissionError("Please login and retry.")
 
         return function(*args, **kwargs)
 
@@ -44,8 +43,7 @@ def permission_required(roles: typing.List[Department]):
             token_payload = decode_token(token)
 
             if not token_payload:
-                print(REJECT_MESSAGE)
-                return None
+                raise PermissionError(REJECT_MESSAGE)
 
             user_id = token_payload["user_id"]
 
@@ -54,12 +52,11 @@ def permission_required(roles: typing.List[Department]):
             employee = session.scalar(request)
 
             if not employee:
-                print(REJECT_MESSAGE)
-                return None
+                raise PermissionError(REJECT_MESSAGE)
 
             if employee.department not in roles:
-                print(REJECT_MESSAGE)
-                return None
+                print(employee.id, employee.department, roles)
+                raise PermissionError(REJECT_MESSAGE)
 
             return function(*args, **kwargs)
 

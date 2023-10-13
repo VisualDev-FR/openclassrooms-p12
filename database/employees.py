@@ -32,7 +32,7 @@ class EmployeeManager(Manager):
 
         new_employee.set_password(password)
 
-        super().create(new_employee)
+        return super().create(new_employee)
 
     @permission_required(roles=[Department.ACCOUNTING])
     def update(self, *args, **kwargs):

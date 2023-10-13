@@ -1,39 +1,24 @@
 import pytest
-from database.manager import engine_test
-from models.clients import Client
-from models.contracts import Contract
-from models.employees import Employee, Department
-from models.events import Event
-from models import Base
-from sqlalchemy import Engine
-from sqlalchemy.orm import Session
-from unittest.mock import patch
-from authentification.token import create_token, store_token, clear_token
 from contextlib import contextmanager
-import os
+from sqlalchemy.orm import Session
+import sqlalchemy
+
+from authentification.token import create_token, store_token, clear_token
+from database.manager import DATABASE_PASSWORD, DATABASE_USERNAME
+from models import Base
+from models.employees import Employee, Department
+from models.contracts import Contract
+from models.clients import Client
+from models.events import Event
 
 
-@pytest.fixture(scope="session")
-def setup_database():
-    Base.metadata.create_all(engine_test)
-    yield
-    Base.metadata.drop_all(engine_test)
-
-
-@pytest.fixture
-def account_employee():
-    employee = Employee(
-        full_name="account, employee",
-        email="account.employee@epicevents.co",
-        department=Department.ACCOUNTING,
-    )
-
-    employee.set_password("password")
-    return employee
+__TEST_ENGINE = sqlalchemy.create_engine(
+    f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/epicevents_test"
+)
 
 
 @pytest.fixture
-def sales_employee():
+def sales_employee() -> Employee:
     employee = Employee(
         full_name="sales, employee",
         email="sales.employee@epicevents.co",
@@ -45,7 +30,19 @@ def sales_employee():
 
 
 @pytest.fixture
-def support_employee():
+def account_employee() -> Employee:
+    employee = Employee(
+        full_name="account, employee",
+        email="account.employee@epicevents.co",
+        department=Department.ACCOUNTING,
+    )
+
+    employee.set_password("password")
+    return employee
+
+
+@pytest.fixture
+def support_employee() -> Employee:
     employee = Employee(
         full_name="support, employee",
         email="support.employee@epicevents.co",
@@ -56,9 +53,16 @@ def support_employee():
     return employee
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
+def setup_database():
+    Base.metadata.create_all(__TEST_ENGINE)
+    yield
+    Base.metadata.drop_all(__TEST_ENGINE)
+
+
+@pytest.fixture(scope="function")
 def session(setup_database, account_employee, sales_employee, support_employee):
-    connection = engine_test.connect()
+    connection = __TEST_ENGINE.connect()
     transaction = connection.begin()
     session = Session(bind=connection)
 
@@ -73,7 +77,7 @@ def session(setup_database, account_employee, sales_employee, support_employee):
 
 
 @contextmanager
-def login_as_sales(session):
+def login_as_sales():
     try:
         token = create_token(user_id=1)
         store_token(token)
@@ -84,7 +88,7 @@ def login_as_sales(session):
 
 
 @contextmanager
-def login_as_accounting(session):
+def login_as_accounting():
     try:
         token = create_token(user_id=2)
         store_token(token)
@@ -95,7 +99,7 @@ def login_as_accounting(session):
 
 
 @contextmanager
-def login_as_support(session):
+def login_as_support():
     try:
         token = create_token(user_id=3)
         store_token(token)

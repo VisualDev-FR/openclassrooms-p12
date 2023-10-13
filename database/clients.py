@@ -23,7 +23,7 @@ class ClientsManager(Manager):
         enterprise: str,
         sales_contact_id: int,
     ) -> Client:
-        return super().create(
+        client = Client(
             full_name=full_name,
             email=email,
             phone=phone,
@@ -31,9 +31,11 @@ class ClientsManager(Manager):
             sales_contact_id=sales_contact_id,
         )
 
+        return super().create(client)
+
     @login_required
-    def get(self, where_clause):
-        return super().get(where_clause)
+    def get(self, *args, **kwargs) -> typing.List[Client]:
+        return super().get(*args, **kwargs)
 
     @login_required
     def all(self) -> typing.List[Client]:
