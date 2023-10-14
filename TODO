@@ -14,5 +14,11 @@ objectifs pour le 13/10/2023:
   ✔ crypter le password au moment de l'identification
   ✔ debugger les relations entre les modèles
   ✔ mettre en place l'environnement de tests @started(23-10-13 10:36) @done(23-10-13 12:50) @lasted(2h14m3s)
+  ✔ finir l'étape 5 @done(23-10-13 16:26)
+
+objectifs pour le 20/10/2023:
+  ✘ fusionner les decorateurs de login (ça vaut le coup ou pas ?) @cancelled(23-10-14 11:59)
+  ☐ mettre en place les tests sur les fonctions d'authentification
   ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
-  ☐ finir l'étape 5
+  ☐ finir l'étape 6
+

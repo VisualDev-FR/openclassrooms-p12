@@ -9,10 +9,12 @@ from database.manager import engine
 
 def login_required(function):
     """
-    Decorator allowing to check if the current user is authenticated.\n
+    decorator allowing to check if the current user is authenticated by retreiving the token
+    stored on the user's disk, and trying to decode it. If one of those two steps fails, the
+    authentification check is rejected.
 
-    Retreive the token stored on the user's disk, and try to decode it.
-    If one of those two steps fails, the authentification check is rejected.
+    Raises:
+    * ``PermissionError``
     """
 
     def wrapper(*args, **kwargs):
@@ -28,11 +30,13 @@ def login_required(function):
 
 def permission_required(roles: typing.List[Department]):
     """
-    checks if the authenticated user belongs to a given department.
+    decorator allowing to checks if the authenticated user belongs to a given department.
 
-    Several departments can be specified, in order to give permission to multiple roles.
+    Args:
+    * ``roles``: A list of ``Departement`` objects which are authorized to access the function.
 
-    returns ``None`` if the user is not authenticated or if he does not belong to the required departement.
+    Raises:
+    * ``PermissionError``
     """
 
     def decorator(function):
@@ -55,7 +59,6 @@ def permission_required(roles: typing.List[Department]):
                 raise PermissionError(REJECT_MESSAGE)
 
             if employee.department not in roles:
-                print(employee.id, employee.department, roles)
                 raise PermissionError(REJECT_MESSAGE)
 
             return function(*args, **kwargs)

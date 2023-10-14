@@ -50,24 +50,3 @@ class ClientsManager(Manager):
 
     def filter_by_name(self, name_contains: str):
         return self.get(Client.full_name.contains(name_contains))
-
-
-if __name__ == "__main__":
-    from database.manager import engine
-
-    session = Session(engine)
-
-    manager = ClientsManager(session)
-
-    client = manager.create(
-        full_name="Thomas Menanteau",
-        email="thomas.menanteau@example.co",
-        phone="0611181228",
-        enterprise="Airbus Helicopters",
-        sales_contact_id=1,
-    )
-
-    if not client:
-        exit()
-
-    print(client.id, client.full_name)
