@@ -10,7 +10,7 @@ from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 DUMMY_CLIENT = {
     "email": "dummy.client@example.co",
     "full_name": "Dummy, Client",
-    "phone": "0607080910",
+    "phone": "0607080911",
     "enterprise": "dummy enterprise",
     "sales_contact_id": 1,
 }

@@ -85,3 +85,15 @@ def decode_token(token: str) -> dict:
         # token is expired or is not valid
         clear_token()
         return None
+
+
+def get_authenticated_user_id() -> int:
+
+    stored_token = retreive_token()
+
+    if not stored_token:
+        return None
+
+    token_payload = decode_token(stored_token)
+
+    return token_payload["user_id"]

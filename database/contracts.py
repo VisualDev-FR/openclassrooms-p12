@@ -4,9 +4,10 @@ from database.manager import Manager
 from models.contracts import Contract
 from models.employees import Department
 from authentification.decorators import login_required, permission_required
+from authentification.token import get_authenticated_user_id
 
 
-class EventsManager(Manager):
+class ContractsManager(Manager):
     """
     Manage the access to ``Contract`` table.
     """
@@ -16,21 +17,17 @@ class EventsManager(Manager):
 
     @permission_required(roles=[Department.ACCOUNTING])
     def create(
-        total_amount: float,
-        client_id: int,
-        account_contact_id: int,
-        to_be_paid: float = None,
-        is_signed: bool = False,
-    ) -> Contract:
-        contract = Contract(
-            total_amount=total_amount,
-            client_id=client_id,
-            account_contact_id=account_contact_id,
-            to_be_paid=to_be_paid or total_amount,
-            is_signed=is_signed,
+        self, client_id: int, total_amount: float, to_be_paid: int, is_signed: bool
+    ):
+        return super().create(
+            Contract(
+                client_id=client_id,
+                account_contact_id=get_authenticated_user_id(),
+                total_amount=total_amount,
+                to_be_paid=to_be_paid,
+                is_signed=is_signed,
+            )
         )
-
-        return super().create(contract)
 
     @login_required
     def get(self, where_clause) -> typing.List[Contract]:

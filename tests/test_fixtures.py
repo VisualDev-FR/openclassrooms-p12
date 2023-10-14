@@ -2,6 +2,9 @@ from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 from authentification.token import retreive_token, decode_token
 from database.employees import EmployeeManager
 from models.employees import Employee, Department
+from models.clients import Client
+from models.contracts import Contract
+from models.events import Event
 import sqlalchemy
 from sqlalchemy.orm import Session
 
@@ -63,9 +66,7 @@ def test_database_fixtures(session: Session):
     assert len(session.scalars(request).all()) == 3
 
     # check sales user
-    request = sqlalchemy.select(Employee).where(
-        Employee.department == Department.SALES
-    )
+    request = sqlalchemy.select(Employee).where(Employee.department == Department.SALES)
     assert session.scalars(request).first().id == 1
 
     # check accounting user
@@ -79,3 +80,15 @@ def test_database_fixtures(session: Session):
         Employee.department == Department.SUPPORT
     )
     assert session.scalars(request).first().id == 3
+
+    # check first client
+    request = sqlalchemy.select(Client)
+    assert session.scalars(request).first().id == 1
+
+    # check first contract
+    request = sqlalchemy.select(Contract)
+    assert session.scalars(request).first().id == 1
+
+    # check first event
+    request = sqlalchemy.select(Event)
+    assert session.scalars(request).first().id == 1
