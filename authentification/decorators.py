@@ -9,18 +9,19 @@ from database.manager import engine
 
 def login_required(function):
     """
-    Decorator allowing to check if the current user is authenticated.\n
+    decorator allowing to check if the current user is authenticated by retreiving the token
+    stored on the user's disk, and trying to decode it. If one of those two steps fails, the
+    authentification check is rejected.
 
-    Retreive the token stored on the user's disk, and try to decode it.
-    If one of those two steps fails, the authentification check is rejected.
+    Raises:
+    * ``PermissionError``
     """
 
     def wrapper(*args, **kwargs):
         token = retreive_token()
 
         if not decode_token(token):
-            print("Please login and retry.")
-            return None
+            raise PermissionError("Please login and retry.")
 
         return function(*args, **kwargs)
 
@@ -29,11 +30,13 @@ def login_required(function):
 
 def permission_required(roles: typing.List[Department]):
     """
-    checks if the authenticated user belongs to a given department.
+    decorator allowing to checks if the authenticated user belongs to a given department.
 
-    Several departments can be specified, in order to give permission to multiple roles.
+    Args:
+    * ``roles``: A list of ``Departement`` objects which are authorized to access the function.
 
-    returns ``None`` if the user is not authenticated or if he does not belong to the required departement.
+    Raises:
+    * ``PermissionError``
     """
 
     def decorator(function):
@@ -44,8 +47,7 @@ def permission_required(roles: typing.List[Department]):
             token_payload = decode_token(token)
 
             if not token_payload:
-                print(REJECT_MESSAGE)
-                return None
+                raise PermissionError(REJECT_MESSAGE)
 
             user_id = token_payload["user_id"]
 
@@ -54,12 +56,10 @@ def permission_required(roles: typing.List[Department]):
             employee = session.scalar(request)
 
             if not employee:
-                print(REJECT_MESSAGE)
-                return None
+                raise PermissionError(REJECT_MESSAGE)
 
             if employee.department not in roles:
-                print(REJECT_MESSAGE)
-                return None
+                raise PermissionError(REJECT_MESSAGE)
 
             return function(*args, **kwargs)
 

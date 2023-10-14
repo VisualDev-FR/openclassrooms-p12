@@ -42,10 +42,8 @@ class Manager(ABC):
         self._session = session
         self._model = model
 
-    def create(self, *args, **kwargs):
+    def create(self, obj):
         try:
-            obj = self._model(*args, **kwargs)
-
             self._session.add(obj)
             self._session.commit()
 
@@ -61,11 +59,11 @@ class Manager(ABC):
 
     def all(self):
         request = sqlalchemy.select(self._model)
-        return self._session.scalars(request)
+        return self._session.scalars(request).all()
 
     def get(self, where_clause):
         request = sqlalchemy.select(self._model).where(where_clause)
-        return self._session.scalars(request)
+        return self._session.scalars(request).all()
 
     @abstractmethod
     def update(self, *args, **kwargs):

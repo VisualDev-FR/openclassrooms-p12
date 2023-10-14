@@ -27,7 +27,11 @@ class Event(Base):
 
     notes = Column(String(1000))
 
+    contract_id = Column(Integer, ForeignKey("contracts.id"))
+
     support_contact_id = Column(Integer, ForeignKey("employees.id"))
+
+    contract = relationship("Contract")
 
     support_contact = relationship(
         "Employee",

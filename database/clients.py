@@ -23,7 +23,7 @@ class ClientsManager(Manager):
         enterprise: str,
         sales_contact_id: int,
     ) -> Client:
-        return super().create(
+        client = Client(
             full_name=full_name,
             email=email,
             phone=phone,
@@ -31,9 +31,11 @@ class ClientsManager(Manager):
             sales_contact_id=sales_contact_id,
         )
 
+        return super().create(client)
+
     @login_required
-    def get(self, where_clause):
-        return super().get(where_clause)
+    def get(self, *args, **kwargs) -> typing.List[Client]:
+        return super().get(*args, **kwargs)
 
     @login_required
     def all(self) -> typing.List[Client]:
@@ -48,24 +50,3 @@ class ClientsManager(Manager):
 
     def filter_by_name(self, name_contains: str):
         return self.get(Client.full_name.contains(name_contains))
-
-
-if __name__ == "__main__":
-    from database.manager import engine
-
-    session = Session(engine)
-
-    manager = ClientsManager(session)
-
-    client = manager.create(
-        full_name="Thomas Menanteau",
-        email="thomas.menanteau@example.co",
-        phone="0611181228",
-        enterprise="Airbus Helicopters",
-        sales_contact_id=1,
-    )
-
-    if not client:
-        exit()
-
-    print(client.id, client.full_name)

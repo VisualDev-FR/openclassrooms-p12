@@ -1,13 +1,9 @@
 from pathlib import Path
-from authentification.environ import get_epicevents_path
 import datetime
 import os
-
 import jwt
 
-from authentification.environ import (
-    SECRET_KEY,
-)
+from authentification.environ import get_epicevents_path, SECRET_KEY
 
 __JWT_ALGORITHM = "HS256"
 __JWT_EXPIRATION_TIME = datetime.timedelta(hours=1)
@@ -32,7 +28,9 @@ def store_token(token: str):
 
 def retreive_token() -> str:
     """
-    retreive the authentification json-web-token stored on the user's disk
+    retreive the authentification json-web-token stored on the user's disk.
+
+    Return None if no token exists.
     """
     path = __get_token_path()
 
@@ -83,3 +81,14 @@ def decode_token(token: str) -> dict:
         # token is expired or is not valid
         clear_token()
         return None
+
+
+def get_authenticated_user_id() -> int:
+    stored_token = retreive_token()
+
+    if not stored_token:
+        return None
+
+    token_payload = decode_token(stored_token)
+
+    return token_payload["user_id"]

@@ -1,7 +1,7 @@
 """
 This module is an helper to retreive all necessaries environnement variables.\n
 
-it performs a check during the import, to crash the application if needed variable environnement are not set.
+it performs a check after the import, then raises exceptions if needed variable environnement are not set.
 """
 
 from pathlib import Path
