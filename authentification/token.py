@@ -1,13 +1,9 @@
 from pathlib import Path
-from authentification.environ import get_epicevents_path
 import datetime
 import os
-
 import jwt
 
-from authentification.environ import (
-    SECRET_KEY,
-)
+from authentification.environ import get_epicevents_path, SECRET_KEY
 
 __JWT_ALGORITHM = "HS256"
 __JWT_EXPIRATION_TIME = datetime.timedelta(hours=1)
@@ -88,7 +84,6 @@ def decode_token(token: str) -> dict:
 
 
 def get_authenticated_user_id() -> int:
-
     stored_token = retreive_token()
 
     if not stored_token:
