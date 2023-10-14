@@ -17,6 +17,9 @@ __TEST_ENGINE = sqlalchemy.create_engine(
 )
 
 
+# -----------------------------------
+# database test datas
+# -----------------------------------
 @pytest.fixture
 def sales_employee() -> Employee:
     employee = Employee(
@@ -88,6 +91,9 @@ def event() -> Event:
     )
 
 
+# -----------------------------------
+# database setup
+# -----------------------------------
 @pytest.fixture(scope="function")
 def setup_database():
     Base.metadata.create_all(__TEST_ENGINE)
@@ -96,12 +102,22 @@ def setup_database():
 
 
 @pytest.fixture(scope="function")
-def session(setup_database, account_employee, sales_employee, support_employee, client, contract, event):
+def session(
+    setup_database,
+    account_employee,
+    sales_employee,
+    support_employee,
+    client,
+    contract,
+    event,
+):
     connection = __TEST_ENGINE.connect()
     transaction = connection.begin()
     session = Session(bind=connection)
 
-    session.add_all([sales_employee, account_employee, support_employee, client, contract, event])
+    session.add_all(
+        [sales_employee, account_employee, support_employee, client, contract, event]
+    )
     session.commit()
 
     yield session
@@ -111,6 +127,9 @@ def session(setup_database, account_employee, sales_employee, support_employee, 
     connection.close()
 
 
+# -----------------------------------
+# login fixtures
+# -----------------------------------
 @contextmanager
 def login_as_sales():
     try:
