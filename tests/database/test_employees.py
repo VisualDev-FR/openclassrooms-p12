@@ -91,3 +91,37 @@ def test_get_employee(session):
     with login_as_support():
         employee = manager.get(Employee.department == Department.ACCOUNTING)[0]
         assert employee.email == "account.employee@epicevents.co"
+
+
+def test_update_employee_from_accounting_user(session):
+
+    manager = EmployeeManager(session)
+
+    with login_as_accounting():
+
+        manager.update(
+            where_clause=Employee.email == "sales.employee@epicevents.co",
+            full_name="updated_employee_fullname"
+        )
+
+        assert manager.get(Employee.email == "sales.employee@epicevents.co")[0].full_name == "updated_employee_fullname"
+
+
+def test_delete_employee_from_accounting_user(session):
+
+    manager = EmployeeManager(session)
+
+    with login_as_accounting():
+
+        employee = manager.create(
+            full_name="employee to be deleted",
+            email="to.be.deleted@epicevents.co",
+            password="password",
+            department=Department.ACCOUNTING
+        )
+
+        assert manager.get(Employee.email == employee.email)[0] is not None
+
+        manager.delete(Employee.email == employee.email)
+
+        assert manager.get(Employee.email == employee.email) == []
