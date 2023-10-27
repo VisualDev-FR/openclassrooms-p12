@@ -22,4 +22,5 @@ objectifs pour le 27/10/2023:
   ✔ finir l'étape 6 @done(23-10-27 09:35)
   ☐ mettre en place les tests sur les fonctions d'authentification
   ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
-  ☐ mettre en place les fonctions de validation des données @started(23-10-27 09:37)
+  ☐ mettre en place les fonctions de validation des données
+  ☐ mettre en place l'interface en ligne de commande
