@@ -158,5 +158,6 @@ def login_as_support():
         token = create_token(user_id=3)
         store_token(token)
         yield
+
     finally:
         clear_token()

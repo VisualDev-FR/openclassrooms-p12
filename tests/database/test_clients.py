@@ -15,6 +15,8 @@ DUMMY_CLIENT = {
     "sales_contact_id": 1,
 }
 
+CLIENT_EMAIL = "first.client@example.co"
+
 
 def test_create_client_from_sales_employee(session: Session):
     """
@@ -50,3 +52,91 @@ def test_create_employee_from_unauthorized(session: Session):
         Client.full_name == DUMMY_CLIENT["full_name"]
     )
     assert session.scalars(request).all() == []
+
+
+def test_get_all_clients(session: Session):
+    """
+    check thaht all clients can be accessed from all users
+    """
+
+    manager = ClientsManager(session)
+
+    with login_as_accounting():
+        assert len(manager.all()) == 1
+
+    with login_as_sales():
+        assert len(manager.all()) == 1
+
+    with login_as_support():
+        assert len(manager.all()) == 1
+
+
+def test_get_client(session):
+    """
+    check that employees can be searched from all users
+    """
+
+    manager = ClientsManager(session)
+
+    with login_as_accounting():
+        client = manager.get(Client.email == CLIENT_EMAIL)[0]
+        assert client.id == 1
+
+    with login_as_sales():
+        client = manager.get(Client.email == CLIENT_EMAIL)[0]
+        assert client.id == 1
+
+    with login_as_support():
+        client = manager.get(Client.email == CLIENT_EMAIL)[0]
+        assert client.id == 1
+
+
+def test_delete_client(session):
+    """
+    Check that no user is allowed to delete a client.
+    """
+
+    manager = ClientsManager(session)
+
+    def delete_client():
+        manager.delete(Client.email == CLIENT_EMAIL)
+
+    with login_as_accounting(), pytest.raises(PermissionError):
+        delete_client()
+
+    with login_as_sales(), pytest.raises(PermissionError):
+        delete_client()
+
+    with login_as_support(), pytest.raises(PermissionError):
+        delete_client()
+
+
+def test_update_client_from_sales_employee(session):
+    manager = ClientsManager(session)
+
+    with login_as_sales():
+        manager.update(
+            where_clause=Client.email == "first.client@example.co",
+            full_name="updated_client_fullname",
+        )
+
+        assert (
+            manager.get(Client.email == "first.client@example.co")[0].full_name
+            == "updated_client_fullname"
+        )
+
+
+def test_update_client_from_unauthorized(session):
+    manager = ClientsManager(session)
+
+    def update_client():
+        manager.update(
+            where_clause=Client.email == "first.client@example.co",
+            full_name="updated_client_fullname",
+        )
+
+    with login_as_accounting(), pytest.raises(PermissionError):
+        update_client()
+
+    with login_as_support(), pytest.raises(PermissionError):
+        update_client()
