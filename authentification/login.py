@@ -6,7 +6,7 @@ from database.manager import engine
 from authentification.token import create_token, store_token, clear_token
 
 
-def login(email: str, password: str) -> Employee:
+def perform_login(email: str, password: str) -> Employee:
     """
     Create a json-web-token containing the user id, and stores it on the user's disk.
 
@@ -34,7 +34,7 @@ def login(email: str, password: str) -> Employee:
         return None
 
 
-def sign_up(full_name: str, email: str, password: str):
+def perform_sign_up(full_name: str, email: str, password: str):
     """
     Create a new user in the database without be logged in, then loggin the created user.\n
     As only accounting employees are allowed to create users, the created user will be assigned to accounting department.
@@ -51,8 +51,8 @@ def sign_up(full_name: str, email: str, password: str):
         session.add(new_employee)
         session.commit()
 
-    login(email, password)
+    perform_login(email, password)
 
 
-def logout():
-    clear_token()
+def perform_logout() -> bool:
+    return clear_token()

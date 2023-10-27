@@ -41,14 +41,21 @@ def retreive_token() -> str:
         return reader.read()
 
 
-def clear_token():
+def clear_token() -> bool:
     """
     remove the token stored on the user's disk
+
+    Returns:
+    * `True` if the token was sucessfully deleted
+    * `False` if no token exists
     """
     path = __get_token_path()
 
     if path.exists():
         os.remove(path)
+        return True
+
+    return False
 
 
 def create_token(user_id: int) -> str:

@@ -1,14 +1,14 @@
 from pwinput import pwinput
-from authentification.login import sign_up
+
+from authentification.login import perform_sign_up
 from authentification.environ import DATABASE_PASSWORD
+from view import cli
 
 
-if __name__ == "__main__":
+@cli.command
+def signup():
     """
-    Entry point for registration functionality.
-
-    Asks the user for the database password to access this method, then collects
-    all the information required to create a new user in the database and log him in.
+    Create an employee account. (You need the database password to perform this action)
     """
 
     password = pwinput(
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     email = input("email : ")
     password = pwinput("password : ")
 
-    sign_up(
+    perform_sign_up(
         full_name=full_name,
         email=email,
         password=password,
