@@ -1,6 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from contextlib import contextmanager
 import sqlalchemy
 import typing
 
@@ -15,6 +16,26 @@ from models.events import Event
 engine = sqlalchemy.create_engine(
     f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/EpicEvents"
 )
+
+
+@contextmanager
+def create_session():
+    try:
+        connection = engine.connect()
+        session = Session(bind=connection)
+
+        yield session
+
+    except PermissionError as e:
+        print(e)
+
+    except Exception as e:
+        # TODO: handle exceptions here
+        raise e
+
+    finally:
+        session.close()
+        connection.close()
 
 
 def drop_tables():
