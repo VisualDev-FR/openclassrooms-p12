@@ -65,10 +65,10 @@ class Manager(ABC):
         request = sqlalchemy.select(self._model).where(where_clause)
         return self._session.scalars(request).all()
 
-    @abstractmethod
-    def update(self, *args, **kwargs):
-        pass
+    def update(self, where_clause, **values):
+        self._session.execute(
+            sqlalchemy.update(self._model).where(where_clause).values(**values)
+        )
 
-    @abstractmethod
-    def delete(*args, **kwargs):
-        pass
+    def delete(self, whereclause):
+        self._session.execute(sqlalchemy.delete(self._model).where(whereclause))

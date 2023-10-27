@@ -35,9 +35,9 @@ class EmployeeManager(Manager):
         return super().create(new_employee)
 
     @permission_required(roles=[Department.ACCOUNTING])
-    def update(self, *args, **kwargs):
-        return super().update(*args, **kwargs)
+    def update(self, where_clause, **values):
+        return super().update(where_clause, **values)
 
     @permission_required(roles=[Department.ACCOUNTING])
-    def delete(*args, **kwargs):
-        return super().delete(**kwargs)
+    def delete(self, whereclause):
+        return super().delete(whereclause)

@@ -91,4 +91,7 @@ def get_authenticated_user_id() -> int:
 
     token_payload = decode_token(stored_token)
 
+    if token_payload is None:
+        return None
+
     return token_payload["user_id"]
