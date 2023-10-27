@@ -67,13 +67,8 @@ class Manager(ABC):
 
     def update(self, where_clause, **values):
         self._session.execute(
-            sqlalchemy.update(self._model)
-            .where(where_clause)
-            .values(**values)
+            sqlalchemy.update(self._model).where(where_clause).values(**values)
         )
 
     def delete(self, whereclause):
-        self._session.execute(
-            sqlalchemy.delete(self._model)
-            .where(whereclause)
-        )
+        self._session.execute(sqlalchemy.delete(self._model).where(whereclause))
