@@ -45,8 +45,9 @@ class ClientsManager(Manager):
     def update(self, where_clause, **values):
         return super().update(where_clause, **values)
 
+    @permission_required(roles=[roles.SALES])
     def delete(self, whereclause):
-        raise PermissionError("Delete a client is forbidden.")
+        return super().delete(whereclause)
 
     def filter_by_name(self, name_contains: str):
         return self.get(Client.full_name.contains(name_contains))

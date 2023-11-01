@@ -41,5 +41,6 @@ class ContractsManager(Manager):
     def update(self, where_clause, **values):
         return super().update(where_clause, **values)
 
+    @permission_required(roles=[Department.ACCOUNTING, Department.SALES])
     def delete(self, whereclause):
-        raise PermissionError("Delete a contract is forbidden.")
+        return super().delete(whereclause)

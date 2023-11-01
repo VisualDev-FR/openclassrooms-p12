@@ -51,5 +51,6 @@ class EventsManager(Manager):
     def update(self, where_clause, **values):
         return super().update(where_clause, **values)
 
+    @permission_required([roles.ACCOUNTING, roles.SUPPORT])
     def delete(self, whereclause):
-        raise PermissionError("Delete an event is forbidden.")
+        return super().delete(whereclause)
