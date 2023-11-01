@@ -47,3 +47,17 @@ class Client(Base):
     sales_contact = relationship(
         "Employee",
     )
+
+    def __repr__(self):
+        return "\n".join(
+            [
+                f"id:            {self.id}",
+                f"full name:     {self.full_name}",
+                f"email:         {self.email}",
+                f"phone:         {self.phone}",
+                f"enterprise:    {self.enterprise}",
+                f"creation date: {self.creation_date}",
+                f"last update:   {self.last_update}",
+                f"sales contact  {self.sales_contact_id}",
+            ]
+        )

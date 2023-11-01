@@ -50,3 +50,14 @@ class Employee(Base):
             password=password.encode("utf-8"),
             hashed_password=self.password_hash.encode("utf-8"),
         )
+
+    def __repr__(self):
+        return "\n".join(
+            [
+                f"id:            {self.id}",
+                f"creation date: {self.creation_date}",
+                f"email:         {self.email}",
+                f"full_name:     {self.full_name}",
+                f"department:    {self.department.name}",
+            ]
+        )

@@ -36,3 +36,18 @@ class Event(Base):
     support_contact = relationship(
         "Employee",
     )
+
+    def __repr__(self):
+        return "\n".join(
+            [
+                f"id:                 {self.id}",
+                f"creation_date:      {self.creation_date}",
+                f"start_date:         {self.start_date}",
+                f"end_date:           {self.end_date}",
+                f"location:           {self.location}",
+                f"attendees_count:    {self.attendees_count}",
+                f"notes:              {self.notes}",
+                f"contract_id:        {self.contract_id}",
+                f"support_contact_id: {self.support_contact_id}",
+            ]
+        )
