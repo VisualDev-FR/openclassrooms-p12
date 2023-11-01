@@ -2,12 +2,15 @@ import json
 import datetime
 from sqlalchemy.orm import Session
 from pathlib import Path
+from pwinput import pwinput
 
+from view import cli
 from database import manager
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
+from authentification.environ import DATABASE_PASSWORD
 
 
 def create_employees():
@@ -130,10 +133,16 @@ def create_events():
     session.commit()
 
 
-if __name__ == "__main__":
+@cli.command
+def init():
     """
-    reset the database tables and insert some datas
+    reset the database tables and insert demos datas
     """
+
+    if pwinput("password: ") != DATABASE_PASSWORD:
+        print("Invalid password")
+        return
+
     manager.drop_tables()
     manager.create_tables()
 
