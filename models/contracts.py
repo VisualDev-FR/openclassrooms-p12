@@ -36,15 +36,23 @@ class Contract(Base):
         "Employee",
     )
 
-    def __repr__(self):
-        return "\n".join(
-            [
-                f"id:                {self.id}",
-                f"creation_date:     {self.creation_date}",
-                f"total_amount:      {self.total_amount}",
-                f"to_be_paid:        {self.to_be_paid}",
-                f"is_signed:         {self.is_signed}",
-                f"client_id:         {self.client_id}",
-                f"acounting_contact: {self.account_contact_id}",
-            ]
+    HEADERS = (
+        "id",
+        "creation_date",
+        "total_amount",
+        "to_be_paid",
+        "is_signed",
+        "client_id",
+        "account_contact_id",
+    )
+
+    def to_list(self):
+        return (
+            self.id,
+            self.creation_date,
+            self.total_amount,
+            self.to_be_paid,
+            self.is_signed,
+            self.client_id,
+            self.account_contact_id,
         )

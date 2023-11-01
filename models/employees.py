@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy import Enum, Column, Integer, String, DateTime
 import enum
 import bcrypt
+from typing import List
 
 
 class Department(enum.Enum):
@@ -51,13 +52,13 @@ class Employee(Base):
             hashed_password=self.password_hash.encode("utf-8"),
         )
 
-    def __repr__(self):
-        return "\n".join(
-            [
-                f"id:            {self.id}",
-                f"creation date: {self.creation_date}",
-                f"email:         {self.email}",
-                f"full_name:     {self.full_name}",
-                f"department:    {self.department.name}",
-            ]
+    HEADERS = ["id", "creation_date", "email", "full_name", "departement"]
+
+    def to_list(self):
+        return (
+            self.id,
+            self.creation_date,
+            self.email,
+            self.full_name,
+            self.department.name,
         )

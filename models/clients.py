@@ -48,16 +48,25 @@ class Client(Base):
         "Employee",
     )
 
-    def __repr__(self):
-        return "\n".join(
-            [
-                f"id:            {self.id}",
-                f"full name:     {self.full_name}",
-                f"email:         {self.email}",
-                f"phone:         {self.phone}",
-                f"enterprise:    {self.enterprise}",
-                f"creation date: {self.creation_date}",
-                f"last update:   {self.last_update}",
-                f"sales contact  {self.sales_contact_id}",
-            ]
+    HEADERS = (
+        "id",
+        "full_name",
+        "email",
+        "phone",
+        "enterprise",
+        "creation_date",
+        "last_update",
+        "sales_contact_id",
+    )
+
+    def to_list(self):
+        return (
+            self.id,
+            self.full_name,
+            self.email,
+            self.phone,
+            self.enterprise,
+            self.creation_date,
+            self.last_update,
+            self.sales_contact_id,
         )
