@@ -41,7 +41,7 @@ def permission_required(roles: typing.List[Department]):
 
     def decorator(function):
         def wrapper(*args, **kwargs):
-            REJECT_MESSAGE = "Permission denied."
+            REJECT_MESSAGE = f"Permission denied. Please login as [{' | '.join(role.name for role in roles)}]"
 
             token = retreive_token()
             token_payload = decode_token(token)

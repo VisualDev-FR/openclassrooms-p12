@@ -1,6 +1,5 @@
 from abc import ABC
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from contextlib import contextmanager
 import sqlalchemy
 from tabulate import tabulate
@@ -65,19 +64,10 @@ class Manager(ABC):
         self._model = model
 
     def create(self, obj):
-        try:
-            self._session.add(obj)
-            self._session.commit()
+        self._session.add(obj)
+        self._session.commit()
 
-            return obj
-
-        except IntegrityError as e:
-            print(f"Integrity error : {e._message()}")
-
-        except Exception as e:
-            print(f"Unhandled exception: {type(e).__name__}")
-
-        return None
+        return obj
 
     def all(self):
         request = sqlalchemy.select(self._model)
