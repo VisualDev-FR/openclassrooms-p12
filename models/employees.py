@@ -52,7 +52,7 @@ class Employee(Base):
             hashed_password=self.password_hash.encode("utf-8"),
         )
 
-    HEADERS = ["id", "creation_date", "email", "full_name", "departement"]
+    HEADERS = ["id", "creation_date", "email", "full_name", "department"]
 
     def to_list(self):
         return (

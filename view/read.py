@@ -6,7 +6,6 @@ from database.clients import ClientsManager, Client
 from database.contracts import ContractsManager, Contract
 from database.events import EventsManager, Event
 from database.manager import create_session, Manager
-from tabulate import tabulate
 
 
 @cli.group()
@@ -23,7 +22,7 @@ def generic_read(manager: Manager, model: type, query: str):
 
     Args:
     * ``manager``: the manager of the accessed datas
-    * ``all``: a boolean indacating if all the datas needs to be retreived
+    * ``model``: the model of the accessed datas
     * ``query``: a string containing a query to apply on the given manager
     """
     if query is None:
@@ -34,17 +33,20 @@ def generic_read(manager: Manager, model: type, query: str):
             full_query = f"{model.__name__}.{query}"
             objects = manager.get(eval(full_query))
 
-        except (NameError, AttributeError):
+        except (NameError, AttributeError, SyntaxError):
             click.echo(f"query error: {full_query}")
             return
 
     click.echo(manager.tabulate(objects=objects, headers=manager._model.HEADERS))
 
 
-@read.command()
-@click.option(
-    "--query", help="Retreive employees from a custom query. Sample : 'id == 5'"
+__HELP_MESSAGE = (
+    "Retreive {model} from a custom query. If not specified, retreive all existing entries."
 )
+
+
+@read.command()
+@click.option("--query", help=__HELP_MESSAGE.format(model="employees"))
 def employees(query):
     """
     Retreive existing employee
@@ -55,7 +57,7 @@ def employees(query):
 
 @read.command()
 @click.option(
-    "--query", help="Retreive clients from a custom query. Sample : 'id == 5'"
+    "--query", help=__HELP_MESSAGE.format(model="clients")
 )
 def clients(query):
     """
@@ -67,15 +69,21 @@ def clients(query):
 
 @read.command()
 @click.option(
-    "--query", help="Retreive contracts from a custom query. Sample : 'id == 5'"
+    "--query", help=__HELP_MESSAGE.format(model="contracts")
 )
 def contracts(query):
+    """
+    Retreive existing contracts
+    """
     with create_session() as session:
         generic_read(manager=ContractsManager(session), model=Contract, query=query)
 
 
 @read.command()
-@click.option("--query", help="Retreive events from a custom query. Sample : 'id == 5'")
+@click.option("--query", help=__HELP_MESSAGE.format(model="events"))
 def events(query):
+    """
+    Retreive existing events
+    """
     with create_session() as session:
         generic_read(manager=EventsManager(session), model=Event, query=query)
