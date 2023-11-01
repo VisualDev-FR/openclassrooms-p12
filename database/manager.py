@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from contextlib import contextmanager
 import sqlalchemy
-import typing
+from tabulate import tabulate
+from typing import List, Any
 
 from authentification.environ import DATABASE_PASSWORD, DATABASE_USERNAME
 from models import Base
@@ -93,3 +94,19 @@ class Manager(ABC):
 
     def delete(self, whereclause):
         self._session.execute(sqlalchemy.delete(self._model).where(whereclause))
+
+    def tabulate(self, objects: List[Any], headers: List[str]) -> str:
+        """
+        Prettify a list of objects to a tabulated view.
+
+        Args:
+        * ``objects``: a list of objects to display, the objects must implement the method ``to_list()``
+        * ``headers``: a list of strings containing the headers of the tabulated view
+
+        Returns:
+        A string representing the table of the given datas
+
+        """
+        return tabulate(
+            tabular_data=[obj.to_list() for obj in objects], headers=headers
+        )

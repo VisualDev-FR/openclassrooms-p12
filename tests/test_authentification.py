@@ -2,7 +2,7 @@ from unittest.mock import patch
 from pathlib import Path
 import pytest
 
-from authentification.login import perform_login, sign_up, logout
+from authentification.login import perform_login
 from authentification.token import (
     store_token,
     retreive_token,

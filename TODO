@@ -21,6 +21,7 @@ objectifs pour le 27/10/2023:
   ✔ mocker le décorateur de login pour les tests @started(23-10-20 08:23) @done(23-10-27 09:35) @lasted(1w1h12m28s)
   ✔ finir l'étape 6 @done(23-10-27 09:35)
   ☐ mettre en place les tests sur les fonctions d'authentification
-  ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
   ☐ mettre en place les fonctions de validation des données
   ☐ mettre en place l'interface en ligne de commande
+  ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
+  ☐ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal
