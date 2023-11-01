@@ -15,12 +15,12 @@ from authentification.environ import DATABASE_PASSWORD
 
 def create_employees():
     """
-    create employees in database, from ``data/employees.json``.
+    create employees in database, from ``tests/data/employees.json``.
     """
 
     print("create employees...")
 
-    data_path = Path("data", "employees.json")
+    data_path = Path("tests/data/employees.json")
 
     with open(data_path, "rb") as reader:
         employees_data = json.loads(reader.read())
@@ -46,12 +46,12 @@ def create_employees():
 
 def create_clients():
     """
-    create clients in database, from ``data/clients.json``.
+    create clients in database, from ``tests/data/clients.json``.
     """
 
     print("create clients...")
 
-    data_path = Path("data", "clients.json")
+    data_path = Path("tests/data/clients.json")
 
     with open(data_path, "rb") as reader:
         clients_data = json.loads(reader.read())
@@ -75,12 +75,12 @@ def create_clients():
 
 def create_contracts():
     """
-    create contracts in database, from ``data/contracts.json``.
+    create contracts in database, from ``tests/data/contracts.json``.
     """
 
     print("create contracts...")
 
-    data_path = Path("data", "contracts.json")
+    data_path = Path("tests/data/contracts.json")
 
     with open(data_path, "rb") as reader:
         contracts_data = json.loads(reader.read())
@@ -104,12 +104,12 @@ def create_contracts():
 
 def create_events():
     """
-    create events in database, from ``data/events.json``.
+    create events in database, from ``tests/data/events.json``.
     """
 
     print("create events...")
 
-    data_path = Path("data", "events.json")
+    data_path = Path("tests/data/events.json")
 
     with open(data_path, "rb") as reader:
         events_data = json.loads(reader.read())
