@@ -7,11 +7,15 @@ from view import cli
 
 
 @cli.command
-@click.option("--email", help="Your authentification email", required=True)
+@click.option("--email", help="Your authentification email")
 def login(email):
     """
     Login with email and password.
     """
+
+    if email is None:
+        email = input("email : ")
+
     password = pwinput("password : ")
 
     logged_in_employee = perform_login(email, password)
