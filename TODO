@@ -25,3 +25,6 @@ objectifs pour le 27/10/2023:
   ☐ mettre en place l'interface en ligne de commande
   ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
   ☐ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal
+
+debug:
+  ☐ py.exe .\epicevents.py update clients --query=full_name==25 --email=5

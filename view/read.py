@@ -40,11 +40,10 @@ def generic_read(manager: Manager, model: type, query: str):
     click.echo(manager.tabulate(objects=objects, headers=manager._model.HEADERS))
 
 
-__HELP_MESSAGE = (
-    "Retreive {model} from a custom query. If not specified, retreive all existing entries."
-)
+__HELP_MESSAGE = "Retreive {model} from a custom query. If not specified, retreive all existing entries."
 
 
+# READ EMPLOYEES
 @read.command()
 @click.option("--query", help=__HELP_MESSAGE.format(model="employees"))
 def employees(query):
@@ -55,10 +54,9 @@ def employees(query):
         generic_read(manager=EmployeeManager(session), model=Employee, query=query)
 
 
+# READ CLIENTS
 @read.command()
-@click.option(
-    "--query", help=__HELP_MESSAGE.format(model="clients")
-)
+@click.option("--query", help=__HELP_MESSAGE.format(model="clients"))
 def clients(query):
     """
     Retreive existing clients
@@ -67,10 +65,9 @@ def clients(query):
         generic_read(manager=ClientsManager(session), model=Client, query=query)
 
 
+# READ CONTRACTS
 @read.command()
-@click.option(
-    "--query", help=__HELP_MESSAGE.format(model="contracts")
-)
+@click.option("--query", help=__HELP_MESSAGE.format(model="contracts"))
 def contracts(query):
     """
     Retreive existing contracts
@@ -79,6 +76,7 @@ def contracts(query):
         generic_read(manager=ContractsManager(session), model=Contract, query=query)
 
 
+# READ EVENTS
 @read.command()
 @click.option("--query", help=__HELP_MESSAGE.format(model="events"))
 def events(query):

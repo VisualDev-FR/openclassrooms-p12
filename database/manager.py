@@ -99,6 +99,6 @@ class Manager(ABC):
         A string representing the table of the given datas
 
         """
-        return tabulate(
+        return "\n" + tabulate(
             tabular_data=[obj.to_list() for obj in objects], headers=headers
-        )
+        ) + "\n"
