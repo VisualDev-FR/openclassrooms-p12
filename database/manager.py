@@ -85,6 +85,7 @@ class Manager(ABC):
 
     def delete(self, whereclause):
         self._session.execute(sqlalchemy.delete(self._model).where(whereclause))
+        self._session.commit()
 
     def tabulate(self, objects: List[Any], headers: List[str]) -> str:
         """
