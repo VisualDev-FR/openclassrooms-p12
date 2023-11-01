@@ -121,6 +121,7 @@ def create_events():
             attendees_count=data["attendees_count"],
             notes=data["notes"],
             support_contact_id=data["support_contact_id"],
+            contract_id=data["contract_id"],
         )
         for data in events_data
     ]
