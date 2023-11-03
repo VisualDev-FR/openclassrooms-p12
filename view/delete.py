@@ -3,11 +3,18 @@ from sqlalchemy.exc import IntegrityError
 
 from view import cli
 from view.read import generic_read
-from database.employees import EmployeeManager, Employee
-from database.clients import ClientsManager, Client
-from database.contracts import ContractsManager, Contract
-from database.events import EventsManager, Event
-from database.manager import create_session, Manager
+from controller.managers import (
+    create_session,
+    Manager,
+    EmployeeManager,
+    ClientsManager,
+    ContractsManager,
+    EventsManager,
+    Employee,
+    Client,
+    Contract,
+    Event,
+)
 
 
 @cli.group()

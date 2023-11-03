@@ -1,4 +1,4 @@
-from common import utils
+from controller import utils
 
 
 def test_email_is_valid():

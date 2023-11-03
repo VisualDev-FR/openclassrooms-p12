@@ -5,12 +5,12 @@ from pathlib import Path
 from pwinput import pwinput
 
 from view import cli
-from database import manager
+from controller import managers
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-from authentification.environ import DATABASE_PASSWORD
+from controller.environ import DATABASE_PASSWORD
 
 
 def create_employees():
@@ -25,7 +25,7 @@ def create_employees():
     with open(data_path, "rb") as reader:
         employees_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     employees = []
 
@@ -56,7 +56,7 @@ def create_clients():
     with open(data_path, "rb") as reader:
         clients_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     clients = [
         Client(
@@ -85,7 +85,7 @@ def create_contracts():
     with open(data_path, "rb") as reader:
         contracts_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     contracts = [
         Contract(
@@ -114,7 +114,7 @@ def create_events():
     with open(data_path, "rb") as reader:
         events_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     events = [
         Event(
@@ -143,8 +143,8 @@ def init():
         print("Invalid password")
         return
 
-    manager.drop_tables()
-    manager.create_tables()
+    managers.drop_tables()
+    managers.create_tables()
 
     create_employees()
     create_clients()

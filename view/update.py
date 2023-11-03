@@ -2,13 +2,20 @@ import click
 from sqlalchemy.exc import IntegrityError
 
 from view import cli
-from common import utils
-from database.manager import create_session, Manager
-from database.employees import EmployeeManager, Employee
-from database.clients import ClientsManager, Client
-from database.contracts import ContractsManager, Contract
-from database.events import EventsManager, Event
 from view.read import generic_read
+from controller import utils
+from controller.managers import (
+    create_session,
+    Manager,
+    EmployeeManager,
+    ClientsManager,
+    ContractsManager,
+    EventsManager,
+    Employee,
+    Client,
+    Contract,
+    Event,
+)
 
 
 @cli.group()

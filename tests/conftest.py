@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 import datetime
 
-from authentification.token import create_token, store_token, clear_token
-from database.manager import DATABASE_PASSWORD, DATABASE_USERNAME
+from controller.authentification import create_token, store_token, clear_token
+from controller.managers import DATABASE_PASSWORD, DATABASE_USERNAME
 from models import Base
 from models.employees import Employee, Department
 from models.contracts import Contract

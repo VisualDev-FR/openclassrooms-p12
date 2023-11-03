@@ -2,9 +2,9 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 import typing
 
-from authentification.token import decode_token, retreive_token
+from controller.authentification import decode_token, retreive_token
 from models.employees import Employee, Department
-from database.manager import engine
+from controller.managers import engine
 
 
 def login_required(function):
