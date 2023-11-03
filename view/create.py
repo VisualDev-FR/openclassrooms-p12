@@ -2,6 +2,10 @@ import click
 from sqlalchemy.exc import IntegrityError
 
 from view import cli
+from models.employees import Employee
+from models.clients import Client
+from models.contracts import Contract
+from models.events import Event
 from controller.database import create_session
 from controller.managers import (
     Manager,
@@ -9,10 +13,6 @@ from controller.managers import (
     ClientsManager,
     ContractsManager,
     EventsManager,
-    Employee,
-    Client,
-    Contract,
-    Event,
 )
 
 
