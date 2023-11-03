@@ -1,6 +1,5 @@
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
-from authentification.token import retreive_token, decode_token
-from database.employees import EmployeeManager
+from controller.authentification import retreive_token, decode_token
 from models.employees import Employee, Department
 from models.clients import Client
 from models.contracts import Contract
@@ -25,7 +24,8 @@ def test_login_fixtures(session: Session):
             Employee.id == authenticated_user_id
         )
         # assert len(session.scalars(request).all()) == 1
-        assert session.scalars(request).first().department == Department.ACCOUNTING
+        assert session.scalars(request).first(
+        ).department == Department.ACCOUNTING
     assert retreive_token() is None
 
     # login as sales
@@ -53,7 +53,8 @@ def test_login_fixtures(session: Session):
             Employee.id == authenticated_user_id
         )
         assert len(session.scalars(request).all()) == 1
-        assert session.scalars(request).first().department == Department.SUPPORT
+        assert session.scalars(request).first(
+        ).department == Department.SUPPORT
     assert retreive_token() is None
 
 
@@ -66,7 +67,8 @@ def test_database_fixtures(session: Session):
     assert len(session.scalars(request).all()) == 3
 
     # check sales user
-    request = sqlalchemy.select(Employee).where(Employee.department == Department.SALES)
+    request = sqlalchemy.select(Employee).where(
+        Employee.department == Department.SALES)
     assert session.scalars(request).first().id == 1
 
     # check accounting user

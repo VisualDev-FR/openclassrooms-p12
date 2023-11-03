@@ -2,13 +2,11 @@ from unittest.mock import patch
 from pathlib import Path
 import pytest
 
-from authentification.login import perform_login
-from authentification.token import (
+from controller.authentification import (
     store_token,
     retreive_token,
     create_token,
     decode_token,
-    clear_token
 )
 
 __TOKEN_PATH_TEMP = Path("tests/ignore/token.txt")

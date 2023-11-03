@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 
-from database.events import EventsManager
+from controller.managers import EventsManager
 from models.events import Event
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 

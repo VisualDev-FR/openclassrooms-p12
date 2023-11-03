@@ -4,13 +4,13 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 import datetime
 
-from controller.authentification import create_token, store_token, clear_token
-from controller.managers import DATABASE_PASSWORD, DATABASE_USERNAME
 from models import Base
 from models.employees import Employee, Department
 from models.contracts import Contract
 from models.clients import Client
 from models.events import Event
+from controller.authentification import create_token, store_token, clear_token
+from controller.environ import DATABASE_PASSWORD, DATABASE_USERNAME
 
 __TEST_ENGINE = sqlalchemy.create_engine(
     f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/epicevents_test"

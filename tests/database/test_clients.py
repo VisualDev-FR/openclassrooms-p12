@@ -2,7 +2,7 @@ import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
 
-from database.clients import ClientsManager
+from controller.managers import ClientsManager
 from models.clients import Client
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 
