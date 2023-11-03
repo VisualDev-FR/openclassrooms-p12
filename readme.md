@@ -64,8 +64,7 @@ set EPICEVENTS_SK <secret_key>
 set SENTRY_KEY <sentry_key>
 ```
 
-## Initialisation de la base de donnée
-<a name="database"></a>
+## Initialisation de la base de donnée <a name="database"></a>
 
 1. Activer l'environnement virtuel
 ```
