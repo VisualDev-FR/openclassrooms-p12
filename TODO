@@ -24,13 +24,17 @@ objectifs pour le 27/10/2023:
 objectifs pour le 03/11/2023:
   ✘ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal @cancelled(23-11-01 19:05)
   ✔ mettre en place l'interface en ligne de commande @done(23-11-01 19:05)
-  ☐ mettre en place l'environnement de tests sur l'interface cli
+  ✔ mettre en place l'environnement de tests sur l'interface cli @done(23-11-03 15:28)
+  ✔ écrire les spécifications de mise en place de la base de donnée dans le readme @done(23-11-03 15:55)
+  ✔ mettre en place la journalisation avec sentry @done(23-11-03 15:55)
+  ✔ reorganiser le code en MVC @done(23-11-03 15:55)
+  ☐ mettre en place les tests de l'interface cli
   ☐ mettre en place les tests sur les fonctions d'authentification
-  ☐ mettre en place la strategie de validation des données
-  ☐ mettre en place la journalisation avec sentry
-  ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
-  ☐ reorganiser le code en MVC
+  ☐ affiner la strategie de validation des données
   ☐ faire le tour de la documentation des commandes
+  ☐ renvoyer la gestion d'exception globale vers sentry
+  ☐ debugger les deletes, mettre en place les stratégies on_delete
 
 debug:
   ☐ py.exe .\epicevents.py update clients --query=full_name==25 --email=5
+  ☐ impossible d'update un password sur les employees

@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
 from contextlib import contextmanager
 import sqlalchemy
+import sentry_sdk
 
-from controller.environ import DATABASE_PASSWORD, DATABASE_USERNAME
+from controller.environ import DATABASE_PASSWORD, DATABASE_USERNAME, SENTRY_KEY
 from models import Base
 from models.employees import Department, Employee
 from models.clients import Client
@@ -11,6 +12,10 @@ from models.events import Event
 
 engine = sqlalchemy.create_engine(
     f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/EpicEvents"
+)
+
+sentry_sdk.init(
+    dsn=SENTRY_KEY
 )
 
 

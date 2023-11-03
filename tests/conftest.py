@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 from contextlib import contextmanager
 from sqlalchemy.orm import Session
 import sqlalchemy
@@ -127,9 +128,15 @@ def session(
     connection.close()
 
 
+@pytest.fixture
+def database_mock(session):
+    return patch("controller.database.create_session", return_value=session)
+
 # -----------------------------------
 # login fixtures
 # -----------------------------------
+
+
 @contextmanager
 def login_as_sales():
     try:

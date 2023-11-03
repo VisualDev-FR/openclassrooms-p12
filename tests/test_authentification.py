@@ -15,7 +15,7 @@ __TOKEN_TEMP = create_token(user_id=1)
 
 @pytest.fixture
 def token_path_mock():
-    return patch("authentification.token.__get_token_path", lambda: __TOKEN_PATH_TEMP)
+    return patch("controller.authentification.__get_token_path", lambda: __TOKEN_PATH_TEMP)
 
 
 @pytest.fixture

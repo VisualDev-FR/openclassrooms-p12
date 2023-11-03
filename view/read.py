@@ -5,7 +5,7 @@ from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-from controller.database import create_session
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -59,9 +59,12 @@ def employees(query):
     """
     Retreive existing employee
     """
-    with create_session() as session:
-        generic_read(manager=EmployeeManager(
-            session), model=Employee, query=query)
+    with db.create_session() as session:
+        generic_read(
+            manager=EmployeeManager(session),
+            model=Employee,
+            query=query
+        )
 
 
 # READ CLIENTS
@@ -71,9 +74,12 @@ def clients(query):
     """
     Retreive existing clients
     """
-    with create_session() as session:
-        generic_read(manager=ClientsManager(
-            session), model=Client, query=query)
+    with db.create_session() as session:
+        generic_read(
+            manager=ClientsManager(session),
+            model=Client,
+            query=query
+        )
 
 
 # READ CONTRACTS
@@ -83,9 +89,12 @@ def contracts(query):
     """
     Retreive existing contracts
     """
-    with create_session() as session:
-        generic_read(manager=ContractsManager(
-            session), model=Contract, query=query)
+    with db.create_session() as session:
+        generic_read(
+            manager=ContractsManager(session),
+            model=Contract,
+            query=query
+        )
 
 
 # READ EVENTS
@@ -95,5 +104,9 @@ def events(query):
     """
     Retreive existing events
     """
-    with create_session() as session:
-        generic_read(manager=EventsManager(session), model=Event, query=query)
+    with db.create_session() as session:
+        generic_read(
+            manager=EventsManager(session),
+            model=Event,
+            query=query
+        )
