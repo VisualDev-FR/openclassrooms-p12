@@ -61,7 +61,11 @@ def employees(query):
     Delete on or several employees
     """
     with create_session() as session:
-        generic_delete(manager=EmployeeManager(session), model=Employee, query=query)
+        generic_delete(
+            manager=EmployeeManager(session),
+            model=Employee,
+            query=query
+        )
 
 
 # DELETE CLIENTS
@@ -72,7 +76,11 @@ def clients(query):
     Delete on or several clients
     """
     with create_session() as session:
-        generic_delete(manager=ClientsManager(session), model=Client, query=query)
+        generic_delete(
+            manager=ClientsManager(session),
+            model=Client,
+            query=query
+        )
 
 
 # DELETE CONTRACTS
@@ -83,7 +91,11 @@ def contracts(query):
     Delete on or several contracts
     """
     with create_session() as session:
-        generic_delete(manager=ContractsManager(session), model=Contract, query=query)
+        generic_delete(
+            manager=ContractsManager(session),
+            model=Contract,
+            query=query
+        )
 
 
 # DELETE EVENTS
@@ -94,4 +106,8 @@ def events(query):
     Delete on or several events
     """
     with create_session() as session:
-        generic_delete(manager=EventsManager(session), model=Event, query=query)
+        generic_delete(
+            manager=EventsManager(session),
+            model=Event,
+            query=query
+        )

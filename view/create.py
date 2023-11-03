@@ -33,12 +33,19 @@ def generic_create(manager: Manager, model: type, **kwargs):
         click.echo(f"Integrity error : {e.__cause__}")
         return
 
-    click.echo(manager.tabulate(objects=[created_object], headers=model.HEADERS))
+    click.echo(
+        manager.tabulate(objects=[created_object], headers=model.HEADERS)
+    )
 
 
 # CREATE EMPLOYEE
 @create.command()
-@click.option("--email", prompt=True, help="The email of the employee", required=True)
+@click.option(
+    "--email",
+    prompt=True,
+    help="The email of the employee",
+    required=True
+)
 @click.option(
     "--password",
     prompt=True,
@@ -75,9 +82,17 @@ def employee(email, password, fullname, department):
 
 # CREATE CLIENT
 @create.command()
-@click.option("--email", prompt=True, help="The email of the client", required=True)
 @click.option(
-    "--fullname", prompt=True, help="The full name of the client", required=True
+    "--email",
+    prompt=True,
+    help="The email of the client",
+    required=True
+)
+@click.option(
+    "--fullname",
+    prompt=True,
+    help="The full name of the client",
+    required=True
 )
 @click.option(
     "--sales_contact",
@@ -86,8 +101,16 @@ def employee(email, password, fullname, department):
     required=True,
     type=int,
 )
-@click.option("--phone", prompt=True, help="The phone number of the client")
-@click.option("--enterprise", prompt=True, help="The enterprise of the client")
+@click.option(
+    "--phone",
+    prompt=True,
+    help="The phone number of the client"
+)
+@click.option(
+    "--enterprise",
+    prompt=True,
+    help="The enterprise of the client"
+)
 def client(email, fullname, sales_contact, phone, enterprise):
     """
     Create a new client
@@ -106,9 +129,16 @@ def client(email, fullname, sales_contact, phone, enterprise):
 
 # CREATE CONTRACT
 @create.command()
-@click.option("--client_id", prompt=True, help="The id of the attached client")
 @click.option(
-    "--total", prompt=True, help="The total amount of the contract", type=float
+    "--client_id",
+    prompt=True,
+    help="The id of the attached client"
+)
+@click.option(
+    "--total",
+    prompt=True,
+    help="The total amount of the contract",
+    type=float
 )
 @click.option(
     "--to_be_paid",
@@ -117,7 +147,10 @@ def client(email, fullname, sales_contact, phone, enterprise):
     type=float,
 )
 @click.option(
-    "--signed", prompt=True, help="1 if the contract is signed, else 0", type=bool
+    "--signed",
+    prompt=True,
+    help="1 if the contract is signed, else 0",
+    type=bool
 )
 def contract(client_id, total, to_be_paid, signed):
     """
@@ -151,10 +184,16 @@ def contract(client_id, total, to_be_paid, signed):
     required=True,
 )
 @click.option(
-    "--location", prompt=True, help="The location of the event", required=True
+    "--location",
+    prompt=True,
+    help="The location of the event",
+    required=True
 )
 @click.option(
-    "--attendees", prompt=True, help="The total amount of attendees", required=True
+    "--attendees",
+    prompt=True,
+    help="The total amount of attendees",
+    required=True
 )
 @click.option(
     "--contract_id",
@@ -170,7 +209,11 @@ def contract(client_id, total, to_be_paid, signed):
     type=int,
     required=True,
 )
-@click.option("--notes", prompt=True, help="Notes about the event")
+@click.option(
+    "--notes",
+    prompt=True,
+    help="Notes about the event"
+)
 def event(start, end, location, attendees, contract_id, support_id, notes):
     """
     Create a new event
