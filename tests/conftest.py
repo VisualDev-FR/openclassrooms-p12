@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 from contextlib import contextmanager
 from sqlalchemy.orm import Session
 import sqlalchemy
@@ -102,7 +103,7 @@ def setup_database():
 
 
 @pytest.fixture(scope="function")
-def session(
+def database_mock(
     setup_database,
     account_employee,
     sales_employee,
@@ -120,7 +121,7 @@ def session(
     )
     session.commit()
 
-    yield session
+    yield patch("controller.database.create_session", return_value=session)
 
     session.close()
     transaction.rollback()

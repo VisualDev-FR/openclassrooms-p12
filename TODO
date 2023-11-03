@@ -31,7 +31,9 @@ objectifs pour le 03/11/2023:
   ☐ écrire les spécifications de mise en place de la base de donnée dans le readme
   ☐ reorganiser le code en MVC
   ☐ faire le tour de la documentation des commandes
+  ☐ renvoyer la gestion d'exception globale vers sentry
 
 debug:
   ☐ py.exe .\epicevents.py update clients --query=full_name==25 --email=5
   ☐ debugger les deletes, mettre en place les stratégies on_delete
+  ☐ impossible d'update un password sur les employees
