@@ -64,7 +64,8 @@ set EPICEVENTS_SK <secret_key>
 set SENTRY_KEY <sentry_key>
 ```
 
-## Initialisation de la base de donnée (#database)
+## Initialisation de la base de donnée
+<a name="database"></a>
 
 1. Activer l'environnement virtuel
 ```
@@ -108,7 +109,7 @@ Options:
 
 ## Lancement des tests
 
-1. configuer une base de données de tests nommée `epicevents_test`, en vous référant à la [section déidiée](#database) avec le même utilisateur, les mêmes droits.
+1. configuer une base de données de tests nommée `epicevents_test`, en vous référant à la [section dédiée](#database) avec le même utilisateur, les mêmes droits.
 
 2. Lancer les tests
 
