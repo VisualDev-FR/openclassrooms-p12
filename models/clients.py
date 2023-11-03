@@ -33,17 +33,47 @@ class Client(Base):
         unique=True,
     )
 
-    enterprise = Column(String(50))
+    enterprise = Column(
+        String(50)
+    )
 
-    creation_date = Column(DateTime(timezone=True), server_default=func.now())
+    creation_date = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
     last_update = Column(
         DateTime(timezone=True),
         onupdate=func.now(),
     )
 
-    sales_contact_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    sales_contact_id = Column(
+        Integer,
+        ForeignKey("employees.id"), nullable=False)
 
     sales_contact = relationship(
         "Employee",
     )
+
+    HEADERS = (
+        "id",
+        "full_name",
+        "email",
+        "phone",
+        "enterprise",
+        "creation_date",
+        "last_update",
+        "sales_contact_id",
+    )
+
+    def to_list(self):
+        return (
+            self.id,
+            self.full_name,
+            self.email,
+            self.phone,
+            self.enterprise,
+            self.creation_date,
+            self.last_update,
+            self.sales_contact_id,
+        )

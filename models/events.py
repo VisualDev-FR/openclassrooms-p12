@@ -36,3 +36,28 @@ class Event(Base):
     support_contact = relationship(
         "Employee",
     )
+
+    HEADERS = (
+        "id",
+        "creation_date",
+        "start_date",
+        "end_date",
+        "location",
+        "attendees_count",
+        "notes",
+        "contract_id",
+        "support_contact_id",
+    )
+
+    def to_list(self):
+        return (
+            self.id,
+            self.creation_date,
+            self.start_date,
+            self.end_date,
+            self.location,
+            self.attendees_count,
+            self.notes,
+            self.contract_id,
+            self.support_contact_id,
+        )

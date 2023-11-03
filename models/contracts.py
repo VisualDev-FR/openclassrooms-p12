@@ -35,3 +35,24 @@ class Contract(Base):
     account_contact = relationship(
         "Employee",
     )
+
+    HEADERS = (
+        "id",
+        "creation_date",
+        "total_amount",
+        "to_be_paid",
+        "is_signed",
+        "client_id",
+        "account_contact_id",
+    )
+
+    def to_list(self):
+        return (
+            self.id,
+            self.creation_date,
+            self.total_amount,
+            self.to_be_paid,
+            self.is_signed,
+            self.client_id,
+            self.account_contact_id,
+        )

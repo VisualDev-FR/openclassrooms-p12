@@ -2,27 +2,30 @@ import json
 import datetime
 from sqlalchemy.orm import Session
 from pathlib import Path
+from pwinput import pwinput
 
-from database import manager
+from view import cli
+from controller import managers
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
+from controller.environ import DATABASE_PASSWORD
 
 
 def create_employees():
     """
-    create employees in database, from ``data/employees.json``.
+    create employees in database, from ``tests/data/employees.json``.
     """
 
     print("create employees...")
 
-    data_path = Path("data", "employees.json")
+    data_path = Path("tests/data/employees.json")
 
     with open(data_path, "rb") as reader:
         employees_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     employees = []
 
@@ -43,17 +46,17 @@ def create_employees():
 
 def create_clients():
     """
-    create clients in database, from ``data/clients.json``.
+    create clients in database, from ``tests/data/clients.json``.
     """
 
     print("create clients...")
 
-    data_path = Path("data", "clients.json")
+    data_path = Path("tests/data/clients.json")
 
     with open(data_path, "rb") as reader:
         clients_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     clients = [
         Client(
@@ -72,17 +75,17 @@ def create_clients():
 
 def create_contracts():
     """
-    create contracts in database, from ``data/contracts.json``.
+    create contracts in database, from ``tests/data/contracts.json``.
     """
 
     print("create contracts...")
 
-    data_path = Path("data", "contracts.json")
+    data_path = Path("tests/data/contracts.json")
 
     with open(data_path, "rb") as reader:
         contracts_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     contracts = [
         Contract(
@@ -101,17 +104,17 @@ def create_contracts():
 
 def create_events():
     """
-    create events in database, from ``data/events.json``.
+    create events in database, from ``tests/data/events.json``.
     """
 
     print("create events...")
 
-    data_path = Path("data", "events.json")
+    data_path = Path("tests/data/events.json")
 
     with open(data_path, "rb") as reader:
         events_data = json.loads(reader.read())
 
-    session = Session(manager.engine)
+    session = Session(managers.engine)
 
     events = [
         Event(
@@ -121,6 +124,7 @@ def create_events():
             attendees_count=data["attendees_count"],
             notes=data["notes"],
             support_contact_id=data["support_contact_id"],
+            contract_id=data["contract_id"],
         )
         for data in events_data
     ]
@@ -129,12 +133,18 @@ def create_events():
     session.commit()
 
 
-if __name__ == "__main__":
+@cli.command
+def init():
     """
-    reset the database tables and insert some datas
+    reset the database tables and insert demos datas
     """
-    manager.drop_tables()
-    manager.create_tables()
+
+    if pwinput("password: ") != DATABASE_PASSWORD:
+        print("Invalid password")
+        return
+
+    managers.drop_tables()
+    managers.create_tables()
 
     create_employees()
     create_clients()

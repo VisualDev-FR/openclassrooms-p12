@@ -2,9 +2,9 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 import typing
 
-from authentification.token import decode_token, retreive_token
+from controller.authentification import decode_token, retreive_token
 from models.employees import Employee, Department
-from database.manager import engine
+from controller.database import create_session
 
 
 def login_required(function):
@@ -41,7 +41,7 @@ def permission_required(roles: typing.List[Department]):
 
     def decorator(function):
         def wrapper(*args, **kwargs):
-            REJECT_MESSAGE = "Permission denied."
+            REJECT_MESSAGE = f"Permission denied. Please login as [{' | '.join(role.name for role in roles)}]"
 
             token = retreive_token()
             token_payload = decode_token(token)
@@ -51,9 +51,9 @@ def permission_required(roles: typing.List[Department]):
 
             user_id = token_payload["user_id"]
 
-            session = Session(engine)
-            request = sqlalchemy.select(Employee).where(Employee.id == user_id)
-            employee = session.scalar(request)
+            with create_session() as session:
+                request = sqlalchemy.select(Employee).where(Employee.id == user_id)
+                employee = session.scalar(request)
 
             if not employee:
                 raise PermissionError(REJECT_MESSAGE)

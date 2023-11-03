@@ -2,7 +2,7 @@ import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
 
-from database.contracts import ContractsManager
+from controller.managers import ContractsManager
 from models.contracts import Contract
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 

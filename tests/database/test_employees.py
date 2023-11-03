@@ -2,7 +2,7 @@ import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
 
-from database.employees import EmployeeManager
+from controller.managers import EmployeeManager
 from models.employees import Employee, Department
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 

@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy import Enum, Column, Integer, String, DateTime
 import enum
 import bcrypt
+from typing import List
 
 
 class Department(enum.Enum):
@@ -49,4 +50,15 @@ class Employee(Base):
         return bcrypt.checkpw(
             password=password.encode("utf-8"),
             hashed_password=self.password_hash.encode("utf-8"),
+        )
+
+    HEADERS = ["id", "creation_date", "email", "full_name", "department"]
+
+    def to_list(self):
+        return (
+            self.id,
+            self.creation_date,
+            self.email,
+            self.full_name,
+            self.department.name,
         )

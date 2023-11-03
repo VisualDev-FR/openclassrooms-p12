@@ -5,6 +5,7 @@
         "location": "Salle A",
         "attendees_count": 50,
         "notes": "Réunion annuelle de l'entreprise",
+        "contract_id": 1,
         "support_contact_id": 3
     },
     {
@@ -13,6 +14,7 @@
         "location": "Salle de conférence B",
         "attendees_count": 80,
         "notes": "Conférence sur les nouvelles tendances",
+        "contract_id": 2,
         "support_contact_id": 6
     },
     {
@@ -21,6 +23,7 @@
         "location": "Salle C",
         "attendees_count": 40,
         "notes": "Formation interne",
+        "contract_id": 3,
         "support_contact_id": 9
     },
     {
@@ -29,6 +32,7 @@
         "location": "Salle D",
         "attendees_count": 120,
         "notes": "Salon professionnel",
+        "contract_id": 4,
         "support_contact_id": 3
     },
     {
@@ -37,6 +41,7 @@
         "location": "Salle E",
         "attendees_count": 60,
         "notes": "Séminaire de marketing",
+        "contract_id": 5,
         "support_contact_id": 6
     },
     {
@@ -45,6 +50,7 @@
         "location": "Salle F",
         "attendees_count": 75,
         "notes": "Présentation des produits",
+        "contract_id": 6,
         "support_contact_id": 9
     },
     {
@@ -53,6 +59,7 @@
         "location": "Salle G",
         "attendees_count": 55,
         "notes": "Réunion de développement",
+        "contract_id": 7,
         "support_contact_id": 3
     },
     {
@@ -61,6 +68,7 @@
         "location": "Salle de réception H",
         "attendees_count": 90,
         "notes": "Fête d'entreprise",
+        "contract_id": 8,
         "support_contact_id": 6
     },
     {
@@ -69,6 +77,7 @@
         "location": "Salle I",
         "attendees_count": 30,
         "notes": "Réunion de l'équipe de projet",
+        "contract_id": 9,
         "support_contact_id": 9
     },
     {
@@ -77,6 +86,7 @@
         "location": "Salle de réunion J",
         "attendees_count": 35,
         "notes": "Discussion stratégique",
+        "contract_id": 10,
         "support_contact_id": 3
     }
 ]
