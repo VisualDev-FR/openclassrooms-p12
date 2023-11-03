@@ -64,7 +64,7 @@ set EPICEVENTS_SK <secret_key>
 set SENTRY_KEY <sentry_key>
 ```
 
-## Initialisation de la base de donnée
+## Initialisation de la base de donnée (#database)
 
 1. Activer l'environnement virtuel
 ```
@@ -104,4 +104,14 @@ Options:
   --department [sales|accounting|support]
                                   The department of the employee  [required]
   --help                          Show this message and exit.
+```
+
+## Lancement des tests
+
+1. configuer une base de données de tests nommée `epicevents_test`, en vous référant à la [section déidiée](#database) avec le même utilisateur, les mêmes droits.
+
+2. Lancer les tests
+
+```
+python -m pytest
 ```
