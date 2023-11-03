@@ -2,8 +2,8 @@ import click
 from sqlalchemy.exc import IntegrityError
 
 from view import cli
+from controller.database import create_session
 from controller.managers import (
-    create_session,
     Manager,
     EmployeeManager,
     ClientsManager,

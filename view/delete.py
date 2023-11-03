@@ -3,8 +3,8 @@ from sqlalchemy.exc import IntegrityError
 
 from view import cli
 from view.read import generic_read
+from controller.database import create_session
 from controller.managers import (
-    create_session,
     Manager,
     EmployeeManager,
     ClientsManager,
