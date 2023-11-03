@@ -33,16 +33,23 @@ class Client(Base):
         unique=True,
     )
 
-    enterprise = Column(String(50))
+    enterprise = Column(
+        String(50)
+    )
 
-    creation_date = Column(DateTime(timezone=True), server_default=func.now())
+    creation_date = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
     last_update = Column(
         DateTime(timezone=True),
         onupdate=func.now(),
     )
 
-    sales_contact_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    sales_contact_id = Column(
+        Integer,
+        ForeignKey("employees.id"), nullable=False)
 
     sales_contact = relationship(
         "Employee",
