@@ -10,6 +10,7 @@ import os
 DATABASE_USERNAME = os.environ.get("EPICEVENTS_USER")
 DATABASE_PASSWORD = os.environ.get("EPICEVENTS_PW")
 SECRET_KEY = os.environ.get("EPICEVENTS_SK")
+SENTRY_KEY = os.environ.get("SENTRY_KEY")
 
 __ENV_NOT_SET_MESSAGE = "Environnement variable not set : {name}"
 
@@ -22,6 +23,9 @@ if not DATABASE_PASSWORD:
 
 if not SECRET_KEY:
     raise AttributeError(__ENV_NOT_SET_MESSAGE.format(name="SECRET_KEY"))
+
+if not SENTRY_KEY:
+    raise AttributeError(__ENV_NOT_SET_MESSAGE.format(name="SENTRY_KEY"))
 
 
 def get_epicevents_path() -> Path:
