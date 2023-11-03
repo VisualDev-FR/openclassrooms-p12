@@ -4,6 +4,7 @@ from datetime import datetime
 from tabulate import tabulate
 from typing import List, Any
 from abc import ABC
+from sentry_sdk import capture_message
 
 from controller.authentification import get_authenticated_user_id
 from controller.permissions import login_required, permission_required
@@ -92,11 +93,25 @@ class EmployeeManager(Manager):
 
         new_employee.set_password(password)
 
-        return super().create(new_employee)
+        created_employee = super().create(new_employee)
+
+        if created_employee is not None:
+            capture_message(
+                message=f"user {get_authenticated_user_id()} : create employee {created_employee.id}",
+            )
+
+        return created_employee
 
     @permission_required(roles=[Department.ACCOUNTING])
     def update(self, where_clause, **values):
-        return super().update(where_clause, **values)
+        super().update(where_clause, **values)
+
+        request = sqlalchemy.select(Employee).where(where_clause)
+        updated_employees = self._session.scalars(request)
+
+        capture_message(
+            message=f"user {get_authenticated_user_id()} : update employees : {[employee.id for employee in updated_employees]}",
+        )
 
     @permission_required(roles=[Department.ACCOUNTING])
     def delete(self, whereclause):
