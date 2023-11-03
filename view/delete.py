@@ -55,7 +55,11 @@ __HELP_MESSAGE = "Retreive {model} from a custom query."
 
 # DELETE EMPLOYEES
 @delete.command()
-@click.option("--query", help=__HELP_MESSAGE.format(model="employees"), required=True)
+@click.option(
+    "--query",
+    help=__HELP_MESSAGE.format(model="employees"),
+    required=True
+)
 def employees(query):
     """
     Delete on or several employees
@@ -70,7 +74,11 @@ def employees(query):
 
 # DELETE CLIENTS
 @delete.command()
-@click.option("--query", help=__HELP_MESSAGE.format(model="clients"), required=True)
+@click.option(
+    "--query",
+    help=__HELP_MESSAGE.format(model="clients"),
+    required=True
+)
 def clients(query):
     """
     Delete on or several clients
@@ -85,7 +93,11 @@ def clients(query):
 
 # DELETE CONTRACTS
 @delete.command()
-@click.option("--query", help=__HELP_MESSAGE.format(model="contracts"), required=True)
+@click.option(
+    "--query",
+    help=__HELP_MESSAGE.format(model="contracts"),
+    required=True
+)
 def contracts(query):
     """
     Delete on or several contracts
@@ -100,7 +112,11 @@ def contracts(query):
 
 # DELETE EVENTS
 @delete.command()
-@click.option("--query", help=__HELP_MESSAGE.format(model="events"), required=True)
+@click.option(
+    "--query",
+    help=__HELP_MESSAGE.format(model="events"),
+    required=True
+)
 def events(query):
     """
     Delete on or several events

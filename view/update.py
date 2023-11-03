@@ -60,8 +60,15 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
 
 # UPDATE EMPLOYEES
 @update.command()
-@click.option("--query", help="A query to select entries to update", required=True)
-@click.option("--email", help="The email of the employee")
+@click.option(
+    "--query",
+    help="A query to select entries to update",
+    required=True
+)
+@click.option(
+    "--email",
+    help="The email of the employee"
+)
 @click.option(
     "--password",
     help="The password of the employee",
@@ -93,16 +100,32 @@ def employees(query, email, password, fullname, department):
 
 # UPDATE CLIENTS
 @update.command()
-@click.option("--query", help="A query to select entries to update", required=True)
-@click.option("--email", help="The email of the client")
-@click.option("--fullname", help="The full name of the client")
+@click.option(
+    "--query",
+    help="A query to select entries to update",
+    required=True
+)
+@click.option(
+    "--email",
+    help="The email of the client"
+)
+@click.option(
+    "--fullname",
+    help="The full name of the client"
+)
 @click.option(
     "--sales_contact",
     help="The id of the client's sales contact",
     type=int,
 )
-@click.option("--phone", help="The phone number of the client")
-@click.option("--enterprise", help="The enterprise of the client")
+@click.option(
+    "--phone",
+    help="The phone number of the client"
+)
+@click.option(
+    "--enterprise",
+    help="The enterprise of the client"
+)
 def clients(query, email, fullname, sales_contact, phone, enterprise):
     """
     Update one or several existing clients.
@@ -122,18 +145,34 @@ def clients(query, email, fullname, sales_contact, phone, enterprise):
 
 # UPDATE CONTRACTS
 @update.command()
-@click.option("--query", help="A query to select entries to update", required=True)
-@click.option("--client_id", help="The id of the attached client")
 @click.option(
-    "--account_id", help="The id of accounting employee in charge of this contract."
+    "--query",
+    help="A query to select entries to update",
+    required=True
 )
-@click.option("--total", help="The total amount of the contract", type=float)
+@click.option(
+    "--client_id",
+    help="The id of the attached client"
+)
+@click.option(
+    "--account_id",
+    help="The id of accounting employee in charge of this contract."
+)
+@click.option(
+    "--total",
+    help="The total amount of the contract",
+    type=float
+)
 @click.option(
     "--to_be_paid",
     help="The remaing amount of the contract to be paid",
     type=float,
 )
-@click.option("--signed", help="1 if the contract is signed, else 0", type=bool)
+@click.option(
+    "--signed",
+    help="1 if the contract is signed, else 0",
+    type=bool
+)
 def contracts(query, client_id, account_id, total, to_be_paid, signed):
     """
     Update one or several existing contracts.
@@ -153,7 +192,11 @@ def contracts(query, client_id, account_id, total, to_be_paid, signed):
 
 # UPDATE EVENT
 @update.command()
-@click.option("--query", help="A query to select entries to update", required=True)
+@click.option(
+    "--query",
+    help="A query to select entries to update",
+    required=True
+)
 @click.option(
     "--start",
     help="The start date of the event",
@@ -182,8 +225,20 @@ def contracts(query, client_id, account_id, total, to_be_paid, signed):
     help="the id of the support employee, managing this event.",
     type=int,
 )
-@click.option("--notes", help="Notes about the event")
-def events(query, start, end, location, attendees, contract_id, support_id, notes):
+@click.option(
+    "--notes",
+    help="Notes about the event"
+)
+def events(
+    query,
+    start,
+    end,
+    location,
+    attendees,
+    contract_id,
+    support_id,
+    notes
+):
     """
     Update one or several existing events.
     """

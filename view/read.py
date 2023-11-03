@@ -37,7 +37,9 @@ def generic_read(manager: Manager, model: type, query: str):
             click.echo(f"query error: {full_query}")
             return
 
-    click.echo(manager.tabulate(objects=objects, headers=manager._model.HEADERS))
+    click.echo(
+        manager.tabulate(objects=objects, headers=manager._model.HEADERS)
+    )
 
 
 __HELP_MESSAGE = "Retreive {model} from a custom query. If not specified, retreive all existing entries."
@@ -51,7 +53,8 @@ def employees(query):
     Retreive existing employee
     """
     with create_session() as session:
-        generic_read(manager=EmployeeManager(session), model=Employee, query=query)
+        generic_read(manager=EmployeeManager(
+            session), model=Employee, query=query)
 
 
 # READ CLIENTS
@@ -62,7 +65,8 @@ def clients(query):
     Retreive existing clients
     """
     with create_session() as session:
-        generic_read(manager=ClientsManager(session), model=Client, query=query)
+        generic_read(manager=ClientsManager(
+            session), model=Client, query=query)
 
 
 # READ CONTRACTS
@@ -73,7 +77,8 @@ def contracts(query):
     Retreive existing contracts
     """
     with create_session() as session:
-        generic_read(manager=ContractsManager(session), model=Contract, query=query)
+        generic_read(manager=ContractsManager(
+            session), model=Contract, query=query)
 
 
 # READ EVENTS
