@@ -103,7 +103,7 @@ def setup_database():
 
 
 @pytest.fixture(scope="function")
-def database_mock(
+def session(
     setup_database,
     account_employee,
     sales_employee,
@@ -121,16 +121,22 @@ def database_mock(
     )
     session.commit()
 
-    yield patch("controller.database.create_session", return_value=session)
+    yield session
 
     session.close()
     transaction.rollback()
     connection.close()
 
 
+@pytest.fixture
+def database_mock(session):
+    return patch("controller.database.create_session", return_value=session)
+
 # -----------------------------------
 # login fixtures
 # -----------------------------------
+
+
 @contextmanager
 def login_as_sales():
     try:
