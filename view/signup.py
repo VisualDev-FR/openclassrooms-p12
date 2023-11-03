@@ -1,7 +1,7 @@
 from pwinput import pwinput
 
-from authentification.login import perform_sign_up
-from authentification.environ import DATABASE_PASSWORD
+from controller.authentification import perform_sign_up
+from controller.environ import DATABASE_PASSWORD
 from view import cli
 
 

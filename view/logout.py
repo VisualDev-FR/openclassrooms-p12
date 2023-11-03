@@ -1,7 +1,7 @@
 import click
 
 from view import cli
-from authentification.login import perform_logout
+from controller.authentification import perform_logout
 
 
 @cli.command

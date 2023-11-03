@@ -1,6 +1,6 @@
 import sys
 from pwinput import pwinput
-from authentification.login import perform_login
+from controller.authentification import perform_login
 import click
 
 from view import cli
