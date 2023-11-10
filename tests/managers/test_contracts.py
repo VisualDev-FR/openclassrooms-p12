@@ -2,9 +2,10 @@ import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
 
+from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 from controller.managers import ContractsManager
 from models.contracts import Contract
-from tests.conftest import login_as_accounting, login_as_sales, login_as_support
+from models.events import Event
 
 
 DUMMY_CONTRACT = {
@@ -101,7 +102,26 @@ def test_update_contract_from_unauthorized(session):
         manager.update(where_clause=Contract.client_id == 1, total_amount=50)
 
 
-def test_delete_contract(session):
+def test_delete_contract(session: Session):
+    manager = ContractsManager(session)
+
+    def count_events() -> int:
+        return len(session.scalars(sqlalchemy.select(Event)).all())
+
+    with login_as_sales():
+
+        assert count_events() == 1
+
+        manager.delete(Contract.client_id == 1)
+
+        # check that conctract has been correctly deleted
+        assert manager.get(Contract.client_id == 1) == []
+
+        # check that associated events have been deleted
+        assert count_events() == 0
+
+
+def test_delete_contract_from_unothorized(session):
     manager = ContractsManager(session)
 
     with login_as_support(), pytest.raises(PermissionError):
