@@ -74,7 +74,9 @@ def generic_create(manager: Manager, model: type, **kwargs):
 )
 def employee(email, password, fullname, department):
     """
-    Create a new employee
+    Create a new employee.
+
+    Permissions required : [ACCOUNTING]
     """
     with create_session() as session:
         generic_create(
@@ -121,6 +123,8 @@ def employee(email, password, fullname, department):
 def client(email, fullname, sales_contact, phone, enterprise):
     """
     Create a new client
+
+    Permissions required : [SALES]
     """
     with create_session() as session:
         generic_create(
@@ -162,6 +166,8 @@ def client(email, fullname, sales_contact, phone, enterprise):
 def contract(client_id, total, to_be_paid, signed):
     """
     Create a new contract
+
+    Permissions required : [ACCOUNTING]
     """
     with create_session() as session:
         generic_create(
@@ -224,6 +230,8 @@ def contract(client_id, total, to_be_paid, signed):
 def event(start, end, location, attendees, contract_id, support_id, notes):
     """
     Create a new event
+
+    Permissions required : [SALES]
     """
     with create_session() as session:
         generic_create(
