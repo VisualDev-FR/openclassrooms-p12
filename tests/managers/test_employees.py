@@ -2,9 +2,12 @@ import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
 
+from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 from controller.managers import EmployeeManager
 from models.employees import Employee, Department
-from tests.conftest import login_as_accounting, login_as_sales, login_as_support
+from models.clients import Client
+from models.contracts import Contract
+from models.events import Event
 
 
 def test_create_employee_from_accounting_user(session):
@@ -52,7 +55,8 @@ def test_create_employee_from_unauthorized(session: Session):
 
         assert raised_exception is not None
 
-    request = sqlalchemy.select(Employee).where(Employee.full_name == "dummy employee")
+    request = sqlalchemy.select(Employee).where(
+        Employee.full_name == "dummy employee")
     assert session.scalars(request).all() == []
 
 
@@ -93,24 +97,6 @@ def test_get_employee(session):
         assert employee.email == "account.employee@epicevents.co"
 
 
-def test_delete_employee_from_accounting_user(session):
-    manager = EmployeeManager(session)
-
-    with login_as_accounting():
-        employee = manager.create(
-            full_name="employee to be deleted",
-            email="to.be.deleted@epicevents.co",
-            password="password",
-            department=Department.ACCOUNTING,
-        )
-
-        assert manager.get(Employee.email == employee.email)[0] is not None
-
-        manager.delete(Employee.email == employee.email)
-
-        assert manager.get(Employee.email == employee.email) == []
-
-
 def test_update_employee_from_accounting_user(session):
     manager = EmployeeManager(session)
 
@@ -121,7 +107,8 @@ def test_update_employee_from_accounting_user(session):
         )
 
         assert (
-            manager.get(Employee.email == "sales.employee@epicevents.co")[0].full_name
+            manager.get(Employee.email ==
+                        "sales.employee@epicevents.co")[0].full_name
             == "updated_employee_fullname"
         )
 
@@ -140,3 +127,24 @@ def test_update_employee_from_unauthorized(session):
 
     with login_as_sales(), pytest.raises(PermissionError):
         update_employee()
+
+
+def test_delete_employee_from_accounting_user(session: Session):
+    manager = EmployeeManager(session)
+
+    def count_objects(object: type) -> int:
+        return len(session.scalars(sqlalchemy.select(object)).all())
+
+    with login_as_accounting():
+
+        assert count_objects(Employee) == 3
+        assert count_objects(Client) == 1
+        assert count_objects(Contract) == 1
+        assert count_objects(Event) == 1
+
+        manager.delete(Employee.id == 1)
+
+        assert count_objects(Employee) == 2
+        assert count_objects(Client) == 0
+        assert count_objects(Contract) == 0
+        assert count_objects(Event) == 0
