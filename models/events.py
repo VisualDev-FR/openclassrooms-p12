@@ -17,6 +17,11 @@ class Event(Base):
 
     creation_date = Column(DateTime(timezone=True), server_default=func.now())
 
+    last_update = Column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+    )
+
     start_date = Column(DateTime())
 
     end_date = Column(DateTime())

@@ -29,6 +29,11 @@ class Employee(Base):
 
     department = Column(Enum(Department), nullable=False)
 
+    last_update = Column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+    )
+
     def set_password(self, password: str):
         """
         Hash and store a new password + salt value

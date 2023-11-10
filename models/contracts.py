@@ -22,6 +22,11 @@ class Contract(Base):
 
     creation_date = Column(DateTime(timezone=True), server_default=func.now())
 
+    last_update = Column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+    )
+
     is_signed = Column(Boolean())
 
     client_id = Column(
