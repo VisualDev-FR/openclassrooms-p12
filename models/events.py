@@ -27,14 +27,24 @@ class Event(Base):
 
     notes = Column(String(1000))
 
-    contract_id = Column(Integer, ForeignKey("contracts.id"))
+    contract_id = Column(
+        Integer,
+        ForeignKey("contracts.id", ondelete="CASCADE"),
+    )
 
-    support_contact_id = Column(Integer, ForeignKey("employees.id"))
+    support_contact_id = Column(
+        Integer,
+        ForeignKey("employees.id", ondelete="CASCADE"),
+    )
 
-    contract = relationship("Contract")
+    contract = relationship(
+        "Contract",
+        cascade="all,delete",
+    )
 
     support_contact = relationship(
         "Employee",
+        cascade="all,delete",
     )
 
     HEADERS = (

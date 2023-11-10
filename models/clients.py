@@ -49,10 +49,13 @@ class Client(Base):
 
     sales_contact_id = Column(
         Integer,
-        ForeignKey("employees.id"), nullable=False)
+        ForeignKey("employees.id", ondelete="CASCADE"),
+        nullable=False,
+    )
 
     sales_contact = relationship(
         "Employee",
+        cascade="all,delete",
     )
 
     HEADERS = (

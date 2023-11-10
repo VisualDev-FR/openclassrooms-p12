@@ -24,16 +24,24 @@ class Contract(Base):
 
     is_signed = Column(Boolean())
 
-    client_id = Column(Integer, ForeignKey("clients.id"))
+    client_id = Column(
+        Integer,
+        ForeignKey("clients.id", ondelete="CASCADE"),
+    )
 
-    account_contact_id = Column(Integer, ForeignKey("employees.id"))
+    account_contact_id = Column(
+        Integer,
+        ForeignKey("employees.id", ondelete="CASCADE"),
+    )
 
     client = relationship(
         "Client",
+        cascade="all,delete",
     )
 
     account_contact = relationship(
         "Employee",
+        cascade="all,delete",
     )
 
     HEADERS = (
