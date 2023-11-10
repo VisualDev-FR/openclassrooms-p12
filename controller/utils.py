@@ -5,7 +5,7 @@ def email_is_valid(email: str):
     return re.fullmatch(r"\w+\.?\w+@\w+\.[a-z]+", email) is not None
 
 
-def drop_none_from_dict(data: dict) -> dict:
+def drop_dict_none_values(data: dict) -> dict:
     """
     Removes entries from a dictionary where the values are ``None``
 

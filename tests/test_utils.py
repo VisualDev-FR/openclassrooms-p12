@@ -11,8 +11,8 @@ def test_email_is_valid():
 
 
 def test_drop_none_from_dict():
-    assert utils.drop_none_from_dict({"key1": None, "key2": None}) == {}
+    assert utils.drop_dict_none_values({"key1": None, "key2": None}) == {}
 
-    assert utils.drop_none_from_dict({"key1": "value1", "key2": None}) == {
+    assert utils.drop_dict_none_values({"key1": "value1", "key2": None}) == {
         "key1": "value1"
     }

@@ -36,7 +36,7 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
     * ``kwargs``: the parameters to be updated
     """
 
-    params = utils.drop_none_from_dict(kwargs)
+    params = utils.drop_dict_none_values(kwargs)
 
     if len(params) == 0:
         click.echo("No parameters were specified.")
