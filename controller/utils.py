@@ -20,6 +20,18 @@ def validate_email(email: str):
     return email
 
 
+def validate_phone(phone):
+
+    cleaned_phone = re.sub(r'\D', '', phone)
+
+    pattern = re.compile(r'^\+?\d{1,3}?\d{9,15}$')
+
+    if pattern.match(cleaned_phone):
+        return phone
+    else:
+        raise ValueError(f"Invalid phone : {phone}")
+
+
 def drop_dict_none_values(data: dict) -> dict:
     """
     Removes entries from a dictionary where the values are ``None``
