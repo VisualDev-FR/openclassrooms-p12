@@ -1,9 +1,11 @@
-import pytest
 from datetime import datetime
+from sqlalchemy.orm import Session
+import sqlalchemy
+import pytest
 
+from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 from controller.managers import EventsManager
 from models.events import Event
-from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 
 
 __DUMMY_EVENT = {
@@ -88,15 +90,21 @@ def test_update_event_from_unauthorized(event_manager: EventsManager):
     pass
 
 
-def test_delete_event(event_manager: EventsManager):
-    def delete_event():
+def test_delete_event_from_unauthorized(event_manager: EventsManager):
+    with login_as_sales(), pytest.raises(PermissionError):
         event_manager.delete(Event.location == "Dummy location")
 
-    with login_as_accounting(), pytest.raises(PermissionError):
-        delete_event()
 
-    with login_as_sales(), pytest.raises(PermissionError):
-        delete_event()
+def test_delete_event(session: Session):
 
-    with login_as_support(), pytest.raises(PermissionError):
-        delete_event()
+    manager = EventsManager(session)
+
+    def count_events() -> int:
+        return len(session.scalars(sqlalchemy.select(Event)).all())
+
+    with login_as_accounting():
+        assert count_events() == 1
+
+        manager.delete(Event.id == 1)
+
+        assert count_events() == 0
