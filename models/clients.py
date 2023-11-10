@@ -1,5 +1,4 @@
-from models import Base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
 from sqlalchemy import (
     Column,
@@ -8,6 +7,9 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
 )
+
+from models import Base
+from controller import utils
 
 
 class Client(Base):
@@ -80,3 +82,11 @@ class Client(Base):
             self.last_update,
             self.sales_contact_id,
         )
+
+    @validates("email")
+    def validate_email(self, key, value):
+        return utils.validate_email(value)
+
+    @validates("phone")
+    def validate_phone(self, key, value):
+        return utils.validate_phone(value)

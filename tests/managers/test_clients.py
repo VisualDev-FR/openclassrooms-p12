@@ -1,6 +1,7 @@
 import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 from controller.managers import ClientsManager
@@ -55,6 +56,43 @@ def test_create_employee_from_unauthorized(session: Session):
         Client.full_name == DUMMY_CLIENT["full_name"]
     )
     assert session.scalars(request).all() == []
+
+
+def test_create_client_with_invalid_datas(session):
+
+    manager = ClientsManager(session)
+
+    with login_as_sales():
+
+        # invalid email
+        with pytest.raises(ValueError):
+            manager.create(
+                email="invalid_email",
+                full_name="valid, fullname",
+                phone="0611181228",
+                enterprise="valid enterprise",
+                sales_contact_id=1
+            )
+
+        # invalid phone
+        with pytest.raises(ValueError):
+            manager.create(
+                email="valid.email@example.co",
+                full_name="valid, fullname",
+                phone="invalid phone",
+                enterprise="valid enterprise",
+                sales_contact_id=1
+            )
+
+        # invalid sales_contact_id
+        with pytest.raises(IntegrityError):
+            manager.create(
+                email="valid.email@example.co",
+                full_name="valid, fullname",
+                phone="0611181228",
+                enterprise="valid enterprise",
+                sales_contact_id=99
+            )
 
 
 def test_get_all_clients(session: Session):
