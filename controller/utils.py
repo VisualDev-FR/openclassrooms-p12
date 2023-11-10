@@ -1,8 +1,23 @@
 import re
 
 
-def email_is_valid(email: str):
-    return re.fullmatch(r"\w+\.?\w+@\w+\.[a-z]+", email) is not None
+def validate_email(email: str):
+    """
+    Validates an email address format.
+
+    Args:
+    * ``email``: the email to validate
+
+    Returns:
+    * A string containing the given email
+
+    Raises:
+    * ``ValueError`` if the email is not valid
+    """
+    if not re.fullmatch(r"\w+\.?\w+@\w+\.[a-z]+", email):
+        raise ValueError(f"Invalid email: {email}")
+
+    return email
 
 
 def drop_dict_none_values(data: dict) -> dict:

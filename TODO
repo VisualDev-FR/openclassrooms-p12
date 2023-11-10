@@ -29,16 +29,19 @@ objectifs pour le 03/11/2023:
   ✔ reorganiser le code en MVC @done(23-11-03 15:55)
 
 objectifs pour le 10/11/2023:
-  ☐ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal
+  ✘ faire apparaitre les permissions avant de rentrer une commande complete @cancelled(23-11-10 14:15)
+  ✘ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal @cancelled(23-11-10 14:17)
+  ✔ debugger les deletes, mettre en place les stratégies on_delete @done(23-11-10 11:58)
+  ✔ mettre à jour les tests de suppression sur tout les modèles @done(23-11-10 11:59)
+  ✔ s'assurer que les id se sont pas modifiables @done(23-11-10 11:59)
+    on ne peut modifier que les champs autorisés par la cli
+  ✔ rajouter le champ last_update sur toute les tables que l'on peut mettre à jour @done(23-11-10 14:17)
+  ☐ affiner la strategie de validation des données
   ☐ mettre en place les tests de l'interface cli
   ☐ mettre en place les tests sur les fonctions d'authentification
-  ☐ affiner la strategie de validation des données
+
   ☐ faire le tour de la documentation des commandes
   ☐ renvoyer la gestion d'exception globale vers sentry
-  ☐ debugger les deletes, mettre en place les stratégies on_delete
-  ☐ faire apparaitre les permissions avant de rentrer une commande complete
-  ☐ rajouter le champ last_update sur toute les tables que l'on peut mettre à jour
-  ☐ s'assurer que les id se sont pas modifiables
 
 debug:
   ☐ py.exe .\epicevents.py update clients --query=full_name==25 --email=5

@@ -1,6 +1,7 @@
 import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import DataError
 
 from tests.conftest import login_as_accounting, login_as_sales, login_as_support
 from controller.managers import EmployeeManager
@@ -58,6 +59,30 @@ def test_create_employee_from_unauthorized(session: Session):
     request = sqlalchemy.select(Employee).where(
         Employee.full_name == "dummy employee")
     assert session.scalars(request).all() == []
+
+
+def test_create_employee_with_invalid_datas(session):
+    manager = EmployeeManager(session)
+
+    with login_as_accounting():
+
+        # invalid email
+        with pytest.raises(ValueError):
+            manager.create(
+                full_name="Valid fullname",
+                email="invalid_email",
+                password="Valid password",
+                department=Department.ACCOUNTING,
+            )
+
+        # invalid departement
+        with pytest.raises(DataError):
+            manager.create(
+                full_name="Valid fullname",
+                email="valid.email@example.co",
+                password="Valid password",
+                department="Invalid departement",
+            )
 
 
 def test_get_all_employees(session):

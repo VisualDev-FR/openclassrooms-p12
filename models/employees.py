@@ -1,9 +1,12 @@
-from models import Base
 from sqlalchemy.sql import func
+from sqlalchemy.orm import validates
 from sqlalchemy import Enum, Column, Integer, String, DateTime
+from typing import List
 import enum
 import bcrypt
-from typing import List
+
+from controller import utils
+from models import Base
 
 
 class Department(enum.Enum):
@@ -42,7 +45,8 @@ class Employee(Base):
         salt = bcrypt.gensalt()
 
         # hash password with generated salt
-        password_hash = bcrypt.hashpw(password=password.encode("utf-8"), salt=salt)
+        password_hash = bcrypt.hashpw(
+            password=password.encode("utf-8"), salt=salt)
 
         # set the hashed password and the salt value
         self.password_hash = password_hash.decode("utf-8")
@@ -67,3 +71,7 @@ class Employee(Base):
             self.full_name,
             self.department.name,
         )
+
+    @validates("email")
+    def validate_email(self, key, value):
+        return utils.validate_email(value)
