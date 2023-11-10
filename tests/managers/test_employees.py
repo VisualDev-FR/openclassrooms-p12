@@ -129,6 +129,16 @@ def test_update_employee_from_unauthorized(session):
         update_employee()
 
 
+def test_delete_employee_from_unauthorized(session):
+    manager = EmployeeManager(session)
+
+    with login_as_sales(), pytest.raises(PermissionError):
+        manager.delete(Employee.id == 1)
+
+    with login_as_support(), pytest.raises(PermissionError):
+        manager.delete(Employee.id == 1)
+
+
 def test_delete_employee_from_accounting_user(session: Session):
     manager = EmployeeManager(session)
 
