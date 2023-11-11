@@ -30,6 +30,9 @@ def create_session():
     except PermissionError as e:
         print(e)
 
+    except ValueError as e:
+        print(e)
+
     except Exception as e:
         # TODO: handle exceptions here
         raise e
