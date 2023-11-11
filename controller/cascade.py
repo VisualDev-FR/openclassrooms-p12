@@ -19,11 +19,15 @@ class CascadeDetails:
         self.objects = objects
         self.headers = headers
 
+    def not_none_objects(self) -> List[object]:
+        return [obj for obj in self.objects if obj is not None]
+
     def __str__(self):
+
         return "\n".join([
             self.title,
             utils.tabulate(
-                objects=self.objects,
+                objects=self.not_none_objects(),
                 headers=self.headers
             )
         ])
@@ -46,7 +50,7 @@ class CascadeResolver:
                 sqlalchemy.select(Client)
                 .where(Client.sales_contact_id == employee.id)
             )
-            for employee in employees
+            for employee in employees if employee is not None
         ]
 
     def _retreive_contracts_from_employees(self, employees: List[Employee]) -> List[Contract]:
@@ -55,7 +59,7 @@ class CascadeResolver:
                 sqlalchemy.select(Contract)
                 .where(Contract.account_contact_id == employee.id)
             )
-            for employee in employees
+            for employee in employees if employee is not None
         ]
 
     def _retreive_events_from_employee(self, employees: List[Employee]) -> List[Event]:
@@ -64,7 +68,7 @@ class CascadeResolver:
                 sqlalchemy.select(Event)
                 .where(Event.support_contact_id == employee.id)
             )
-            for employee in employees
+            for employee in employees if employee is not None
         ]
 
     def _retreive_contracts_from_clients(self, clients: List[Client]) -> List[Contract]:
@@ -73,7 +77,7 @@ class CascadeResolver:
                 sqlalchemy.select(Contract)
                 .where(Contract.client_id == client.id)
             )
-            for client in clients
+            for client in clients if client is not None
         ]
 
     def _retreive_events_from_contracts(self, contracts: List[Contract]) -> List[Event]:
@@ -82,7 +86,7 @@ class CascadeResolver:
                 sqlalchemy.select(Event)
                 .where(Event.contract_id == contract.id)
             )
-            for contract in contracts
+            for contract in contracts if contract is not None
         ]
 
     def resolve_employee_cascade(self, employees: List[Employee]) -> List[CascadeDetails]:

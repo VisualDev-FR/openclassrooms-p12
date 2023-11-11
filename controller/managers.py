@@ -1,13 +1,13 @@
 import sqlalchemy
 from sqlalchemy.orm import Session
 from datetime import datetime
-from typing import List, Any
+from typing import List
 from abc import ABC, abstractmethod
 from sentry_sdk import capture_message
 
 from controller.authentification import get_authenticated_user_id
 from controller.permissions import login_required, permission_required
-from controller import utils
+from controller.cascade import CascadeDetails, CascadeResolver
 from models.employees import Department, Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -24,6 +24,7 @@ class Manager(ABC):
     def __init__(self, session: Session, model: type) -> None:
         self._session = session
         self._model = model
+        self.cascade_resolver = CascadeResolver(session)
 
     def create(self, obj):
         self._session.add(obj)
@@ -49,6 +50,10 @@ class Manager(ABC):
         self._session.execute(sqlalchemy.delete(
             self._model).where(whereclause))
         self._session.commit()
+
+    @abstractmethod
+    def resolve_cascade(self, objects: List[object]) -> List[CascadeDetails]:
+        pass
 
 
 class EmployeeManager(Manager):
@@ -101,6 +106,11 @@ class EmployeeManager(Manager):
     def delete(self, whereclause):
         return super().delete(whereclause)
 
+    def resolve_cascade(self, employees: List[Employee]) -> List[CascadeDetails]:
+        return self.cascade_resolver.resolve_employee_cascade(
+            employees=employees
+        )
+
 
 class ClientsManager(Manager):
     """
@@ -130,8 +140,8 @@ class ClientsManager(Manager):
         return super().create(client)
 
     @login_required
-    def get(self, *args, **kwargs) -> List[Client]:
-        return super().get(*args, **kwargs)
+    def get(self, where_clause) -> List[Client]:
+        return super().get(where_clause)
 
     @login_required
     def all(self) -> List[Client]:
@@ -147,6 +157,11 @@ class ClientsManager(Manager):
 
     def filter_by_name(self, name_contains: str):
         return self.get(Client.full_name.contains(name_contains))
+
+    def resolve_cascade(self, clients: List[Client]) -> List[CascadeDetails]:
+        return self.cascade_resolver.resolve_clients_cascade(
+            clients=clients
+        )
 
 
 class ContractsManager(Manager):
@@ -186,6 +201,11 @@ class ContractsManager(Manager):
     @permission_required(roles=[Department.ACCOUNTING, Department.SALES])
     def delete(self, whereclause):
         return super().delete(whereclause)
+
+    def resolve_cascade(self, contracts: List[Contract]) -> List[CascadeDetails]:
+        return self.cascade_resolver.resolve_contracts_cascade(
+            contracts=contracts
+        )
 
 
 class EventsManager(Manager):
@@ -234,3 +254,12 @@ class EventsManager(Manager):
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def delete(self, whereclause):
         return super().delete(whereclause)
+
+    def resolve_cascade(self, events: List[Event]) -> List[CascadeDetails]:
+        return [
+            CascadeDetails(
+                title="EVENTS",
+                headers=Event.HEADERS,
+                objects=events
+            )
+        ]
