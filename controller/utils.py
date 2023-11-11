@@ -58,7 +58,7 @@ def drop_dict_none_values(data: dict) -> dict:
     return dict([(key, value) for key, value in data.items() if value is not None])
 
 
-def tabulate(objects: List[Any], headers: List[str], indent: int = 0) -> str:
+def tabulate(objects: List[Any], headers: List[str]) -> str:
     """
     Prettify a list of objects to a tabulated view.
 

@@ -101,9 +101,6 @@ class EmployeeManager(Manager):
     def delete(self, whereclause):
         return super().delete(whereclause)
 
-    def get_cascade(self, where_clause) -> List[List[Any]]:
-        return []
-
 
 class ClientsManager(Manager):
     """
@@ -237,18 +234,3 @@ class EventsManager(Manager):
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def delete(self, whereclause):
         return super().delete(whereclause)
-
-    def get_cascade(self, where_clause) -> List[List[Any]]:
-        return []
-
-
-if __name__ == "__main__":
-    from controller.database import create_session
-
-    with create_session() as session:
-        manager = ContractsManager(session)
-
-        cascads = manager.get_cascade(Contract.id == 1)
-
-        for c in cascads:
-            print(c)

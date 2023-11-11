@@ -24,7 +24,7 @@ class CascadeDetails:
             self.title,
             utils.tabulate(
                 objects=self.objects,
-                headers=self.headers, indent=10
+                headers=self.headers
             )
         ])
 
