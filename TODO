@@ -40,6 +40,7 @@ objectifs pour le 10/11/2023:
 objectifs pour le 17/11/2023:
   ✘ faire apparaitre les permissions avant de rentrer une commande complete @cancelled(23-11-10 14:15)
   ✔ homogeniser les noms de models dans la cli (client / clients, etc...) @done(23-11-11 14:39)
+  ✔ basculer la méthode tabulate en méthode statique @done(23-11-11 15:04)
   ☐ faire apparaitre la cascade de suppressions sur les commandes delete
   ☐ mettre en place les tests de l'interface cli
 

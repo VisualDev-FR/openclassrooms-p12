@@ -2,6 +2,7 @@ import click
 from sqlalchemy.exc import IntegrityError
 
 from view import cli
+from controller import utils
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -41,7 +42,7 @@ def generic_create(manager: Manager, model: type, **kwargs):
         return
 
     click.echo(
-        manager.tabulate(objects=[created_object], headers=model.HEADERS)
+        utils.tabulate(objects=[created_object], headers=model.HEADERS)
     )
 
 

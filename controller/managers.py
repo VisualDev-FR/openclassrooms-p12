@@ -8,6 +8,7 @@ from sentry_sdk import capture_message
 
 from controller.authentification import get_authenticated_user_id
 from controller.permissions import login_required, permission_required
+from controller import utils
 from models.employees import Department, Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -49,22 +50,6 @@ class Manager(ABC):
         self._session.execute(sqlalchemy.delete(
             self._model).where(whereclause))
         self._session.commit()
-
-    def tabulate(self, objects: List[Any], headers: List[str]) -> str:
-        """
-        Prettify a list of objects to a tabulated view.
-
-        Args:
-        * ``objects``: a list of objects to display, the objects must implement the method ``to_list()``
-        * ``headers``: a list of strings containing the headers of the tabulated view
-
-        Returns:
-        A string representing the table of the given datas
-
-        """
-        return "\n" + tabulate(
-            tabular_data=[obj.to_list() for obj in objects], headers=headers
-        ) + "\n"
 
 
 class EmployeeManager(Manager):
