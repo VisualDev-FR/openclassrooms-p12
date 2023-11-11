@@ -1,9 +1,8 @@
 import sqlalchemy
 from sqlalchemy.orm import Session
 from datetime import datetime
-from tabulate import tabulate
 from typing import List, Any
-from abc import ABC
+from abc import ABC, abstractmethod
 from sentry_sdk import capture_message
 
 from controller.authentification import get_authenticated_user_id
@@ -13,6 +12,29 @@ from models.employees import Department, Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
+
+
+class CascadeDetails:
+    """
+    Data object storing deletion cascade details.
+    """
+
+    def __init__(self, title: str, headers: List[str], objects: List[Any]) -> None:
+        self.title = title
+        self.objects = objects
+        self.headers = headers
+
+    def __str__(self):
+        return "\n".join([
+            self.title,
+            utils.tabulate(
+                objects=self.objects,
+                headers=self.headers, indent=10
+            )
+        ])
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
 class Manager(ABC):
@@ -50,6 +72,10 @@ class Manager(ABC):
         self._session.execute(sqlalchemy.delete(
             self._model).where(whereclause))
         self._session.commit()
+
+    @abstractmethod
+    def get_cascade(self, where_clause) -> List[List[Any]]:
+        pass
 
 
 class EmployeeManager(Manager):
@@ -102,6 +128,9 @@ class EmployeeManager(Manager):
     def delete(self, whereclause):
         return super().delete(whereclause)
 
+    def get_cascade(self, where_clause) -> List[List[Any]]:
+        return []
+
 
 class ClientsManager(Manager):
     """
@@ -149,6 +178,9 @@ class ClientsManager(Manager):
     def filter_by_name(self, name_contains: str):
         return self.get(Client.full_name.contains(name_contains))
 
+    def get_cascade(self, where_clause) -> List[List[Any]]:
+        return []
+
 
 class ContractsManager(Manager):
     """
@@ -187,6 +219,25 @@ class ContractsManager(Manager):
     @permission_required(roles=[Department.ACCOUNTING, Department.SALES])
     def delete(self, whereclause):
         return super().delete(whereclause)
+
+    def get_cascade(self, where_clause) -> List[CascadeDetails]:
+        contracts = self.get(where_clause)
+
+        events = [
+            self._session.scalar(
+                sqlalchemy.select(Event)
+                .where(Event.contract_id == contract.id)
+            )
+            for contract in contracts
+        ]
+
+        return [
+            CascadeDetails(
+                title="EVENTS",
+                headers=Event.HEADERS,
+                objects=events,
+            )
+        ]
 
 
 class EventsManager(Manager):
@@ -235,3 +286,18 @@ class EventsManager(Manager):
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def delete(self, whereclause):
         return super().delete(whereclause)
+
+    def get_cascade(self, where_clause) -> List[List[Any]]:
+        return []
+
+
+if __name__ == "__main__":
+    from controller.database import create_session
+
+    with create_session() as session:
+        manager = ContractsManager(session)
+
+        cascads = manager.get_cascade(Contract.id == 1)
+
+        for c in cascads:
+            print(c)
