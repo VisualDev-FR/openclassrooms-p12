@@ -72,7 +72,7 @@ def generic_create(manager: Manager, model: type, **kwargs):
     type=click.Choice(["sales", "accounting", "support"]),
     required=True,
 )
-def employee(email, password, fullname, department):
+def employees(email, password, fullname, department):
     """
     Create a new employee.
 
@@ -120,7 +120,7 @@ def employee(email, password, fullname, department):
     prompt=True,
     help="The enterprise of the client"
 )
-def client(email, fullname, sales_contact, phone, enterprise):
+def clients(email, fullname, sales_contact, phone, enterprise):
     """
     Create a new client
 
@@ -163,7 +163,7 @@ def client(email, fullname, sales_contact, phone, enterprise):
     help="1 if the contract is signed, else 0",
     type=bool
 )
-def contract(client_id, total, to_be_paid, signed):
+def contracts(client_id, total, to_be_paid, signed):
     """
     Create a new contract
 
@@ -227,7 +227,7 @@ def contract(client_id, total, to_be_paid, signed):
     prompt=True,
     help="Notes about the event"
 )
-def event(start, end, location, attendees, contract_id, support_id, notes):
+def events(start, end, location, attendees, contract_id, support_id, notes):
     """
     Create a new event
 
