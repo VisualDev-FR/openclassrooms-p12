@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import patch
-from contextlib import contextmanager
 from sqlalchemy.orm import Session
 import sqlalchemy
 import datetime
@@ -10,7 +9,6 @@ from models.employees import Employee, Department
 from models.contracts import Contract
 from models.clients import Client
 from models.events import Event
-from controller.authentification import create_token, store_token, clear_token
 from controller.environ import DATABASE_PASSWORD, DATABASE_USERNAME
 
 __TEST_ENGINE = sqlalchemy.create_engine(
@@ -132,39 +130,43 @@ def session(
 def database_mock(session):
     return patch("controller.database.create_session", return_value=session)
 
+
 # -----------------------------------
 # login fixtures
 # -----------------------------------
 
 
-@contextmanager
+def sales_required(roles, function, *args, **kwargs):
+    if Department.SALES not in roles:
+        raise PermissionError()
+
+    return function(*args, **kwargs)
+
+
+def accouting_required(roles, function, *args, **kwargs):
+    if Department.ACCOUNTING not in roles:
+        raise PermissionError()
+
+    return function(*args, **kwargs)
+
+
+def support_required(roles, function, *args, **kwargs):
+    if Department.SUPPORT not in roles:
+        raise PermissionError()
+
+    return function(*args, **kwargs)
+
+
+@pytest.fixture
 def login_as_sales():
-    try:
-        token = create_token(user_id=1)
-        store_token(token)
-        yield
-
-    finally:
-        clear_token()
+    return patch("controller.permissions.resolve_permission", side_effect=sales_required)
 
 
-@contextmanager
+@pytest.fixture
 def login_as_accounting():
-    try:
-        token = create_token(user_id=2)
-        store_token(token)
-        yield
-
-    finally:
-        clear_token()
+    return patch("controller.permissions.resolve_permission", side_effect=accouting_required)
 
 
-@contextmanager
+@pytest.fixture
 def login_as_support():
-    try:
-        token = create_token(user_id=3)
-        store_token(token)
-        yield
-
-    finally:
-        clear_token()
+    return patch("controller.permissions.resolve_permission", side_effect=support_required)

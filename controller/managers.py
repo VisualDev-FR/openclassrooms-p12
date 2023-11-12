@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from sentry_sdk import capture_message
 
 from controller.authentification import get_authenticated_user_id
-from controller.permissions import login_required, permission_required
+from controller.permissions import permission_required
 from controller.cascade import CascadeDetails, CascadeResolver
 from models.employees import Department, Employee
 from models.clients import Client
@@ -64,11 +64,11 @@ class EmployeeManager(Manager):
     def __init__(self, session: Session) -> None:
         super().__init__(session=session, model=Employee)
 
-    @login_required
+    @permission_required(roles=Department)
     def get(self, *args, **kwargs) -> List[Employee]:
         return super().get(*args, **kwargs)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Employee]:
         return super().all()
 
@@ -139,11 +139,11 @@ class ClientsManager(Manager):
 
         return super().create(client)
 
-    @login_required
+    @permission_required(roles=Department)
     def get(self, where_clause) -> List[Client]:
         return super().get(where_clause)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Client]:
         return super().all()
 
@@ -186,11 +186,11 @@ class ContractsManager(Manager):
             )
         )
 
-    @login_required
+    @permission_required(roles=Department)
     def get(self, where_clause) -> List[Contract]:
         return super().get(where_clause)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Contract]:
         return super().all()
 
@@ -239,11 +239,11 @@ class EventsManager(Manager):
             )
         )
 
-    @login_required
+    @permission_required(roles=Department)
     def get(self, *args, **kwargs) -> List[Event]:
         return super().get(*args, **kwargs)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Event]:
         return super().all()
 
