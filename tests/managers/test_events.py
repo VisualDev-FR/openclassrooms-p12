@@ -103,9 +103,23 @@ def test_update_event_from_authorized():
     pass
 
 
-def test_update_event_from_unauthorized(database_mock, ):
-    # TODO: test_update_event_from_unauthorized
-    pass
+def test_update_event_from_unauthorized(database_mock, session, login_as_sales, login_as_support):
+
+    manager = EventsManager(session)
+
+    # check that sales employee are not authorized to update eventsF
+    with database_mock, login_as_sales, pytest.raises(PermissionError):
+        manager.update(
+            where_clause=Event.id == 1,
+            location="dummy location",
+        )
+
+    # TODO: check that support employee are not authorized to update an event that they dont own
+    with database_mock, login_as_support, pytest.raises(PermissionError):
+        manager.update(
+            where_clause=Event.id == 2,
+            location="Dummy location"
+        )
 
 
 def test_update_event_with_invalid_datas(database_mock, session, login_as_support):

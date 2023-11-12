@@ -270,6 +270,18 @@ class EventsManager(Manager):
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def update(self, where_clause, **values):
 
+        user = auth.retreive_authenticated_user(self._session)
+        accessed_objects = self.get(where_clause)
+
+        # check that support employee own the accessed events
+        if user.department == Department.SUPPORT:
+            for event in accessed_objects:
+                if event.support_contact_id != user.id:
+                    raise PermissionError(
+                        f"Permission denied. Not authorized to update event {event.id}"
+                    )
+
+        # Chech that support_contact is a support employee
         if "support_contact_id" in values:
             support_contact = self._session.scalar(
                 sqlalchemy.select(Employee)
@@ -284,8 +296,8 @@ class EventsManager(Manager):
         return super().update(where_clause, **values)
 
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
-    def delete(self, whereclause):
-        return super().delete(whereclause)
+    def delete(self, where_clause):
+        return super().delete(where_clause)
 
     def resolve_cascade(self, events: List[Event]) -> List[CascadeDetails]:
         return [
