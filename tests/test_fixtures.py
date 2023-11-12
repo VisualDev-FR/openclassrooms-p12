@@ -13,24 +13,28 @@ def test_database_fixtures(session: Session):
     """
 
     request = sqlalchemy.select(Employee)
-    assert len(session.scalars(request).all()) == 3
+    assert len(session.scalars(request).all()) == 10
 
     # check sales user
-    request = sqlalchemy.select(Employee).where(
-        Employee.department == Department.SALES)
-    assert session.scalars(request).first().id == 1
+    request = (
+        sqlalchemy.select(Employee)
+        .where(Employee.id == 1)
+    )
+    assert session.scalar(request).department == Department.SALES
 
     # check accounting user
-    request = sqlalchemy.select(Employee).where(
-        Employee.department == Department.ACCOUNTING
+    request = (
+        sqlalchemy.select(Employee)
+        .where(Employee.id == 2)
     )
-    assert session.scalars(request).first().id == 2
+    assert session.scalar(request).department == Department.ACCOUNTING
 
     # check support user
-    request = sqlalchemy.select(Employee).where(
-        Employee.department == Department.SUPPORT
+    request = (
+        sqlalchemy.select(Employee)
+        .where(Employee.id == 3)
     )
-    assert session.scalars(request).first().id == 3
+    assert session.scalar(request).department == Department.SUPPORT
 
     # check first client
     request = sqlalchemy.select(Client)
