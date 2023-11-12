@@ -1,10 +1,10 @@
-from controller.authentification import retreive_token, decode_token
+import sqlalchemy
+from sqlalchemy.orm import Session
+
 from models.employees import Employee, Department
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-import sqlalchemy
-from sqlalchemy.orm import Session
 
 
 def test_database_fixtures(session: Session):

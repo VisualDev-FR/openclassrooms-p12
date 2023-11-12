@@ -1,17 +1,17 @@
 [
     {
-        "full_name": "John Smith",
-        "email": "john.smith@epicevents.co",
+        "full_name": "sales, employee",
+        "email": "sales.employee@epicevents.co",
         "departement": "SALES"
     },
     {
-        "full_name": "Jane Doe",
-        "email": "jane.doe@epicevents.co",
+        "full_name": "account, employee",
+        "email": "account.employee@epicevents.co",
         "departement": "ACCOUNTING"
     },
     {
-        "full_name": "Michael Johnson",
-        "email": "michael.johnson@epicevents.co",
+        "full_name": "support, employee",
+        "email": "support.employee@epicevents.co",
         "departement": "SUPPORT"
     },
     {
@@ -48,10 +48,5 @@
         "full_name": "Amanda Harris",
         "email": "amanda.harris@epicevents.co",
         "departement": "SALES"
-    },
-    {
-        "full_name": "admin",
-        "email": "admin@example.co",
-        "departement": "ACCOUNTING"
     }
 ]

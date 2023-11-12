@@ -51,7 +51,7 @@ def test_get_all_contracts(database_mock, session, login_as_accounting, login_as
 
     def get_all_contracts():
         all_contracts = manager.all()
-        assert len(all_contracts) == 1
+        assert len(all_contracts) == 10
 
     with database_mock, login_as_accounting:
         get_all_contracts()
@@ -67,8 +67,8 @@ def test_get_contract(database_mock, session, login_as_accounting, login_as_sale
     manager = ContractsManager(session)
 
     def get_contract():
-        contract = manager.get(Contract.client_id == 1)
-        assert contract[0].total_amount == 99.9
+        contract = manager.get(Contract.id == 1)
+        assert contract[0].total_amount == 5000
 
     with database_mock, login_as_accounting:
         get_contract()
@@ -84,9 +84,9 @@ def test_update_contract_from_authorized(database_mock, session, login_as_accoun
     manager = ContractsManager(session)
 
     def update_contract():
-        manager.update(where_clause=Contract.client_id == 1, total_amount=50)
+        manager.update(where_clause=Contract.id == 1, total_amount=50)
 
-        assert manager.get(Contract.client_id == 1)[0].total_amount == 50
+        assert manager.get(Contract.id == 1)[0].total_amount == 50
 
     with database_mock, login_as_accounting:
         update_contract()
@@ -111,7 +111,7 @@ def test_delete_contract(database_mock, session: Session, login_as_sales):
 
     with database_mock, login_as_sales:
 
-        assert count_events() == 1
+        assert count_events() == 10
 
         manager.delete(Contract.client_id == 1)
 
@@ -119,7 +119,7 @@ def test_delete_contract(database_mock, session: Session, login_as_sales):
         assert manager.get(Contract.client_id == 1) == []
 
         # check that associated events have been deleted
-        assert count_events() == 0
+        assert count_events() == 9
 
 
 def test_delete_contract_from_unothorized(database_mock, session, login_as_support):

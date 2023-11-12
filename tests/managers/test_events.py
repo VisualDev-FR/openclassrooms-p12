@@ -69,7 +69,7 @@ def test_create_event_with_invalid_datas(database_mock, login_as_sales, session)
 def test_get_all_events(database_mock, event_manager: EventsManager, login_as_accounting, login_as_sales, login_as_support):
     def get_all_events():
         events = event_manager.all()
-        assert len(events) == 1
+        assert len(events) == 10
 
     with database_mock, login_as_accounting:
         get_all_events()
@@ -83,10 +83,8 @@ def test_get_all_events(database_mock, event_manager: EventsManager, login_as_ac
 
 def test_get_event(database_mock, event_manager: EventsManager, login_as_accounting, login_as_sales, login_as_support):
     def get_event():
-        events = event_manager.get(Event.location == "Dummy location")
-
-        assert len(events) == 1
-        assert events[0].attendees_count == 99
+        events = event_manager.get(Event.id == 1)
+        assert events[0].attendees_count == 50
 
     with database_mock, login_as_accounting:
         get_event()
@@ -114,7 +112,7 @@ def test_update_event_from_unauthorized(database_mock, session, login_as_sales, 
             location="dummy location",
         )
 
-    # TODO: check that support employee are not authorized to update an event that they dont own
+    # check that support employee are not authorized to update an event that they dont own
     with database_mock, login_as_support, pytest.raises(PermissionError):
         manager.update(
             where_clause=Event.id == 2,
@@ -138,6 +136,8 @@ def test_delete_event_from_unauthorized(database_mock, event_manager: EventsMana
     with database_mock, login_as_sales, pytest.raises(PermissionError):
         event_manager.delete(Event.location == "Dummy location")
 
+    # TODO: check that support employees are not authorized to delete an event they dont own
+
 
 def test_delete_event_as_support_employee(database_mock, session: Session, login_as_support):
 
@@ -147,11 +147,11 @@ def test_delete_event_as_support_employee(database_mock, session: Session, login
         return len(session.scalars(sqlalchemy.select(Event)).all())
 
     with database_mock, login_as_support:
-        assert count_events() == 1
+        assert count_events() == 10
 
         manager.delete(Event.id == 1)
 
-        assert count_events() == 0
+        assert count_events() == 9
 
 
 def test_delete_event_as_accounting_employee(database_mock, session: Session, login_as_accounting):
@@ -162,8 +162,8 @@ def test_delete_event_as_accounting_employee(database_mock, session: Session, lo
         return len(session.scalars(sqlalchemy.select(Event)).all())
 
     with database_mock, login_as_accounting:
-        assert count_events() == 1
+        assert count_events() == 10
 
         manager.delete(Event.id == 1)
 
-        assert count_events() == 0
+        assert count_events() == 9

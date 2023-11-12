@@ -15,7 +15,7 @@ DUMMY_CLIENT = {
     "enterprise": "dummy enterprise",
 }
 
-CLIENT_EMAIL = "first.client@example.co"
+CLIENT_EMAIL = "alice.johnson@example.com"
 
 
 def test_create_client_from_sales_employee(database_mock, session: Session, login_as_sales):
@@ -84,19 +84,19 @@ def test_create_client_with_invalid_datas(database_mock, session, login_as_sales
 
 def test_get_all_clients(database_mock, session: Session, login_as_accounting, login_as_sales, login_as_support):
     """
-    check thaht all clients can be accessed from all users
+    check that all clients can be accessed from all users
     """
 
     manager = ClientsManager(session)
 
     with database_mock, login_as_accounting:
-        assert len(manager.all()) == 1
+        assert len(manager.all()) == 10
 
     with database_mock, login_as_sales:
-        assert len(manager.all()) == 1
+        assert len(manager.all()) == 10
 
     with database_mock, login_as_support:
-        assert len(manager.all()) == 1
+        assert len(manager.all()) == 10
 
 
 def test_get_client(database_mock, session, login_as_accounting, login_as_sales, login_as_support):
@@ -134,13 +134,13 @@ def test_delete_client(database_mock, session: Session, login_as_sales):
 
     with database_mock, login_as_sales:
 
-        assert count_all_contracts() == 1
-        assert count_all_events() == 1
+        assert count_all_contracts() == 10
+        assert count_all_events() == 10
 
         manager.delete(Client.email == CLIENT_EMAIL)
 
-        assert count_all_contracts() == 0
-        assert count_all_events() == 0
+        assert count_all_contracts() == 9
+        assert count_all_events() == 9
 
 
 def test_delete_client_from_unauthorized(database_mock, session, login_as_accounting, login_as_support):
@@ -166,12 +166,12 @@ def test_update_client_from_sales_employee(database_mock, session, login_as_sale
 
     with database_mock, login_as_sales:
         manager.update(
-            where_clause=Client.email == "first.client@example.co",
+            where_clause=Client.email == CLIENT_EMAIL,
             full_name="updated_client_fullname",
         )
 
         assert (
-            manager.get(Client.email == "first.client@example.co")[0].full_name
+            manager.get(Client.email == CLIENT_EMAIL)[0].full_name
             == "updated_client_fullname"
         )
 

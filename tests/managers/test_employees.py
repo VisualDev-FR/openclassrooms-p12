@@ -92,13 +92,13 @@ def test_get_all_employees(database_mock, session, login_as_accounting, login_as
     manager = EmployeeManager(session)
 
     with database_mock, login_as_accounting:
-        assert len(manager.all()) == 3
+        assert len(manager.all()) == 10
 
     with database_mock, login_as_sales:
-        assert len(manager.all()) == 3
+        assert len(manager.all()) == 10
 
     with database_mock, login_as_support:
-        assert len(manager.all()) == 3
+        assert len(manager.all()) == 10
 
 
 def test_get_employee(database_mock, session, login_as_accounting, login_as_sales, login_as_support):
@@ -173,14 +173,14 @@ def test_delete_employee_from_accounting_user(database_mock, session: Session, l
 
     with database_mock, login_as_accounting:
 
-        assert count_objects(Employee) == 3
-        assert count_objects(Client) == 1
-        assert count_objects(Contract) == 1
-        assert count_objects(Event) == 1
+        assert count_objects(Employee) == 10
+        assert count_objects(Client) == 10
+        assert count_objects(Contract) == 10
+        assert count_objects(Event) == 10
 
         manager.delete(Employee.id == 1)
 
-        assert count_objects(Employee) == 2
-        assert count_objects(Client) == 0
-        assert count_objects(Contract) == 0
-        assert count_objects(Event) == 0
+        assert count_objects(Employee) == 9
+        assert count_objects(Client) == 7
+        assert count_objects(Contract) == 7
+        assert count_objects(Event) == 7
