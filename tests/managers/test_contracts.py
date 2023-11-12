@@ -25,6 +25,7 @@ def test_create_contract_from_accounting_employee(database_mock, session, login_
     with database_mock, login_as_accounting:
         created_contract = manager.create(**DUMMY_CONTRACT)
         assert created_contract is not None
+        assert created_contract.account_contact_id == 2
 
 
 def test_create_contract_from_unauthorized(database_mock, session, login_as_sales, login_as_support):

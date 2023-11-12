@@ -250,8 +250,8 @@ class EventsManager(Manager):
         )
 
     @permission_required(roles=Department)
-    def get(self, *args, **kwargs) -> List[Event]:
-        return super().get(*args, **kwargs)
+    def get(self, where_clause) -> List[Event]:
+        return super().get(where_clause)
 
     @permission_required(roles=Department)
     def all(self) -> List[Event]:
@@ -259,6 +259,16 @@ class EventsManager(Manager):
 
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def update(self, where_clause, **values):
+
+        if "support_contact_id" in values:
+            support_contact = self._session.scalar(
+                sqlalchemy.select(Employee)
+                .where(Employee.id == values["support_contact_id"])
+            )
+
+            if support_contact.department != Department.SUPPORT:
+                raise ValueError("support_contact_id must be a support employee")
+
         return super().update(where_clause, **values)
 
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])

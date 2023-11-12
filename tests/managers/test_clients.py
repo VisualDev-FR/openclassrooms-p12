@@ -35,6 +35,7 @@ def test_create_client_from_sales_employee(database_mock, session: Session, logi
             Client.full_name == DUMMY_CLIENT["full_name"])[0]
 
         assert created_client.email == DUMMY_CLIENT["email"]
+        assert created_client.sales_contact_id == 1
 
 
 def test_create_employee_from_unauthorized(database_mock, session: Session, login_as_accounting, login_as_support):

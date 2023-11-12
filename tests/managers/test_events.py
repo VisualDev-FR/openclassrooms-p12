@@ -108,9 +108,16 @@ def test_update_event_from_unauthorized(database_mock, ):
     pass
 
 
-def test_update_event_with_invalid_datas():
-    # TODO: test_update_event_with_invalid_datas
-    pass
+def test_update_event_with_invalid_datas(database_mock, session, login_as_support):
+
+    manager = EventsManager(session)
+
+    # invalid support contact
+    with database_mock, login_as_support, pytest.raises(ValueError):
+        manager.update(
+            where_clause=Event.id == 1,
+            support_contact_id=1,
+        )
 
 
 def test_delete_event_from_unauthorized(database_mock, event_manager: EventsManager, login_as_sales):
