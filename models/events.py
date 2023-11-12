@@ -15,22 +15,35 @@ class Event(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    creation_date = Column(DateTime(timezone=True), server_default=func.now())
+    creation_date = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
     last_update = Column(
         DateTime(timezone=True),
         onupdate=func.now(),
     )
 
-    start_date = Column(DateTime())
+    start_date = Column(
+        DateTime()
+    )
 
-    end_date = Column(DateTime())
+    end_date = Column(
+        DateTime()
+    )
 
-    location = Column(String(50))
+    location = Column(
+        String(50)
+    )
 
-    attendees_count = Column(Integer())
+    attendees_count = Column(
+        Integer()
+    )
 
-    notes = Column(String(1000))
+    notes = Column(
+        String(1000)
+    )
 
     contract_id = Column(
         Integer,
