@@ -38,15 +38,16 @@ objectifs pour le 10/11/2023:
   ✔ affiner la strategie de validation des données @done(23-11-10 16:23)
 
 objectifs pour le 17/11/2023:
+  ✘ faire apparaitre les permissions avant de rentrer une commande complete @cancelled(23-11-12 14:10)
   ✔ homogeniser les noms de models dans la cli (client / clients, etc...) @done(23-11-11 14:39)
   ✔ basculer la méthode tabulate en méthode statique @done(23-11-11 15:04)
   ✔ faire apparaitre la cascade de suppressions sur les commandes delete @done(23-11-11 18:01)
-  ☐ valider les clés étrangères sur les models (ex un sales_contact_id appartient bien au departement sales)
+  ✔ valider les clés étrangères sur les models (ex un sales_contact_id appartient bien au departement sales) @done(23-11-12 14:03)
+  ✔ modifier les données de tests à partir des fichiers json @done(23-11-12 14:03)
+  ✔ ajouter les permissions nécéssaires sur toute les commandes @done(23-11-12 14:25)
   ☐ mettre en place les tests du cascade resolver
   ☐ mettre en place les tests de l'interface cli
 
-  ☐ ajouter les permissions nécéssaires sur toute les commandes
-  ☐ faire apparaitre les permissions avant de rentrer une commande complete
   ☐ mettre en place les tests sur les fonctions d'authentification
   ☐ faire le tour de la documentation des commandes
   ☐ faire le tour des TODO dans le code

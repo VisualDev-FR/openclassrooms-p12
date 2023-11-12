@@ -92,6 +92,8 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
 def employees(query, email, password, fullname, department):
     """
     Update one or several existing employees.
+
+    Permissions required = [ACCOUNTING]
     """
     with db.create_session() as session:
         generic_update(
@@ -185,6 +187,8 @@ def clients(query, email, fullname, sales_contact, phone, enterprise):
 def contracts(query, client_id, account_id, total, to_be_paid, signed):
     """
     Update one or several existing contracts.
+
+    Permissions required = [ACCOUNTING | SALES]
     """
     with db.create_session() as session:
         generic_update(
@@ -250,6 +254,8 @@ def events(
 ):
     """
     Update one or several existing events.
+
+    Permissions required = [ACCOUNTING | SUPPORT]
     """
     with db.create_session() as session:
         generic_update(
