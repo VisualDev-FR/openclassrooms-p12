@@ -5,7 +5,7 @@ from typing import List
 from abc import ABC, abstractmethod
 from sentry_sdk import capture_message
 
-from controller.authentification import get_authenticated_user_id
+from controller import authentification as auth
 from controller.permissions import permission_required
 from controller.cascade import CascadeDetails, CascadeResolver
 from models.employees import Department, Employee
@@ -86,7 +86,7 @@ class EmployeeManager(Manager):
 
         if created_employee is not None:
             capture_message(
-                message=f"user {get_authenticated_user_id()} : create employee {created_employee.id}",
+                message=f"user {auth.get_authenticated_user_id()} : create employee {created_employee.id}",
             )
 
         return created_employee
@@ -99,7 +99,7 @@ class EmployeeManager(Manager):
         updated_employees = self._session.scalars(request)
 
         capture_message(
-            message=f"user {get_authenticated_user_id()} : update employees : {[employee.id for employee in updated_employees]}",
+            message=f"user {auth.get_authenticated_user_id()} : update employees : {[employee.id for employee in updated_employees]}",
         )
 
     @permission_required(roles=[Department.ACCOUNTING])
@@ -127,14 +127,13 @@ class ClientsManager(Manager):
         full_name: str,
         phone: str,
         enterprise: str,
-        sales_contact_id: int,
     ) -> Client:
         client = Client(
             full_name=full_name,
             email=email,
             phone=phone,
             enterprise=enterprise,
-            sales_contact_id=sales_contact_id,
+            sales_contact_id=auth.get_authenticated_user_id(),
         )
 
         return super().create(client)
@@ -179,7 +178,7 @@ class ContractsManager(Manager):
         return super().create(
             Contract(
                 client_id=client_id,
-                account_contact_id=get_authenticated_user_id(),
+                account_contact_id=auth.get_authenticated_user_id(),
                 total_amount=total_amount,
                 to_be_paid=to_be_paid,
                 is_signed=is_signed,
@@ -227,6 +226,17 @@ class EventsManager(Manager):
         contract_id=int,
         support_contact_id=int,
     ):
+
+        support_employee = self._session.scalar(
+            sqlalchemy.select(Employee)
+            .where(Employee.id == support_contact_id)
+        )
+
+        if support_employee.department != Department.SUPPORT:
+            raise ValueError(
+                "The support_contact_id must be a support Employee."
+            )
+
         return super().create(
             Event(
                 start_date=start_date,

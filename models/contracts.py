@@ -45,11 +45,13 @@ class Contract(Base):
     client_id = Column(
         Integer,
         ForeignKey("clients.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     account_contact_id = Column(
         Integer,
         ForeignKey("employees.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     client = relationship(

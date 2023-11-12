@@ -135,38 +135,16 @@ def database_mock(session):
 # login fixtures
 # -----------------------------------
 
-
-def sales_required(roles, function, *args, **kwargs):
-    if Department.SALES not in roles:
-        raise PermissionError()
-
-    return function(*args, **kwargs)
-
-
-def accouting_required(roles, function, *args, **kwargs):
-    if Department.ACCOUNTING not in roles:
-        raise PermissionError()
-
-    return function(*args, **kwargs)
-
-
-def support_required(roles, function, *args, **kwargs):
-    if Department.SUPPORT not in roles:
-        raise PermissionError()
-
-    return function(*args, **kwargs)
-
-
 @pytest.fixture
 def login_as_sales():
-    return patch("controller.permissions.resolve_permission", side_effect=sales_required)
+    return patch("controller.authentification.get_authenticated_user_id", return_value=1)
 
 
 @pytest.fixture
 def login_as_accounting():
-    return patch("controller.permissions.resolve_permission", side_effect=accouting_required)
+    return patch("controller.authentification.get_authenticated_user_id", return_value=2)
 
 
 @pytest.fixture
 def login_as_support():
-    return patch("controller.permissions.resolve_permission", side_effect=support_required)
+    return patch("controller.authentification.get_authenticated_user_id", return_value=3)

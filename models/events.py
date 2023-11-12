@@ -48,11 +48,13 @@ class Event(Base):
     contract_id = Column(
         Integer,
         ForeignKey("contracts.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     support_contact_id = Column(
         Integer,
         ForeignKey("employees.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     contract = relationship(

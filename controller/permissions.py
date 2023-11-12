@@ -1,7 +1,7 @@
 import sqlalchemy
 from typing import List
 
-from controller.authentification import decode_token, retreive_token
+from controller import authentification as auth
 from models.employees import Employee, Department
 from controller import database as db
 
@@ -9,13 +9,7 @@ from controller import database as db
 def resolve_permission(roles: List[Department], function, *args, **kwargs):
     REJECT_MESSAGE = f"Permission denied. Please login as [{' | '.join(role.name for role in roles)}]"
 
-    token = retreive_token()
-    token_payload = decode_token(token)
-
-    if not token_payload:
-        raise PermissionError(REJECT_MESSAGE)
-
-    user_id = token_payload["user_id"]
+    user_id = auth.get_authenticated_user_id()
 
     with db.create_session() as session:
         request = sqlalchemy.select(Employee).where(Employee.id == user_id)

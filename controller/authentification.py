@@ -108,6 +108,15 @@ def get_authenticated_user_id() -> int:
     return token_payload["user_id"]
 
 
+def retreive_authenticated_user(session: Session) -> Employee:
+    user_id = get_authenticated_user_id()
+
+    return session.scalar(
+        sqlalchemy.select(Employee)
+        .where(Employee.id == user_id)
+    )
+
+
 def perform_login(email: str, password: str) -> Employee:
     """
     Create a json-web-token containing the user id, and stores it on the user's disk.

@@ -48,6 +48,7 @@ objectifs pour le 17/11/2023:
   ☐ faire apparaitre les permissions avant de rentrer une commande complete
   ☐ mettre en place les tests sur les fonctions d'authentification
   ☐ faire le tour de la documentation des commandes
+  ☐ faire le tour des TODO dans le code
   ☐ renvoyer la gestion d'exception globale vers sentry
 
 debug:

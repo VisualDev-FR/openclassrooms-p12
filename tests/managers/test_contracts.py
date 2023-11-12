@@ -15,34 +15,34 @@ DUMMY_CONTRACT = {
 }
 
 
-def test_create_contract_from_accounting_employee(session, login_as_accounting):
+def test_create_contract_from_accounting_employee(database_mock, session, login_as_accounting):
     """
     Check that accounting employees are allowed to create a new client
     """
 
     manager = ContractsManager(session)
 
-    with login_as_accounting:
+    with database_mock, login_as_accounting:
         created_contract = manager.create(**DUMMY_CONTRACT)
         assert created_contract is not None
 
 
-def test_create_contract_from_unauthorized(session, login_as_sales, login_as_support):
+def test_create_contract_from_unauthorized(database_mock, session, login_as_sales, login_as_support):
     """
     Check that sales and support employees are not allowed to create a contract
     """
     manager = ContractsManager(session)
 
-    with login_as_sales, pytest.raises(PermissionError):
+    with database_mock, login_as_sales, pytest.raises(PermissionError):
         created_contract = manager.create(**DUMMY_CONTRACT)
         assert created_contract is None
 
-    with login_as_support, pytest.raises(PermissionError):
+    with database_mock, login_as_support, pytest.raises(PermissionError):
         created_contract = manager.create(**DUMMY_CONTRACT)
         assert created_contract is None
 
 
-def test_get_all_contracts(session, login_as_accounting, login_as_sales, login_as_support):
+def test_get_all_contracts(database_mock, session, login_as_accounting, login_as_sales, login_as_support):
     """
     Check that all contracts can be accessed from all users.
     """
@@ -52,34 +52,34 @@ def test_get_all_contracts(session, login_as_accounting, login_as_sales, login_a
         all_contracts = manager.all()
         assert len(all_contracts) == 1
 
-    with login_as_accounting:
+    with database_mock, login_as_accounting:
         get_all_contracts()
 
-    with login_as_sales:
+    with database_mock, login_as_sales:
         get_all_contracts()
 
-    with login_as_support:
+    with database_mock, login_as_support:
         get_all_contracts()
 
 
-def test_get_contract(session, login_as_accounting, login_as_sales, login_as_support):
+def test_get_contract(database_mock, session, login_as_accounting, login_as_sales, login_as_support):
     manager = ContractsManager(session)
 
     def get_contract():
         contract = manager.get(Contract.client_id == 1)
         assert contract[0].total_amount == 99.9
 
-    with login_as_accounting:
+    with database_mock, login_as_accounting:
         get_contract()
 
-    with login_as_sales:
+    with database_mock, login_as_sales:
         get_contract()
 
-    with login_as_support:
+    with database_mock, login_as_support:
         get_contract()
 
 
-def test_update_contract_from_authorized(session, login_as_accounting, login_as_sales):
+def test_update_contract_from_authorized(database_mock, session, login_as_accounting, login_as_sales):
     manager = ContractsManager(session)
 
     def update_contract():
@@ -87,28 +87,28 @@ def test_update_contract_from_authorized(session, login_as_accounting, login_as_
 
         assert manager.get(Contract.client_id == 1)[0].total_amount == 50
 
-    with login_as_accounting:
+    with database_mock, login_as_accounting:
         update_contract()
 
-    with login_as_sales:
+    with database_mock, login_as_sales:
         update_contract()
 
 
-def test_update_contract_from_unauthorized(session, login_as_support):
+def test_update_contract_from_unauthorized(database_mock, session, login_as_support):
     manager = ContractsManager(session)
 
-    with login_as_support, pytest.raises(PermissionError):
+    with database_mock, login_as_support, pytest.raises(PermissionError):
         manager.update(where_clause=Contract.client_id == 1, total_amount=50)
 
 
-def test_delete_contract(session: Session, login_as_sales):
+def test_delete_contract(database_mock, session: Session, login_as_sales):
 
     manager = ContractsManager(session)
 
     def count_events() -> int:
         return len(session.scalars(sqlalchemy.select(Event)).all())
 
-    with login_as_sales:
+    with database_mock, login_as_sales:
 
         assert count_events() == 1
 
@@ -121,8 +121,8 @@ def test_delete_contract(session: Session, login_as_sales):
         assert count_events() == 0
 
 
-def test_delete_contract_from_unothorized(session, login_as_support):
+def test_delete_contract_from_unothorized(database_mock, session, login_as_support):
     manager = ContractsManager(session)
 
-    with login_as_support, pytest.raises(PermissionError):
+    with database_mock, login_as_support, pytest.raises(PermissionError):
         manager.delete(whereclause=Contract.client_id == 1)
