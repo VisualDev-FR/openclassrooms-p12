@@ -190,3 +190,14 @@ def test_update_client_from_unauthorized(database_mock, session, login_as_accoun
 
     with database_mock, login_as_support, pytest.raises(PermissionError):
         update_client()
+
+
+def test_update_client_with_invalid_datas(database_mock, session, login_as_sales):
+    manager = ClientsManager(session)
+
+    # invalid sales contact id
+    with database_mock, login_as_sales, pytest.raises(ValueError):
+        manager.update(
+            where_clause=Client.email == "first.client@example.co",
+            sales_contact_id=3,
+        )

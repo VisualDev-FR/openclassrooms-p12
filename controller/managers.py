@@ -148,6 +148,16 @@ class ClientsManager(Manager):
 
     @permission_required(roles=[Department.SALES])
     def update(self, where_clause, **values):
+
+        if "sales_contact_id" in values:
+            sales_contact = self._session.scalar(
+                sqlalchemy.select(Employee)
+                .where(Employee.id == values["sales_contact_id"])
+            )
+
+            if sales_contact.department != Department.SALES:
+                raise ValueError("sales_contact_id must be a sales employee")
+
         return super().update(where_clause, **values)
 
     @permission_required(roles=[Department.SALES])
@@ -267,7 +277,9 @@ class EventsManager(Manager):
             )
 
             if support_contact.department != Department.SUPPORT:
-                raise ValueError("support_contact_id must be a support employee")
+                raise ValueError(
+                    "support_contact_id must be a support employee"
+                )
 
         return super().update(where_clause, **values)
 

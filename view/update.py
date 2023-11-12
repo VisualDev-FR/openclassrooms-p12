@@ -136,6 +136,8 @@ def employees(query, email, password, fullname, department):
 def clients(query, email, fullname, sales_contact, phone, enterprise):
     """
     Update one or several existing clients.
+
+    Permissions requrired = [SALES]
     """
     with db.create_session() as session:
         generic_update(
