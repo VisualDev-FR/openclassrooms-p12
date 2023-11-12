@@ -8,7 +8,7 @@ from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
 from controller import utils
-from controller.database import create_session
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -93,7 +93,7 @@ def employees(query, email, password, fullname, department):
     """
     Update one or several existing employees.
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=EmployeeManager(session),
             model=Employee,
@@ -137,7 +137,7 @@ def clients(query, email, fullname, sales_contact, phone, enterprise):
     """
     Update one or several existing clients.
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=ClientsManager(session),
             model=Client,
@@ -184,7 +184,7 @@ def contracts(query, client_id, account_id, total, to_be_paid, signed):
     """
     Update one or several existing contracts.
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=ContractsManager(session),
             model=Contract,
@@ -249,7 +249,7 @@ def events(
     """
     Update one or several existing events.
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=EventsManager(session),
             model=Event,

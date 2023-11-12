@@ -1,4 +1,4 @@
-from controller.database import create_session
+from controller import database as db
 from models.employees import Employee, Department
 import sqlalchemy
 from sqlalchemy.orm import Session
@@ -117,7 +117,7 @@ def perform_login(email: str, password: str) -> Employee:
     returns the retreived ``Employee`` objet if the login was sucessfull, else returns ``None``.
     """
 
-    with create_session() as session:
+    with db.create_session() as session:
         request = sqlalchemy.select(Employee).where(Employee.email == email)
         employee = session.scalar(request)
 
@@ -141,7 +141,7 @@ def perform_sign_up(full_name: str, email: str, password: str):
     Create a new user in the database without be logged in, then loggin the created user.\n
     As only accounting employees are allowed to create users, the created user will be assigned to accounting department.
     """
-    with create_session() as session:
+    with db.create_session() as session:
         new_employee = Employee(
             full_name=full_name,
             email=email,

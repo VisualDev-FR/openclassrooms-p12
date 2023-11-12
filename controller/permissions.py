@@ -4,7 +4,7 @@ import typing
 
 from controller.authentification import decode_token, retreive_token
 from models.employees import Employee, Department
-from controller.database import create_session
+from controller import database as db
 
 
 def login_required(function):
@@ -51,7 +51,7 @@ def permission_required(roles: typing.List[Department]):
 
             user_id = token_payload["user_id"]
 
-            with create_session() as session:
+            with db.create_session() as session:
                 request = sqlalchemy.select(Employee).where(Employee.id == user_id)
                 employee = session.scalar(request)
 

@@ -8,7 +8,7 @@ from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
 from controller.cascade import CascadeDetails
-from controller.database import create_session
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -86,7 +86,7 @@ def employees(query):
 
     Permissions required = [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=EmployeeManager(session),
             model=Employee,
@@ -107,7 +107,7 @@ def clients(query):
 
     Permissions required = [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=ClientsManager(session),
             model=Client,
@@ -128,7 +128,7 @@ def contracts(query):
 
     Permissions required = [ACCOUNTING | SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=ContractsManager(session),
             model=Contract,
@@ -149,7 +149,7 @@ def events(query):
 
     Permissions required = [ACCOUNTING | SUPPORT]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=EventsManager(session),
             model=Event,

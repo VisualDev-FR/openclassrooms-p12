@@ -7,7 +7,7 @@ from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-from controller.database import create_session
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -79,7 +79,7 @@ def employees(email, password, fullname, department):
 
     Permissions required : [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=EmployeeManager(session),
             model=Employee,
@@ -127,7 +127,7 @@ def clients(email, fullname, sales_contact, phone, enterprise):
 
     Permissions required : [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=ClientsManager(session),
             model=Client,
@@ -170,7 +170,7 @@ def contracts(client_id, total, to_be_paid, signed):
 
     Permissions required : [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=ContractsManager(session),
             model=Contract,
@@ -234,7 +234,7 @@ def events(start, end, location, attendees, contract_id, support_id, notes):
 
     Permissions required : [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=EventsManager(session),
             model=Event,
