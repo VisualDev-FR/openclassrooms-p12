@@ -18,8 +18,6 @@ def create_employees(session: Session):
     create employees in database, from ``tests/data/employees.json``.
     """
 
-    print("create employees...")
-
     data_path = Path("tests/data/employees.json")
 
     with open(data_path, "rb") as reader:
@@ -47,8 +45,6 @@ def create_clients(session: Session):
     create clients in database, from ``tests/data/clients.json``.
     """
 
-    print("create clients...")
-
     data_path = Path("tests/data/clients.json")
 
     with open(data_path, "rb") as reader:
@@ -74,8 +70,6 @@ def create_contracts(session: Session):
     create contracts in database, from ``tests/data/contracts.json``.
     """
 
-    print("create contracts...")
-
     data_path = Path("tests/data/contracts.json")
 
     with open(data_path, "rb") as reader:
@@ -100,8 +94,6 @@ def create_events(session: Session):
     """
     create events in database, from ``tests/data/events.json``.
     """
-
-    print("create events...")
 
     data_path = Path("tests/data/events.json")
 
