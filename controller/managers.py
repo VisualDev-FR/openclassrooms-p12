@@ -297,6 +297,18 @@ class EventsManager(Manager):
 
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def delete(self, where_clause):
+
+        user = auth.retreive_authenticated_user(self._session)
+        accessed_objects = self.get(where_clause)
+
+        # check that support employee own the accessed events
+        if user.department == Department.SUPPORT:
+            for event in accessed_objects:
+                if event.support_contact_id != user.id:
+                    raise PermissionError(
+                        f"Permission denied. Not authorized to update event {event.id}"
+                    )
+
         return super().delete(where_clause)
 
     def resolve_cascade(self, events: List[Event]) -> List[CascadeDetails]:

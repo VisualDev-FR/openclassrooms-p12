@@ -132,11 +132,17 @@ def test_update_event_with_invalid_datas(database_mock, session, login_as_suppor
         )
 
 
-def test_delete_event_from_unauthorized(database_mock, event_manager: EventsManager, login_as_sales):
-    with database_mock, login_as_sales, pytest.raises(PermissionError):
-        event_manager.delete(Event.location == "Dummy location")
+def test_delete_event_from_unauthorized(database_mock, session, login_as_sales, login_as_support):
 
-    # TODO: check that support employees are not authorized to delete an event they dont own
+    manager = EventsManager(session)
+
+    # check that sales employees are not allowed to delete an event
+    with database_mock, login_as_sales, pytest.raises(PermissionError):
+        manager.delete(Event.id == 1)
+
+    # check that support employees are not allowed to delete an event they dont own
+    with database_mock, login_as_support, pytest.raises(PermissionError):
+        manager.delete(Event.id == 2)
 
 
 def test_delete_event_as_support_employee(database_mock, session: Session, login_as_support):
