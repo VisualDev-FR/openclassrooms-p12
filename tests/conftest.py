@@ -1,95 +1,19 @@
 import pytest
 from unittest.mock import patch
-from contextlib import contextmanager
 from sqlalchemy.orm import Session
 import sqlalchemy
-import datetime
 
 from models import Base
 from models.employees import Employee, Department
 from models.contracts import Contract
 from models.clients import Client
 from models.events import Event
-from controller.authentification import create_token, store_token, clear_token
 from controller.environ import DATABASE_PASSWORD, DATABASE_USERNAME
+from view.init_database import create_employees, create_clients, create_contracts, create_events
 
 __TEST_ENGINE = sqlalchemy.create_engine(
     f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/epicevents_test"
 )
-
-
-# -----------------------------------
-# database test datas
-# -----------------------------------
-@pytest.fixture
-def sales_employee() -> Employee:
-    employee = Employee(
-        full_name="sales, employee",
-        email="sales.employee@epicevents.co",
-        department=Department.SALES,
-    )
-
-    employee.set_password("password")
-    return employee
-
-
-@pytest.fixture
-def account_employee() -> Employee:
-    employee = Employee(
-        full_name="account, employee",
-        email="account.employee@epicevents.co",
-        department=Department.ACCOUNTING,
-    )
-
-    employee.set_password("password")
-    return employee
-
-
-@pytest.fixture
-def support_employee() -> Employee:
-    employee = Employee(
-        full_name="support, employee",
-        email="support.employee@epicevents.co",
-        department=Department.SUPPORT,
-    )
-
-    employee.set_password("password")
-    return employee
-
-
-@pytest.fixture
-def client() -> Client:
-    return Client(
-        sales_contact_id=1,
-        email="first.client@example.co",
-        full_name="First, Client",
-        phone="0607080910",
-        enterprise="First Client Enterprise",
-    )
-
-
-@pytest.fixture
-def contract() -> Contract:
-    return Contract(
-        client_id=1,
-        account_contact_id=2,
-        total_amount=99.9,
-        to_be_paid=99.9,
-        is_signed=False,
-    )
-
-
-@pytest.fixture
-def event() -> Event:
-    return Event(
-        start_date=datetime.datetime(year=2050, month=11, day=17),
-        end_date=datetime.datetime(year=2050, month=11, day=17),
-        location="Dummy location",
-        attendees_count=99,
-        notes="Dummies notes",
-        support_contact_id=3,
-        contract_id=1,
-    )
 
 
 # -----------------------------------
@@ -103,22 +27,20 @@ def setup_database():
 
 
 @pytest.fixture(scope="function")
-def session(
-    setup_database,
-    account_employee,
-    sales_employee,
-    support_employee,
-    client,
-    contract,
-    event,
-):
+def session(setup_database):
+    """
+    DOCME
+    """
+
     connection = __TEST_ENGINE.connect()
     transaction = connection.begin()
     session = Session(bind=connection)
 
-    session.add_all(
-        [sales_employee, account_employee, support_employee, client, contract, event]
-    )
+    create_employees(session)
+    create_clients(session)
+    create_contracts(session)
+    create_events(session)
+
     session.commit()
 
     yield session
@@ -132,39 +54,30 @@ def session(
 def database_mock(session):
     return patch("controller.database.create_session", return_value=session)
 
+
 # -----------------------------------
 # login fixtures
 # -----------------------------------
 
-
-@contextmanager
+@pytest.fixture
 def login_as_sales():
-    try:
-        token = create_token(user_id=1)
-        store_token(token)
-        yield
-
-    finally:
-        clear_token()
+    return patch("controller.authentification.get_authenticated_user_id", return_value=1)
 
 
-@contextmanager
+@pytest.fixture
 def login_as_accounting():
-    try:
-        token = create_token(user_id=2)
-        store_token(token)
-        yield
-
-    finally:
-        clear_token()
+    return patch("controller.authentification.get_authenticated_user_id", return_value=2)
 
 
-@contextmanager
+@pytest.fixture
 def login_as_support():
-    try:
-        token = create_token(user_id=3)
-        store_token(token)
-        yield
+    return patch("controller.authentification.get_authenticated_user_id", return_value=3)
 
-    finally:
-        clear_token()
+
+# -----------------------------------
+# click fixtures
+# -----------------------------------
+
+@pytest.fixture
+def force_click_confirm():
+    return patch("click.confirm", return_value="y")

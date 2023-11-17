@@ -1,13 +1,14 @@
 import sqlalchemy
 from sqlalchemy.orm import Session
 from datetime import datetime
-from tabulate import tabulate
-from typing import List, Any
-from abc import ABC
+from typing import List
+from abc import ABC, abstractmethod
 from sentry_sdk import capture_message
 
-from controller.authentification import get_authenticated_user_id
-from controller.permissions import login_required, permission_required
+from controller import authentification as auth
+from controller.permissions import permission_required
+from controller.cascade import CascadeDetails, CascadeResolver
+from controller import utils
 from models.employees import Department, Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -24,6 +25,7 @@ class Manager(ABC):
     def __init__(self, session: Session, model: type) -> None:
         self._session = session
         self._model = model
+        self.cascade_resolver = CascadeResolver(session)
 
     def create(self, obj):
         self._session.add(obj)
@@ -46,25 +48,15 @@ class Manager(ABC):
         self._session.commit()
 
     def delete(self, whereclause):
-        self._session.execute(sqlalchemy.delete(
-            self._model).where(whereclause))
+        self._session.execute(
+            sqlalchemy.delete(self._model)
+            .where(whereclause)
+        )
         self._session.commit()
 
-    def tabulate(self, objects: List[Any], headers: List[str]) -> str:
-        """
-        Prettify a list of objects to a tabulated view.
-
-        Args:
-        * ``objects``: a list of objects to display, the objects must implement the method ``to_list()``
-        * ``headers``: a list of strings containing the headers of the tabulated view
-
-        Returns:
-        A string representing the table of the given datas
-
-        """
-        return "\n" + tabulate(
-            tabular_data=[obj.to_list() for obj in objects], headers=headers
-        ) + "\n"
+    @abstractmethod
+    def resolve_cascade(self, objects: List[object]) -> List[CascadeDetails]:
+        pass
 
 
 class EmployeeManager(Manager):
@@ -75,11 +67,11 @@ class EmployeeManager(Manager):
     def __init__(self, session: Session) -> None:
         super().__init__(session=session, model=Employee)
 
-    @login_required
+    @permission_required(roles=Department)
     def get(self, *args, **kwargs) -> List[Employee]:
         return super().get(*args, **kwargs)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Employee]:
         return super().all()
 
@@ -97,25 +89,40 @@ class EmployeeManager(Manager):
 
         if created_employee is not None:
             capture_message(
-                message=f"user {get_authenticated_user_id()} : create employee {created_employee.id}",
+                message=f"user {auth.get_authenticated_user_id()} : create employee {created_employee.id}",
             )
 
         return created_employee
 
     @permission_required(roles=[Department.ACCOUNTING])
     def update(self, where_clause, **values):
+
+        if "email" in values:
+            values["email"] = utils.validate_email(values["email"])
+
+        if "password" in values:
+            password = values.pop("password")
+            hash, salt = auth.encrypt_password(password)
+            values["password_hash"] = hash
+            values["salt"] = salt
+
         super().update(where_clause, **values)
 
         request = sqlalchemy.select(Employee).where(where_clause)
         updated_employees = self._session.scalars(request)
 
         capture_message(
-            message=f"user {get_authenticated_user_id()} : update employees : {[employee.id for employee in updated_employees]}",
+            message=f"user {auth.get_authenticated_user_id()} : update employees : {[employee.id for employee in updated_employees]}",
         )
 
     @permission_required(roles=[Department.ACCOUNTING])
     def delete(self, whereclause):
         return super().delete(whereclause)
+
+    def resolve_cascade(self, employees: List[Employee]) -> List[CascadeDetails]:
+        return self.cascade_resolver.resolve_employee_cascade(
+            employees=employees
+        )
 
 
 class ClientsManager(Manager):
@@ -133,28 +140,37 @@ class ClientsManager(Manager):
         full_name: str,
         phone: str,
         enterprise: str,
-        sales_contact_id: int,
     ) -> Client:
         client = Client(
             full_name=full_name,
             email=email,
             phone=phone,
             enterprise=enterprise,
-            sales_contact_id=sales_contact_id,
+            sales_contact_id=auth.get_authenticated_user_id(),
         )
 
         return super().create(client)
 
-    @login_required
-    def get(self, *args, **kwargs) -> List[Client]:
-        return super().get(*args, **kwargs)
+    @permission_required(roles=Department)
+    def get(self, where_clause) -> List[Client]:
+        return super().get(where_clause)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Client]:
         return super().all()
 
     @permission_required(roles=[Department.SALES])
     def update(self, where_clause, **values):
+
+        if "sales_contact_id" in values:
+            sales_contact = self._session.scalar(
+                sqlalchemy.select(Employee)
+                .where(Employee.id == values["sales_contact_id"])
+            )
+
+            if sales_contact.department != Department.SALES:
+                raise ValueError("sales_contact_id must be a sales employee")
+
         return super().update(where_clause, **values)
 
     @permission_required(roles=[Department.SALES])
@@ -163,6 +179,11 @@ class ClientsManager(Manager):
 
     def filter_by_name(self, name_contains: str):
         return self.get(Client.full_name.contains(name_contains))
+
+    def resolve_cascade(self, clients: List[Client]) -> List[CascadeDetails]:
+        return self.cascade_resolver.resolve_clients_cascade(
+            clients=clients
+        )
 
 
 class ContractsManager(Manager):
@@ -180,18 +201,18 @@ class ContractsManager(Manager):
         return super().create(
             Contract(
                 client_id=client_id,
-                account_contact_id=get_authenticated_user_id(),
+                account_contact_id=auth.get_authenticated_user_id(),
                 total_amount=total_amount,
                 to_be_paid=to_be_paid,
                 is_signed=is_signed,
             )
         )
 
-    @login_required
+    @permission_required(roles=Department)
     def get(self, where_clause) -> List[Contract]:
         return super().get(where_clause)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Contract]:
         return super().all()
 
@@ -202,6 +223,11 @@ class ContractsManager(Manager):
     @permission_required(roles=[Department.ACCOUNTING, Department.SALES])
     def delete(self, whereclause):
         return super().delete(whereclause)
+
+    def resolve_cascade(self, contracts: List[Contract]) -> List[CascadeDetails]:
+        return self.cascade_resolver.resolve_contracts_cascade(
+            contracts=contracts
+        )
 
 
 class EventsManager(Manager):
@@ -223,6 +249,17 @@ class EventsManager(Manager):
         contract_id=int,
         support_contact_id=int,
     ):
+
+        support_employee = self._session.scalar(
+            sqlalchemy.select(Employee)
+            .where(Employee.id == support_contact_id)
+        )
+
+        if support_employee.department != Department.SUPPORT:
+            raise ValueError(
+                "The support_contact_id must be a support Employee."
+            )
+
         return super().create(
             Event(
                 start_date=start_date,
@@ -235,18 +272,63 @@ class EventsManager(Manager):
             )
         )
 
-    @login_required
-    def get(self, *args, **kwargs) -> List[Event]:
-        return super().get(*args, **kwargs)
+    @permission_required(roles=Department)
+    def get(self, where_clause) -> List[Event]:
+        return super().get(where_clause)
 
-    @login_required
+    @permission_required(roles=Department)
     def all(self) -> List[Event]:
         return super().all()
 
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
     def update(self, where_clause, **values):
+
+        user = auth.retreive_authenticated_user(self._session)
+        accessed_objects = self.get(where_clause)
+
+        # check that support employee own the accessed events
+        if user.department == Department.SUPPORT:
+            for event in accessed_objects:
+                if event.support_contact_id != user.id:
+                    raise PermissionError(
+                        f"Permission denied. Not authorized to update event {event.id}"
+                    )
+
+        # Chech that support_contact is a support employee
+        if "support_contact_id" in values:
+            support_contact = self._session.scalar(
+                sqlalchemy.select(Employee)
+                .where(Employee.id == values["support_contact_id"])
+            )
+
+            if support_contact.department != Department.SUPPORT:
+                raise ValueError(
+                    "support_contact_id must be a support employee"
+                )
+
         return super().update(where_clause, **values)
 
     @permission_required([Department.ACCOUNTING, Department.SUPPORT])
-    def delete(self, whereclause):
-        return super().delete(whereclause)
+    def delete(self, where_clause):
+
+        user = auth.retreive_authenticated_user(self._session)
+        accessed_objects = self.get(where_clause)
+
+        # check that support employee own the accessed events
+        if user.department == Department.SUPPORT:
+            for event in accessed_objects:
+                if event.support_contact_id != user.id:
+                    raise PermissionError(
+                        f"Permission denied. Not authorized to update event {event.id}"
+                    )
+
+        return super().delete(where_clause)
+
+    def resolve_cascade(self, events: List[Event]) -> List[CascadeDetails]:
+        return [
+            CascadeDetails(
+                title="EVENTS",
+                headers=Event.HEADERS,
+                objects=events
+            )
+        ]

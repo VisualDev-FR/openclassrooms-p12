@@ -7,7 +7,8 @@ from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-from controller.database import create_session
+from controller.cascade import CascadeDetails
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -42,10 +43,21 @@ def generic_delete(manager: Manager, model: type, query: str):
         click.echo(f"query error: {full_query}")
         return
 
-    generic_read(manager=manager, model=model, query=query)
+    deleted_objects = manager.get(parsed_query)
 
-    if not click.confirm("Confirm affected row ?"):
-        raise click.Abort()
+    if len(deleted_objects) == 0:
+        click.echo("No object is matching to the specified query.")
+        return
+
+    cascade_details = [
+        detail for detail in manager.resolve_cascade(deleted_objects)
+        if len(detail.not_none_objects()) > 0
+    ]
+
+    for detail in cascade_details:
+        click.echo(f"\n{detail}")
+
+    click.confirm("\nConfirm affected row ?")
 
     try:
         manager.delete(whereclause=parsed_query)
@@ -70,8 +82,10 @@ __HELP_MESSAGE = "Retreive {model} from a custom query."
 def employees(query):
     """
     Delete on or several employees
+
+    Permissions required = [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=EmployeeManager(session),
             model=Employee,
@@ -89,8 +103,10 @@ def employees(query):
 def clients(query):
     """
     Delete on or several clients
+
+    Permissions required = [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=ClientsManager(session),
             model=Client,
@@ -108,8 +124,10 @@ def clients(query):
 def contracts(query):
     """
     Delete on or several contracts
+
+    Permissions required = [ACCOUNTING | SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=ContractsManager(session),
             model=Contract,
@@ -127,8 +145,10 @@ def contracts(query):
 def events(query):
     """
     Delete on or several events
+
+    Permissions required = [ACCOUNTING | SUPPORT]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_delete(
             manager=EventsManager(session),
             model=Event,

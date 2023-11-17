@@ -27,13 +27,6 @@ def create_session():
 
         yield session
 
-    except PermissionError as e:
-        print(e)
-
-    except Exception as e:
-        # TODO: handle exceptions here
-        raise e
-
     finally:
         session.close()
         connection.close()

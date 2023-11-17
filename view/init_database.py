@@ -5,7 +5,7 @@ from pathlib import Path
 from pwinput import pwinput
 
 from view import cli
-from controller import managers
+from controller import database
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -13,19 +13,15 @@ from models.events import Event
 from controller.environ import DATABASE_PASSWORD
 
 
-def create_employees():
+def create_employees(session: Session):
     """
     create employees in database, from ``tests/data/employees.json``.
     """
-
-    print("create employees...")
 
     data_path = Path("tests/data/employees.json")
 
     with open(data_path, "rb") as reader:
         employees_data = json.loads(reader.read())
-
-    session = Session(managers.engine)
 
     employees = []
 
@@ -44,19 +40,15 @@ def create_employees():
     session.commit()
 
 
-def create_clients():
+def create_clients(session: Session):
     """
     create clients in database, from ``tests/data/clients.json``.
     """
-
-    print("create clients...")
 
     data_path = Path("tests/data/clients.json")
 
     with open(data_path, "rb") as reader:
         clients_data = json.loads(reader.read())
-
-    session = Session(managers.engine)
 
     clients = [
         Client(
@@ -73,19 +65,15 @@ def create_clients():
     session.commit()
 
 
-def create_contracts():
+def create_contracts(session: Session):
     """
     create contracts in database, from ``tests/data/contracts.json``.
     """
-
-    print("create contracts...")
 
     data_path = Path("tests/data/contracts.json")
 
     with open(data_path, "rb") as reader:
         contracts_data = json.loads(reader.read())
-
-    session = Session(managers.engine)
 
     contracts = [
         Contract(
@@ -102,19 +90,15 @@ def create_contracts():
     session.commit()
 
 
-def create_events():
+def create_events(session: Session):
     """
     create events in database, from ``tests/data/events.json``.
     """
-
-    print("create events...")
 
     data_path = Path("tests/data/events.json")
 
     with open(data_path, "rb") as reader:
         events_data = json.loads(reader.read())
-
-    session = Session(managers.engine)
 
     events = [
         Event(
@@ -143,10 +127,15 @@ def init():
         print("Invalid password")
         return
 
-    managers.drop_tables()
-    managers.create_tables()
+    database.drop_tables()
+    database.create_tables()
 
-    create_employees()
-    create_clients()
-    create_contracts()
-    create_events()
+    with database.create_session() as session:
+        create_employees(session)
+        create_clients(session)
+        create_contracts(session)
+        create_events(session)
+
+
+if __name__ == "__main__":
+    database.create_tables()

@@ -1,13 +1,14 @@
-from controller.database import create_session
-from models.employees import Employee, Department
 import sqlalchemy
 from sqlalchemy.orm import Session
 from pathlib import Path
 import datetime
 import os
 import jwt
+import bcrypt
 
 from controller.environ import get_epicevents_path, SECRET_KEY
+from controller import database as db
+from models.employees import Employee, Department
 
 __JWT_ALGORITHM = "HS256"
 __JWT_EXPIRATION_TIME = datetime.timedelta(hours=1)
@@ -108,6 +109,15 @@ def get_authenticated_user_id() -> int:
     return token_payload["user_id"]
 
 
+def retreive_authenticated_user(session: Session) -> Employee:
+    user_id = get_authenticated_user_id()
+
+    return session.scalar(
+        sqlalchemy.select(Employee)
+        .where(Employee.id == user_id)
+    )
+
+
 def perform_login(email: str, password: str) -> Employee:
     """
     Create a json-web-token containing the user id, and stores it on the user's disk.
@@ -117,7 +127,7 @@ def perform_login(email: str, password: str) -> Employee:
     returns the retreived ``Employee`` objet if the login was sucessfull, else returns ``None``.
     """
 
-    with create_session() as session:
+    with db.create_session() as session:
         request = sqlalchemy.select(Employee).where(Employee.email == email)
         employee = session.scalar(request)
 
@@ -141,7 +151,7 @@ def perform_sign_up(full_name: str, email: str, password: str):
     Create a new user in the database without be logged in, then loggin the created user.\n
     As only accounting employees are allowed to create users, the created user will be assigned to accounting department.
     """
-    with create_session() as session:
+    with db.create_session() as session:
         new_employee = Employee(
             full_name=full_name,
             email=email,
@@ -158,3 +168,15 @@ def perform_sign_up(full_name: str, email: str, password: str):
 
 def perform_logout() -> bool:
     return clear_token()
+
+
+def encrypt_password(password: str):
+    # generate new salt
+    salt = bcrypt.gensalt()
+
+    # hash password with generated salt
+    password_hash = bcrypt.hashpw(
+        password=password.encode("utf-8"), salt=salt)
+
+    # return the hashed password and the salt value
+    return password_hash.decode("utf-8"), salt.decode("utf-8")

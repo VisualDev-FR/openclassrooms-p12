@@ -1,6 +1,7 @@
 import click
 
 from view import cli
+from controller import utils
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -45,7 +46,7 @@ def generic_read(manager: Manager, model: type, query: str):
             return
 
     click.echo(
-        manager.tabulate(objects=objects, headers=manager._model.HEADERS)
+        utils.tabulate(objects=objects, headers=manager._model.HEADERS)
     )
 
 

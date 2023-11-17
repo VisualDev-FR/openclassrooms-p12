@@ -15,26 +15,56 @@ class Event(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    creation_date = Column(DateTime(timezone=True), server_default=func.now())
+    creation_date = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
-    start_date = Column(DateTime())
+    last_update = Column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+    )
 
-    end_date = Column(DateTime())
+    start_date = Column(
+        DateTime()
+    )
 
-    location = Column(String(50))
+    end_date = Column(
+        DateTime()
+    )
 
-    attendees_count = Column(Integer())
+    location = Column(
+        String(50)
+    )
 
-    notes = Column(String(1000))
+    attendees_count = Column(
+        Integer()
+    )
 
-    contract_id = Column(Integer, ForeignKey("contracts.id"))
+    notes = Column(
+        String(1000)
+    )
 
-    support_contact_id = Column(Integer, ForeignKey("employees.id"))
+    contract_id = Column(
+        Integer,
+        ForeignKey("contracts.id", ondelete="CASCADE"),
+        nullable=False,
+    )
 
-    contract = relationship("Contract")
+    support_contact_id = Column(
+        Integer,
+        ForeignKey("employees.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+
+    contract = relationship(
+        "Contract",
+        cascade="all,delete",
+    )
 
     support_contact = relationship(
         "Employee",
+        cascade="all,delete",
     )
 
     HEADERS = (

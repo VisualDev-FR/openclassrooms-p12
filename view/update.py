@@ -8,7 +8,7 @@ from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
 from controller import utils
-from controller.database import create_session
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -36,7 +36,7 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
     * ``kwargs``: the parameters to be updated
     """
 
-    params = utils.drop_none_from_dict(kwargs)
+    params = utils.drop_dict_none_values(kwargs)
 
     if len(params) == 0:
         click.echo("No parameters were specified.")
@@ -45,15 +45,24 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
     try:
         full_query = f"{model.__name__}.{query}"
         parsed_query = eval(full_query)
+        affected_objects = manager.get(parsed_query)
 
-    except (NameError, AttributeError, SyntaxError):
+    except PermissionError as e:
+        raise e
+
+    except Exception:
         click.echo(f"query error: {full_query}")
         return
 
+    if len(affected_objects) == 0:
+        click.echo("No data is matching the specified query.")
+        click.Abort()
+
+    click.echo("\nAffected_rows :")
+
     generic_read(manager=manager, model=model, query=query)
 
-    if not click.confirm("Confirm affected rows ?"):
-        raise click.Abort()
+    click.confirm("Confirm affected rows ?")
 
     try:
         manager.update(where_clause=parsed_query, **params)
@@ -92,8 +101,10 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
 def employees(query, email, password, fullname, department):
     """
     Update one or several existing employees.
+
+    Permissions required = [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=EmployeeManager(session),
             model=Employee,
@@ -136,8 +147,10 @@ def employees(query, email, password, fullname, department):
 def clients(query, email, fullname, sales_contact, phone, enterprise):
     """
     Update one or several existing clients.
+
+    Permissions requrired = [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=ClientsManager(session),
             model=Client,
@@ -183,8 +196,10 @@ def clients(query, email, fullname, sales_contact, phone, enterprise):
 def contracts(query, client_id, account_id, total, to_be_paid, signed):
     """
     Update one or several existing contracts.
+
+    Permissions required = [ACCOUNTING | SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=ContractsManager(session),
             model=Contract,
@@ -248,8 +263,10 @@ def events(
 ):
     """
     Update one or several existing events.
+
+    Permissions required = [ACCOUNTING | SUPPORT]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_update(
             manager=EventsManager(session),
             model=Event,

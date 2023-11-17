@@ -2,11 +2,12 @@ import click
 from sqlalchemy.exc import IntegrityError
 
 from view import cli
+from controller import utils
 from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-from controller.database import create_session
+from controller import database as db
 from controller.managers import (
     Manager,
     EmployeeManager,
@@ -41,7 +42,7 @@ def generic_create(manager: Manager, model: type, **kwargs):
         return
 
     click.echo(
-        manager.tabulate(objects=[created_object], headers=model.HEADERS)
+        utils.tabulate(objects=[created_object], headers=model.HEADERS)
     )
 
 
@@ -72,11 +73,13 @@ def generic_create(manager: Manager, model: type, **kwargs):
     type=click.Choice(["sales", "accounting", "support"]),
     required=True,
 )
-def employee(email, password, fullname, department):
+def employees(email, password, fullname, department):
     """
-    Create a new employee
+    Create a new employee.
+
+    Permissions required : [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=EmployeeManager(session),
             model=Employee,
@@ -102,13 +105,6 @@ def employee(email, password, fullname, department):
     required=True
 )
 @click.option(
-    "--sales_contact",
-    prompt=True,
-    help="The id of the client's sales contact",
-    required=True,
-    type=int,
-)
-@click.option(
     "--phone",
     prompt=True,
     help="The phone number of the client"
@@ -118,17 +114,18 @@ def employee(email, password, fullname, department):
     prompt=True,
     help="The enterprise of the client"
 )
-def client(email, fullname, sales_contact, phone, enterprise):
+def clients(email, fullname, phone, enterprise):
     """
     Create a new client
+
+    Permissions required : [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=ClientsManager(session),
             model=Client,
             email=email,
             full_name=fullname,
-            sales_contact_id=sales_contact,
             phone=phone,
             enterprise=enterprise,
         )
@@ -159,11 +156,13 @@ def client(email, fullname, sales_contact, phone, enterprise):
     help="1 if the contract is signed, else 0",
     type=bool
 )
-def contract(client_id, total, to_be_paid, signed):
+def contracts(client_id, total, to_be_paid, signed):
     """
     Create a new contract
+
+    Permissions required : [ACCOUNTING]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=ContractsManager(session),
             model=Contract,
@@ -221,11 +220,13 @@ def contract(client_id, total, to_be_paid, signed):
     prompt=True,
     help="Notes about the event"
 )
-def event(start, end, location, attendees, contract_id, support_id, notes):
+def events(start, end, location, attendees, contract_id, support_id, notes):
     """
     Create a new event
+
+    Permissions required : [SALES]
     """
-    with create_session() as session:
+    with db.create_session() as session:
         generic_create(
             manager=EventsManager(session),
             model=Event,

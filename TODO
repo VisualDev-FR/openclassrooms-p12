@@ -17,24 +17,41 @@ objectifs pour le 13/10/2023:
   ✔ finir l'étape 5 @done(23-10-13 16:26)
 
 objectifs pour le 27/10/2023:
-  ✘ fusionner les decorateurs de login (ça vaut le coup ou pas ?) @cancelled(23-10-20 11:59)
+  ✘ fusionner les decorateurs de login @cancelled(23-10-20 11:59)
   ✔ mocker le décorateur de login pour les tests @started(23-10-20 08:23) @done(23-10-27 09:35) @lasted(1w1h12m28s)
   ✔ finir l'étape 6 @done(23-10-27 09:35)
 
 objectifs pour le 03/11/2023:
-  ✘ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal @cancelled(23-11-01 19:05)
   ✔ mettre en place l'interface en ligne de commande @done(23-11-01 19:05)
   ✔ mettre en place l'environnement de tests sur l'interface cli @done(23-11-03 15:28)
   ✔ écrire les spécifications de mise en place de la base de donnée dans le readme @done(23-11-03 15:55)
   ✔ mettre en place la journalisation avec sentry @done(23-11-03 15:55)
   ✔ reorganiser le code en MVC @done(23-11-03 15:55)
-  ☐ mettre en place les tests de l'interface cli
-  ☐ mettre en place les tests sur les fonctions d'authentification
-  ☐ affiner la strategie de validation des données
-  ☐ faire le tour de la documentation des commandes
+
+objectifs pour le 10/11/2023:
+  ✘ dans le create employee, supprimer le password des arguments pour le masquer dans le terminal @cancelled(23-11-10 14:17)
+  ✔ debugger les deletes, mettre en place les stratégies on_delete @done(23-11-10 11:58)
+  ✔ mettre à jour les tests de suppression sur tout les modèles @done(23-11-10 11:59)
+  ✔ s'assurer que les id se sont pas modifiables @done(23-11-10 11:59)
+  on ne peut modifier que les champs autorisés par la cli
+  ✔ rajouter le champ last_update sur toute les tables que l'on peut mettre à jour @done(23-11-10 14:17)
+  ✔ affiner la strategie de validation des données @done(23-11-10 16:23)
+
+objectifs pour le 17/11/2023:
+  ✘ faire apparaitre les permissions avant de rentrer une commande complete @cancelled(23-11-12 14:10)
+  ✔ homogeniser les noms de models dans la cli (client / clients, etc...) @done(23-11-11 14:39)
+  ✔ basculer la méthode tabulate en méthode statique @done(23-11-11 15:04)
+  ✔ faire apparaitre la cascade de suppressions sur les commandes delete @done(23-11-11 18:01)
+  ✔ valider les clés étrangères sur les models (ex un sales_contact_id appartient bien au departement sales) @done(23-11-12 14:03)
+  ✔ modifier les données de tests à partir des fichiers json @done(23-11-12 14:03)
+  ✔ ajouter les permissions nécéssaires sur toute les commandes @done(23-11-12 14:25)
+  ✔ mettre en place les tests de l'interface cli @done(23-11-17 11:26)
+  ✔ mettre en place les tests du cascade resolver @done(23-11-17 11:52)
+  ✔ mettre en place les tests sur les fonctions d'authentification @done(23-11-17 11:55)
+  ✔ faire le tour des TODO dans le code @done(23-11-17 11:59)
+  ✔ faire le tour de la documentation des commandes @done(23-11-17 12:03)
   ☐ renvoyer la gestion d'exception globale vers sentry
-  ☐ debugger les deletes, mettre en place les stratégies on_delete
 
 debug:
-  ☐ py.exe .\epicevents.py update clients --query=full_name==25 --email=5
-  ☐ impossible d'update un password sur les employees
+  ✔ py.exe .\epicevents.py update clients --query=full_name==25 --email=5 @done(23-11-17 12:09)
+  ✔ impossible d'update un password sur les employees @done(23-11-17 12:41)

@@ -14,26 +14,54 @@ from sqlalchemy import (
 class Contract(Base):
     __tablename__ = "contracts"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True
+    )
 
-    total_amount = Column(Float(precision=2))
+    total_amount = Column(
+        Float(precision=2)
+    )
 
-    to_be_paid = Column(Float(precision=2))
+    to_be_paid = Column(
+        Float(precision=2)
+    )
 
-    creation_date = Column(DateTime(timezone=True), server_default=func.now())
+    creation_date = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
-    is_signed = Column(Boolean())
+    last_update = Column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+    )
 
-    client_id = Column(Integer, ForeignKey("clients.id"))
+    is_signed = Column(
+        Boolean()
+    )
 
-    account_contact_id = Column(Integer, ForeignKey("employees.id"))
+    client_id = Column(
+        Integer,
+        ForeignKey("clients.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+
+    account_contact_id = Column(
+        Integer,
+        ForeignKey("employees.id", ondelete="CASCADE"),
+        nullable=False,
+    )
 
     client = relationship(
         "Client",
+        cascade="all,delete",
     )
 
     account_contact = relationship(
         "Employee",
+        cascade="all,delete",
     )
 
     HEADERS = (
