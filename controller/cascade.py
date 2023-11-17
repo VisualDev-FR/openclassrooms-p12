@@ -45,49 +45,93 @@ class CascadeResolver:
         self.session = session
 
     def _retreive_clients_from_employees(self, employees: List[Employee]) -> List[Client]:
-        return [
-            self.session.scalar(
-                sqlalchemy.select(Client)
-                .where(Client.sales_contact_id == employee.id)
+
+        clients = []
+
+        for employee in employees:
+
+            if employee is None:
+                continue
+
+            clients.extend(
+                self.session.scalars(
+                    sqlalchemy.select(Client)
+                    .where(Client.sales_contact_id == employee.id)
+                ).all()
             )
-            for employee in employees if employee is not None
-        ]
+
+        return clients
 
     def _retreive_contracts_from_employees(self, employees: List[Employee]) -> List[Contract]:
-        return [
-            self.session.scalar(
-                sqlalchemy.select(Contract)
-                .where(Contract.account_contact_id == employee.id)
+
+        contracts = []
+
+        for employee in employees:
+
+            if employee is None:
+                continue
+
+            contracts.extend(
+                self.session.scalars(
+                    sqlalchemy.select(Contract)
+                    .where(Contract.account_contact_id == employee.id)
+                ).all()
             )
-            for employee in employees if employee is not None
-        ]
+
+        return contracts
 
     def _retreive_events_from_employee(self, employees: List[Employee]) -> List[Event]:
-        return [
-            self.session.scalar(
-                sqlalchemy.select(Event)
-                .where(Event.support_contact_id == employee.id)
+
+        events = []
+
+        for employee in employees:
+            if employee is None:
+                continue
+
+            events.extend(
+                self.session.scalars(
+                    sqlalchemy.select(Event)
+                    .where(Event.support_contact_id == employee.id)
+                ).all()
             )
-            for employee in employees if employee is not None
-        ]
+
+        return events
 
     def _retreive_contracts_from_clients(self, clients: List[Client]) -> List[Contract]:
-        return [
-            self.session.scalar(
-                sqlalchemy.select(Contract)
-                .where(Contract.client_id == client.id)
+
+        contracts = []
+
+        for client in clients:
+
+            if client is None:
+                continue
+
+            contracts.extend(
+                self.session.scalars(
+                    sqlalchemy.select(Contract)
+                    .where(Contract.client_id == client.id)
+                ).all()
             )
-            for client in clients if client is not None
-        ]
+
+        return contracts
 
     def _retreive_events_from_contracts(self, contracts: List[Contract]) -> List[Event]:
-        return [
-            self.session.scalar(
-                sqlalchemy.select(Event)
-                .where(Event.contract_id == contract.id)
+
+        events = []
+
+        for contract in contracts:
+
+            if contract is None:
+                continue
+
+            events.extend(
+                self.session.scalars(
+                    sqlalchemy.select(Event)
+                    .where(Event.contract_id == contract.id)
+                ).all()
             )
-            for contract in contracts if contract is not None
-        ]
+
+        return events
 
     def resolve_employee_cascade(self, employees: List[Employee]) -> List[CascadeDetails]:
 
