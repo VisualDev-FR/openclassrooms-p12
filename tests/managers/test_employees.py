@@ -153,6 +153,17 @@ def test_update_employee_from_unauthorized(database_mock, session, login_as_sale
         update_employee()
 
 
+def test_update_employee_with_invalid_datas(database_mock, session, login_as_accounting):
+
+    manager = EmployeeManager(session)
+
+    with database_mock, login_as_accounting, pytest.raises(ValueError):
+        manager.update(
+            where_clause=Employee.id == 1,
+            email="null",
+        )
+
+
 def test_delete_employee_from_unauthorized(database_mock, session, login_as_sales, login_as_support):
 
     manager = EmployeeManager(session)

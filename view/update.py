@@ -45,16 +45,23 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
     try:
         full_query = f"{model.__name__}.{query}"
         parsed_query = eval(full_query)
+        affected_objects = manager.get(parsed_query)
 
-    except (NameError, AttributeError, SyntaxError):
+    except PermissionError as e:
+        raise e
+
+    except Exception:
         click.echo(f"query error: {full_query}")
         return
+
+    if len(affected_objects) == 0:
+        click.echo("No data is matching the specified query.")
+        click.Abort()
 
     click.echo("Before:")
 
     generic_read(manager=manager, model=model, query=query)
 
-    click.echo("\nAfter:")
     click.confirm("Confirm affected rows ?")
 
     try:

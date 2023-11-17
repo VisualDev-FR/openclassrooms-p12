@@ -8,6 +8,7 @@ from sentry_sdk import capture_message
 from controller import authentification as auth
 from controller.permissions import permission_required
 from controller.cascade import CascadeDetails, CascadeResolver
+from controller import utils
 from models.employees import Department, Employee
 from models.clients import Client
 from models.contracts import Contract
@@ -96,6 +97,9 @@ class EmployeeManager(Manager):
     @permission_required(roles=[Department.ACCOUNTING])
     def update(self, where_clause, **values):
         super().update(where_clause, **values)
+
+        if "email" in values:
+            values["email"] = utils.validate_email(values["email"])
 
         request = sqlalchemy.select(Employee).where(where_clause)
         updated_employees = self._session.scalars(request)
