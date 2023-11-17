@@ -96,10 +96,17 @@ class EmployeeManager(Manager):
 
     @permission_required(roles=[Department.ACCOUNTING])
     def update(self, where_clause, **values):
-        super().update(where_clause, **values)
 
         if "email" in values:
             values["email"] = utils.validate_email(values["email"])
+
+        if "password" in values:
+            password = values.pop("password")
+            hash, salt = auth.encrypt_password(password)
+            values["password_hash"] = hash
+            values["salt"] = salt
+
+        super().update(where_clause, **values)
 
         request = sqlalchemy.select(Employee).where(where_clause)
         updated_employees = self._session.scalars(request)

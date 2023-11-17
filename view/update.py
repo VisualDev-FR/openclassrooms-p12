@@ -58,7 +58,7 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
         click.echo("No data is matching the specified query.")
         click.Abort()
 
-    click.echo("Before:")
+    click.echo("\nAffected_rows :")
 
     generic_read(manager=manager, model=model, query=query)
 
