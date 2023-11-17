@@ -96,9 +96,22 @@ def test_get_event(database_mock, event_manager: EventsManager, login_as_account
         get_event()
 
 
-def test_update_event_from_authorized():
-    # TODO: test_update_event_from_authorized
-    pass
+def test_update_event_from_authorized(database_mock, session, login_as_accounting):
+
+    with database_mock, login_as_accounting:
+
+        manager = EventsManager(session)
+        manager.update(
+            where_clause=Event.id == 1,
+            location="dummy location",
+        )
+
+        updated_event = session.scalar(
+            sqlalchemy.select(Event)
+            .where(Event.id == 1)
+        )
+
+        assert updated_event.location == "dummy location"
 
 
 def test_update_event_from_unauthorized(database_mock, session, login_as_sales, login_as_support):
