@@ -41,10 +41,23 @@ def test_phone_validator():
     phone = "123-456-7890"
     assert utils.validate_phone(phone) == phone
 
+    phone = "123 456 7890"
+    assert utils.validate_phone(phone) == phone
+
+    phone = "1234567890"
+    assert utils.validate_phone(phone) == phone
+
+    with pytest.raises(ValueError):
+        utils.validate_phone("invalid_phone")
+
 
 def test_drop_dict_none_values():
     assert utils.drop_dict_none_values({"key1": None, "key2": None}) == {}
 
     assert utils.drop_dict_none_values({"key1": "value1", "key2": None}) == {
         "key1": "value1"
+    }
+
+    assert utils.drop_dict_none_values({"key1": "value1", "key2": "value2"}) == {
+        "key1": "value1", "key2": "value2"
     }

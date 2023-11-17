@@ -105,13 +105,6 @@ def employees(email, password, fullname, department):
     required=True
 )
 @click.option(
-    "--sales_contact",
-    prompt=True,
-    help="The id of the client's sales contact",
-    required=True,
-    type=int,
-)
-@click.option(
     "--phone",
     prompt=True,
     help="The phone number of the client"
@@ -121,7 +114,7 @@ def employees(email, password, fullname, department):
     prompt=True,
     help="The enterprise of the client"
 )
-def clients(email, fullname, sales_contact, phone, enterprise):
+def clients(email, fullname, phone, enterprise):
     """
     Create a new client
 
@@ -133,7 +126,6 @@ def clients(email, fullname, sales_contact, phone, enterprise):
             model=Client,
             email=email,
             full_name=fullname,
-            sales_contact_id=sales_contact,
             phone=phone,
             enterprise=enterprise,
         )
