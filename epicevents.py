@@ -1,7 +1,16 @@
 import click
 from sentry_sdk import capture_exception
-
-from view import cli, create, read, update, delete, login, logout, signup, init_database
+from view import (
+    cli,
+    create,
+    read,
+    update,
+    delete,
+    login,
+    logout,
+    signup,
+    init_database
+)
 
 if __name__ == "__main__":
     try:
