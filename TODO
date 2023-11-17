@@ -54,4 +54,4 @@ objectifs pour le 17/11/2023:
 
 debug:
   ✔ py.exe .\epicevents.py update clients --query=full_name==25 --email=5 @done(23-11-17 12:09)
-  ☐ impossible d'update un password sur les employees
+  ✔ impossible d'update un password sur les employees @done(23-11-17 12:41)

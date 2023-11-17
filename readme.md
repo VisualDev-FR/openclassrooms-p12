@@ -1,36 +1,35 @@
-# Développez une architecture back-end sécurisée avec Python et SQL
+# Develop a secure back-end architecture with Python and SQL
 
-Ce projet consiste à implémenter une application Customer Relationship Management (CRM) pour gérer des évenements, des contrats et des clients.
+This project involves implementing a Customer Relationship Management (CRM) application to manage events, contracts, and clients.
 
-Cette application est développée en python, avec une base de données MySQL. La communication avec avec la base de données se fait au travers de l'ORM [SQLAlchemy](https://docs.sqlalchemy.org/en/20/)
+This application is developed in Python, with a MySQL database. Communication with the database is done through the [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) ORM.
 
+# Setting up the development environment
 
-# Mise en place de l'environnement de developpement
+## Creating the virtual environment
 
-## création de l'environnement virutel
+1. Create the virtual environment
+    ```
+    python -m venv env
+    ```
 
-1. Création de l'environnement virtuel
-```
-python -m venv env
-```
+2. Activate the virtual environment
+    ```
+    env/Scripts/activate
+    ```
 
-2. Activation de l'environnement virtuel
-```
-env/Scripts/activate
-```
+3. Install Python packages with pip
+    ```
+    pip install -r requirements.txt
+    ```
 
-3. Installation des packages python avec pip
-```
-pip install -r requirements.txt
-```
+## Setting up the database:
 
-## mise en place de la base de données:
+1. Create a MySQL database named `epicevents`
 
-1. créer une base de données mysql nommée `epicevents`
+2. Create a user in the DBMS (the username and password for this user will be saved in environment variables later)
 
-2. créer un utilisateur dans le SGBD (le nom et le mot de passe de cet utilisateur seront enregistrés dans des variables d'environnement ultérieurement)
-
-3. Donner à cet utilisateur, les accès suivants:
+3. Grant the following access to this user:
     - ALTER
     - CREATE
     - DELETE
@@ -40,53 +39,55 @@ pip install -r requirements.txt
     - SELECT
     - UPDATE
 
-## création des variables d'environnement
+## Creating environment variables
 
-Plusieurs variables d'environnement son nécéssaires pour faire fonctionner l'application. (voir le fichier [``environ.py``](./controller/environ.py))
+Several environment variables are necessary to make the application work. (see the [``environ.py``](./controller/environ.py) file)
 
-1. Le mot de passe de la base de donnée
-```
-set EPICEVENTS_PW <database_password>
-```
+1. Database password
+    ```
+    set EPICEVENTS_PW <database_password>
+    ```
 
-2. Nom de l'utilisateur de la base de donnée
-```
-set EPICEVENTS_USER <database_username>
-```
+2. Database username
+    ```
+    set EPICEVENTS_USER <database_username>
+    ```
 
-3. Secret key (pour le hachage des mots de passe)
-```
-set EPICEVENTS_SK <secret_key>
-```
+3. Secret key (for password hashing)
+    ```
+    set EPICEVENTS_SK <secret_key>
+    ```
 
-4. Clé Sentry pour la journalisation
-```
-set SENTRY_KEY <sentry_key>
-```
+4. Sentry key for logging
+    ```
+    set SENTRY_KEY <sentry_key>
+    ```
 
-## Initialisation de la base de donnée <a name="database"></a>
+## Initializing the database <a name="database"></a>
 
-1. Activer l'environnement virtuel
-```
-env/Scripts/activate
-```
+1. Activate the virtual environment
+    ```
+    env/Scripts/activate
+    ```
 
-2. Lancer l'utilitaire d'initialisation de la base de données:
-```
-python epicevents.py init
-```
+2. Launch the database initialization utility:
+    ```
+    python epicevents.py init
+    ```
 
-## Lancement du programme
+3. Enter the database password to run the script.
 
-L'application est implémentée en ligne de commande avec [click](https://click.palletsprojects.com/en/8.1.x/). Pour lancer le programme et accéder aux commandes principales, lancer la commande suivante:
+## Running the program
+
+The application is implemented as a command-line interface with [click](https://click.palletsprojects.com/en/8.1.x/). To run the program and access the main commands, use the following command:
 
 ```
 python epicevents.py
 ```
 
-Pour accéder à la documentation d'une commande utiliser l'argument ``--help``
+To access the documentation for a command, use the ``--help`` argument
 
-Exemple:
+Example:
 ```
 python epicevents.py create employee --help
 ```
@@ -106,12 +107,11 @@ Options:
   --help                          Show this message and exit.
 ```
 
-## Lancement des tests
+## Running tests
 
-1. configuer une base de données de tests nommée `epicevents_test`, en vous référant à la [section dédiée](#database) avec le même utilisateur, les mêmes droits.
+1. Configure a test database named `epicevents_test`, referring to the [dedicated section](#database) with the same user and rights.
 
-2. Lancer les tests
-
-```
-python -m pytest
-```
+2. Run the tests
+    ```
+    python -m pytest
+    ```
