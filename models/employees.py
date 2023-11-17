@@ -41,16 +41,8 @@ class Employee(Base):
         """
         Hash and store a new password + salt value
         """
-        # generate new salt
-        salt = bcrypt.gensalt()
-
-        # hash password with generated salt
-        password_hash = bcrypt.hashpw(
-            password=password.encode("utf-8"), salt=salt)
-
-        # set the hashed password and the salt value
-        self.password_hash = password_hash.decode("utf-8")
-        self.salt = salt.decode("utf-8")
+        from controller import authentification as auth
+        self.password_hash, self.salt = auth.encrypt_password(password)
 
     def check_password(self, password: str) -> bool:
         """

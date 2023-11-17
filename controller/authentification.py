@@ -1,13 +1,14 @@
-from controller import database as db
-from models.employees import Employee, Department
 import sqlalchemy
 from sqlalchemy.orm import Session
 from pathlib import Path
 import datetime
 import os
 import jwt
+import bcrypt
 
 from controller.environ import get_epicevents_path, SECRET_KEY
+from controller import database as db
+from models.employees import Employee, Department
 
 __JWT_ALGORITHM = "HS256"
 __JWT_EXPIRATION_TIME = datetime.timedelta(hours=1)
@@ -167,3 +168,15 @@ def perform_sign_up(full_name: str, email: str, password: str):
 
 def perform_logout() -> bool:
     return clear_token()
+
+
+def encrypt_password(password: str):
+    # generate new salt
+    salt = bcrypt.gensalt()
+
+    # hash password with generated salt
+    password_hash = bcrypt.hashpw(
+        password=password.encode("utf-8"), salt=salt)
+
+    # return the hashed password and the salt value
+    return password_hash.decode("utf-8"), salt.decode("utf-8")
