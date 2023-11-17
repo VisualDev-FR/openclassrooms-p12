@@ -55,9 +55,7 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
     generic_read(manager=manager, model=model, query=query)
 
     click.echo("\nAfter:")
-
-    if not click.confirm("Confirm affected rows ?"):
-        raise click.Abort()
+    click.confirm("Confirm affected rows ?")
 
     try:
         manager.update(where_clause=parsed_query, **params)

@@ -1,8 +1,6 @@
 import sqlalchemy
 from sqlalchemy.orm import Session
 from click.testing import CliRunner
-from unittest.mock import patch
-import pytest
 
 from models.employees import Employee, Department
 from models.clients import Client

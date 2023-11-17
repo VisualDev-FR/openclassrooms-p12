@@ -47,8 +47,10 @@ class Manager(ABC):
         self._session.commit()
 
     def delete(self, whereclause):
-        self._session.execute(sqlalchemy.delete(
-            self._model).where(whereclause))
+        self._session.execute(
+            sqlalchemy.delete(self._model)
+            .where(whereclause)
+        )
         self._session.commit()
 
     @abstractmethod
