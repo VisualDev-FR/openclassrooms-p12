@@ -45,8 +45,8 @@ objectifs pour le 17/11/2023:
   ✔ valider les clés étrangères sur les models (ex un sales_contact_id appartient bien au departement sales) @done(23-11-12 14:03)
   ✔ modifier les données de tests à partir des fichiers json @done(23-11-12 14:03)
   ✔ ajouter les permissions nécéssaires sur toute les commandes @done(23-11-12 14:25)
-  ☐ mettre en place les tests du cascade resolver
-  ☐ mettre en place les tests de l'interface cli
+  ✔ mettre en place les tests de l'interface cli @done(23-11-17 11:26)
+  ✔ mettre en place les tests du cascade resolver @done(23-11-17 11:52)
 
   ☐ mettre en place les tests sur les fonctions d'authentification
   ☐ faire le tour de la documentation des commandes
