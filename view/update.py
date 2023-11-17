@@ -56,13 +56,13 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
 
     if len(affected_objects) == 0:
         click.echo("No data is matching the specified query.")
-        click.Abort()
+        return
 
     click.echo("\nAffected_rows :")
 
     generic_read(manager=manager, model=model, query=query)
 
-    click.confirm("Confirm affected rows ?")
+    click.confirm("Confirm affected rows ?", abort=True)
 
     try:
         manager.update(where_clause=parsed_query, **params)
