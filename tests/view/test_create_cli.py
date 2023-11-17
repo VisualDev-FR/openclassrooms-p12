@@ -10,11 +10,6 @@ from view.create import generic_create
 from view import cli
 
 
-# TODO: test_generic_create
-def test_generic_create():
-    pass
-
-
 def test_create_employee(database_mock, session: Session, login_as_accounting):
 
     with database_mock, login_as_accounting:

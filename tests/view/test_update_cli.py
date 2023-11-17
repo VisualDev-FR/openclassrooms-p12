@@ -2,17 +2,11 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 from click.testing import CliRunner
 
-from models.employees import Employee, Department
+from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
-from view.update import generic_update
 from view import cli
-
-
-def test_generic_update():
-    # TODO: test_generic_update
-    pass
 
 
 def test_update_employee(database_mock, session: Session, login_as_accounting, force_click_confirm):

@@ -5,13 +5,7 @@ from view.read import (
     clients as read_clients,
     contracts as read_contracts,
     events as read_events,
-    generic_read,
 )
-
-
-# TODO: test_generic_read
-def test_generic_read():
-    pass
 
 
 # READ EMPLOYEES

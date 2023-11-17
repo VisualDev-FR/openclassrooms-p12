@@ -2,17 +2,9 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 from click.testing import CliRunner
 
-from models.employees import Employee, Department
 from models.clients import Client
 from models.contracts import Contract
-from models.events import Event
-from view.delete import generic_delete
 from view import cli
-
-
-def test_generic_delete():
-    # TODO: test_generic_delete
-    pass
 
 
 def count_objects(model: type, session: Session):

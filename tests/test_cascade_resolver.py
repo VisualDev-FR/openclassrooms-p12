@@ -2,11 +2,10 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 import pytest
 
-from controller.cascade import CascadeDetails, CascadeResolver
-from models.employees import Employee, Department
+from controller.cascade import CascadeResolver
+from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
-from models.events import Event
 
 
 @pytest.fixture(scope="function")
