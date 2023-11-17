@@ -72,3 +72,12 @@ def login_as_accounting():
 @pytest.fixture
 def login_as_support():
     return patch("controller.authentification.get_authenticated_user_id", return_value=3)
+
+
+# -----------------------------------
+# click fixtures
+# -----------------------------------
+
+@pytest.fixture
+def force_click_confirm():
+    return patch("click.confirm", return_value="y")

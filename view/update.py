@@ -50,7 +50,11 @@ def generic_update(manager: Manager, model: type, query: str, **kwargs):
         click.echo(f"query error: {full_query}")
         return
 
+    click.echo("Before:")
+
     generic_read(manager=manager, model=model, query=query)
+
+    click.echo("\nAfter:")
 
     if not click.confirm("Confirm affected rows ?"):
         raise click.Abort()
