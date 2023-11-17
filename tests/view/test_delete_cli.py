@@ -4,6 +4,7 @@ from click.testing import CliRunner
 
 from models.clients import Client
 from models.contracts import Contract
+from view import delete
 from view import cli
 
 

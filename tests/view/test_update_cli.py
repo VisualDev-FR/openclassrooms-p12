@@ -6,6 +6,7 @@ from models.employees import Employee
 from models.clients import Client
 from models.contracts import Contract
 from models.events import Event
+from view import update
 from view import cli
 
 
