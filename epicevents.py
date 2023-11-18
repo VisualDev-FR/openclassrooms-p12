@@ -23,6 +23,5 @@ if __name__ == "__main__":
         click.echo(e)
 
     except Exception as e:
-        # TODO: handle exceptions here
-        # capture_exception(e)
+        capture_exception(e)
         raise e

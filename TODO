@@ -51,8 +51,8 @@ objectifs pour le 17/11/2023:
   ✔ faire le tour de la documentation des commandes @done(23-11-17 12:03)
 
 objectifs pour le 24/11/2023:
-  ☐ mettre en place les tests du cascade resolver
-  ☐ renvoyer la gestion d'exception globale vers sentry
+  ✔ mettre en place les tests du cascade resolver @done(23-11-18 15:40)
+  ✔ renvoyer la gestion d'exception globale vers sentry @done(23-11-18 15:40)
 
 debug:
   ✔ py.exe .\epicevents.py update clients --query=full_name==25 --email=5 @done(23-11-17 12:09)
