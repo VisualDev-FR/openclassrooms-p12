@@ -1,7 +1,16 @@
 import click
 from sentry_sdk import capture_exception
-
-from view import cli, create, read, update, delete, login, logout, signup, init_database
+from view import (
+    cli,
+    create,
+    read,
+    update,
+    delete,
+    login,
+    logout,
+    signup,
+    init_database
+)
 
 if __name__ == "__main__":
     try:
@@ -14,6 +23,5 @@ if __name__ == "__main__":
         click.echo(e)
 
     except Exception as e:
-        # TODO: handle exceptions here
-        # capture_exception(e)
+        capture_exception(e)
         raise e

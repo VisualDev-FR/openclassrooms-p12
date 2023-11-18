@@ -32,8 +32,10 @@ def test_retreive_clients_from_employees(database_mock, session, resolver: Casca
             )
         )
 
-        assert len(retreived_clients) == 1
+        assert len(retreived_clients) == 3
         assert retreived_clients[0].email == "alice.johnson@example.com"
+        assert retreived_clients[1].email == "ella.davis@example.com"
+        assert retreived_clients[2].email == "isabella.adams@example.com"
 
 
 def test_retreive_contracts_from_employees(database_mock, session, resolver: CascadeResolver):
@@ -48,8 +50,11 @@ def test_retreive_contracts_from_employees(database_mock, session, resolver: Cas
             )
         )
 
-        assert len(retreived_contracts) == 1
+        assert len(retreived_contracts) == 4
         assert retreived_contracts[0].total_amount == 5000
+        assert retreived_contracts[1].total_amount == 10000
+        assert retreived_contracts[2].total_amount == 4500
+        assert retreived_contracts[3].total_amount == 9500
 
 
 def test_retreive_events_from_employee(database_mock, session, resolver: CascadeResolver):
@@ -64,8 +69,11 @@ def test_retreive_events_from_employee(database_mock, session, resolver: Cascade
             )
         )
 
-        assert len(retreived_events) == 1
+        assert len(retreived_events) == 4
         assert retreived_events[0].location == "Salle A"
+        assert retreived_events[1].location == "Salle D"
+        assert retreived_events[2].location == "Salle G"
+        assert retreived_events[3].location == "Salle de réunion J"
 
 
 def test_retreive_contracts_from_clients(database_mock, session, resolver: CascadeResolver):
@@ -116,8 +124,8 @@ def test_resolve_employee_cascade(database_mock, session, resolver: CascadeResol
 
         assert details[0].objects[0].email == "sales.employee@epicevents.co"
         assert details[1].objects[0].email == "alice.johnson@example.com"
-        assert details[2].objects[1].total_amount == 5000
-        assert details[3].objects[1].location == "Salle A"
+        assert details[2].objects[1].total_amount == 6000
+        assert details[3].objects[1].location == "Salle E"
 
 
 def test_resolve_clients_cascade(database_mock, session, resolver: CascadeResolver):

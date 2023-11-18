@@ -46,11 +46,13 @@ objectifs pour le 17/11/2023:
   ✔ modifier les données de tests à partir des fichiers json @done(23-11-12 14:03)
   ✔ ajouter les permissions nécéssaires sur toute les commandes @done(23-11-12 14:25)
   ✔ mettre en place les tests de l'interface cli @done(23-11-17 11:26)
-  ✔ mettre en place les tests du cascade resolver @done(23-11-17 11:52)
   ✔ mettre en place les tests sur les fonctions d'authentification @done(23-11-17 11:55)
   ✔ faire le tour des TODO dans le code @done(23-11-17 11:59)
   ✔ faire le tour de la documentation des commandes @done(23-11-17 12:03)
-  ☐ renvoyer la gestion d'exception globale vers sentry
+
+objectifs pour le 24/11/2023:
+  ✔ mettre en place les tests du cascade resolver @done(23-11-18 15:40)
+  ✔ renvoyer la gestion d'exception globale vers sentry @done(23-11-18 15:40)
 
 debug:
   ✔ py.exe .\epicevents.py update clients --query=full_name==25 --email=5 @done(23-11-17 12:09)

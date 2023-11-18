@@ -57,7 +57,7 @@ def generic_delete(manager: Manager, model: type, query: str):
     for detail in cascade_details:
         click.echo(f"\n{detail}")
 
-    click.confirm("\nConfirm affected row ?")
+    click.confirm("\nConfirm affected row ?", abort=True)
 
     try:
         manager.delete(whereclause=parsed_query)
